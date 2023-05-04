@@ -1,0 +1,60 @@
+#pragma kernel CSMain
+#pragma kernel CSMain_t3
+Texture2D<float4> reader;
+RWTexture2D<float4> writer;
+SamplerState _LinearClamp;
+
+RWStructuredBuffer<float> t3Buffer;
+RWStructuredBuffer<float> t3Buffer2;
+float t3Array[5];
+float _time;
+float _blur;
+float _reg01;
+float _reg02;
+float _reg03;
+int _taille;
+#define Pi 3.14159265359
+[numthreads(8,8,1)]
+void CSMain(uint2 id : SV_DispatchThreadID)
+{
+	float2 f = float2(id.x, id.y);
+	float2 res = float2(512., 424.);
+	float2 uv = f / res;
+	float2 uv2 = float2(uv.x, 1. - uv.y);
+	float Directions = 16.0; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
+	float Quality = 4.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
+	float Size = _blur;//+texture(iChannel0,( inData.v_texcoord*resolution)/float2(1024)+548.).a*10.; // BLUR SIZE (Radius)
+	float2 Radius = Size / res;
+	float c = 0.;
+	for (float d = 0.0; d < Pi; d += Pi / Directions)
+	{
+		for (float i = 1.0 / Quality; i <= 1.0; i += 1.0 / Quality)
+		{
+			c += reader.SampleLevel(_LinearClamp, uv2 + float2(cos(d), sin(d))*Radius*i + 0.5 / res, 0).x;
+		}
+	}
+	c /= Quality * Directions - 15.;
+    float t1 = reader.SampleLevel(_LinearClamp, uv2 + 0.5 / res, 0).x;
+	float t2 = smoothstep(_reg01,_reg02,pow(c, _reg03));
+	float pt = smoothstep(0.01, 0., distance(uv, float2(frac(_time), 0.5)));
+	float pt2 = 0.;
+	/*for (int i = 0; i < _taille; i++) {
+		pt2 += smoothstep(0.005, 0.001, distance(uv, float2(frac(_time*0.1), float(i) / _taille+0.5/ _taille)));
+	}*/
+	float d1 = distance(uv.x, frac(_time*0.05));
+	pt2 += smoothstep(0.002, 0.001,d1);
+	pt2 += step(distance(0.5,frac(uv.y*_taille)),0.03)*step(d1,0.005);
+    writer[id] = float4(t2,pt2*0.5,0.,1.);
+}
+[numthreads(8, 8, 1)]
+void CSMain_t3(uint2 id : SV_DispatchThreadID)
+{
+	float2 res = float2(512., 424.);
+	float t3 = reader.SampleLevel(_LinearClamp, float2(frac(_time),0.5) , 0).x;
+
+	for (int i = 0; i < _taille; i++) {
+		t3Buffer2[i] =reader.SampleLevel(_LinearClamp, float2(frac(_time*0.05), float(i)/_taille + 0.5 / _taille), 0).x;
+	}
+	t3Buffer[id.x] = t3;
+	
+}

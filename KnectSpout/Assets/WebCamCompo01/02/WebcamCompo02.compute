@@ -1,0 +1,52 @@
+﻿#pragma kernel CSMain
+#pragma kernel CSMain_t3
+Texture2D<float4> reader;
+Texture2D<float4> reader2;
+RWTexture2D<float4> writer;
+SamplerState _LinearClamp;
+RWStructuredBuffer<float> t3Buffer2;
+float _time;
+float _resx;
+float _resy;
+float _speed1;
+float _speed2;
+float _speed3;
+
+[numthreads(8, 8, 1)]
+
+
+void CSMain(uint2 id : SV_DispatchThreadID)
+{
+
+	float2 f = float2(id.x, id.y);
+	float2 res = float2(_resx, _resy);
+	float2 uv = f / res;
+	float tt1 = _time / _speed1;
+	float tt2 = _time / _speed2;
+	float tt3 = _time / _speed3;
+
+	float t2 = reader2.SampleLevel(_LinearClamp, float2(frac(tt1) + uv.x / _speed1, 0.5 + frac(uv.y*res.y / 10.) / (res.y*0.1)) + 0.5 / res, 0).x;
+	float t3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	float b1 = min(step(frac(tt1), uv.x), step(distance(uv.y, frac(floor(tt1)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float t4 = lerp(t3, t2, b1);
+
+	float u2 = reader2.SampleLevel(_LinearClamp, float2(frac(tt2) + uv.x / _speed2, 0.5 + frac(uv.y*res.y / 10.) / (res.y*0.1)) + 0.5 / res, 0).x;
+	float u3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y;
+	float c1 = min(step(frac(tt2), uv.x), step(distance(uv.y, frac(floor(tt2)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float u4 = lerp(u3, u2, c1);
+
+	float v2 = reader2.SampleLevel(_LinearClamp, float2(frac(tt3) + uv.x / _speed3, 0.5 + frac(uv.y*res.y / 10.) / (res.y*0.1)) + 0.5 / res, 0).x;
+	float v3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).z;
+	float d1 = min(step(frac(tt3), uv.x), step(distance(uv.y, frac(floor(tt3)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float v4 = lerp(v3, v2, d1);
+
+	writer[id] = float4(t4, u4, v4, 1.);
+}
+[numthreads(8, 8, 1)]
+void CSMain_t3(uint2 id : SV_DispatchThreadID)
+{
+	t3Buffer2[0] = reader.SampleLevel(_LinearClamp, float2(frac(_time / _speed1), .5), 0).x;
+	t3Buffer2[1] = reader.SampleLevel(_LinearClamp, float2(frac(_time / _speed2), .5), 0).x;
+	t3Buffer2[2] = reader.SampleLevel(_LinearClamp, float2(frac(_time / _speed3), .5), 0).x;
+}
+
