@@ -19,9 +19,18 @@ float _speed2;
 float _speed3;
 float _p1;
 float _p2;
+float _p3;
+float _p4;
 float _c1;
 float _c2;
 float _c3;
+float _phase2;
+float _phase2st;
+float _phase2v;
+float _phase3;
+float _phase3st;
+float _timePhase32;
+float _timePhase31;
 float3 exclusion(float3 s, float3 d)
 {
 	return s + d - 2.0 * s * d;
@@ -47,26 +56,37 @@ void CSMain (uint2 id : SV_DispatchThreadID)
 	float2 f = float2(id.x,id.y);
 	float2 res=float2(_resx, _resy);
 	float2 uv = f / res;
-	float tt1 = _time/_speed1;
-	float tt2 = _time / _speed2;
-	float tt3 = _time / _speed3;
-	float tf = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a;
-	float t2 = reader.SampleLevel(_LinearClamp, float2(frac(tt1)+uv.x/_speed1,  _p2+frac(uv.y*res.y/10.)/(res.y*0.1)) + 0.5 / res, 0).a;
+	float tt1 = lerp(_time,_timePhase31, _phase3) /_speed1;
+	float tt2 = lerp(_time, _timePhase32, _phase3) / _speed1;
+	//float tt3 = _time / _speed3;
+	//float tf = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a;
+	float ba = frac(tt1) + uv.x / _speed1;
+	float ba2 = frac(tt2) + uv.x / _speed1;
+	float bt = frac(uv.y*res.y / 10.) / (res.y*0.1);
+
+	float2 ut2 = lerp(lerp(float2(ba, _p2 + bt),float2(lerp(_p2,_p1,_phase2st) + bt,ba),_phase2v), float2(ba, _p2 + bt), _phase3);
+	float t2 = reader2.SampleLevel(_LinearClamp,ut2 + 0.5 / res, 0).a;
 	float t3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
 	float b1 = min(step(frac(tt1), uv.x),step(distance(uv.y, frac(floor(tt1)*10. / res.y)-5./res.y), 5./res.y));
 	float t4 = lerp(t3, t2, b1);
 
-	float u2 = reader.SampleLevel(_LinearClamp, float2(frac(tt2) + uv.x / _speed2, 0.5 + frac(uv.y*res.y / 10.) / (res.y*0.1)) + 0.5 / res, 0).a;
+	float2 uu2 = lerp(lerp(float2(ba, 1. - _p2 + bt),float2(lerp(_p4,_p3,_phase2st) + bt,ba),_phase2v),float2(ba,  _p4 + bt),_phase3);
+	float u2 = reader2.SampleLevel(_LinearClamp,uu2 + 0.5 / res, 0).a;
 	float u3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y;
-	float c1 = min(step(frac(tt2), uv.x), step(distance(uv.y, frac(floor(tt2)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float c1 = min(step(frac(tt1), uv.x), step(distance(uv.y, frac(floor(tt1)*10. / res.y) - 5. / res.y), 5. / res.y));
 	float u4 = lerp(u3, u2, c1);
 
-	float v2 = reader.SampleLevel(_LinearClamp, float2(frac(tt3) + uv.x / _speed3, 0.5 + frac(uv.y*res.y / 10.) / (res.y*0.1)) + 0.5 / res, 0).a;
+	float v2 = reader2.SampleLevel(_LinearClamp, float2(ba2, _p1 + bt) + 0.5 / res, 0).a;
 	float v3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).z;
-	float d1 = min(step(frac(tt3), uv.x), step(distance(uv.y, frac(floor(tt3)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float d1 = min(step(frac(tt2), uv.x), step(distance(uv.y, frac(floor(tt2)*10. / res.y) - 5. / res.y), 5. / res.y));
 	float v4 = lerp(v3, v2, d1);
 
-	writer[id] =float4(t4,u4,v4,tf);
+	float w2 = reader2.SampleLevel(_LinearClamp, float2(ba2, _p3 + bt) + 0.5 / res, 0).a;
+	float w3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).z;
+	float e1 = min(step(frac(tt2), uv.x), step(distance(uv.y, frac(floor(tt2)*10. / res.y) - 5. / res.y), 5. / res.y));
+	float w4 = lerp(w3, w2, e1);
+
+	writer[id] =float4(t4,u4,v4,w4);
 }
 [numthreads(8, 8, 1)]
 void CSMain_t3(uint2 id : SV_DispatchThreadID)

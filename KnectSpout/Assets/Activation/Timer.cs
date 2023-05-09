@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour
     public GameObject scene1;
     public GameObject scene2;
     public Material matScene1;
+    public Material matScene2;
     private float timer = 0f;
     public float tempsFondu;
     public float timingMergeScene01;
@@ -29,8 +30,10 @@ public class Timer : MonoBehaviour
     public float timeSinceDeactivation;
     public float activate;
     public float activationScene02;
+    public float dmx; 
     void Start()
     {
+
         activate = 0;
         activationScene02 = 0;
         launch = false;
@@ -43,7 +46,7 @@ public class Timer : MonoBehaviour
         matScene1.SetFloat("_final", 0);
         scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
         scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
-        
+        matScene2.SetFloat("_dither",0);
     }
 
     void Update()
@@ -51,6 +54,7 @@ public class Timer : MonoBehaviour
         if(Mathf.Floor(Time.time)>1)
         {
             detector.SetActive(true);
+            dmx = 0;
         }
         if (detector.GetComponent<Activation>().floatArray1[2] == 1)
         {
@@ -63,6 +67,7 @@ public class Timer : MonoBehaviour
        
         if (launch)
         {
+            canReactivateLaunch = false;
             detector.SetActive(false);
             timer += Time.deltaTime;
             activate = 10;
@@ -73,10 +78,14 @@ public class Timer : MonoBehaviour
                 if (scene1.activeSelf)
                 {
                     matScene1.SetFloat("_fondu", Mathf.Clamp01(timer / tempsFondu));
+                    dmx = 10;
                     if (timer < scene02)
                     {
-
-                        matScene1.SetFloat("_step1to2", Mathf.Clamp01(timer - timingMergeScene01));
+                        if (timer > timingMergeScene01-9)
+                        {
+                            dmx = 0.35f;
+                        }
+                            matScene1.SetFloat("_step1to2", Mathf.Clamp01(timer - timingMergeScene01));
                         if (timer > timingDecoupeScene01)
                         {
                             matScene1.SetFloat("_step0to1", 1);
@@ -97,6 +106,7 @@ public class Timer : MonoBehaviour
                     }
                     else
                     {
+                        dmx = 0.35f;
                         matScene1.SetFloat("_step0to1", 0);
                         if (timer > timingPowerScene02)
                         {
@@ -106,10 +116,11 @@ public class Timer : MonoBehaviour
                         {
                             matScene1.SetFloat("_step2invert", 1);
                         }
-                        if (timer > timingDitherScene02)
-                        {
-                            matScene1.SetFloat("_dither", 1);
-                        }
+                        /*  if (timer > timingDitherScene02)
+                          {
+                              matScene1.SetFloat("_dither", 1);
+                          }   */
+                        matScene1.SetFloat("_dither", Mathf.Clamp01((timer - timingDitherScene02)*0.25f));
                         if (timer > timingFinalScene02)
                         {
                             matScene1.SetFloat("_final", 1);
@@ -118,9 +129,12 @@ public class Timer : MonoBehaviour
                 }
                 if (timer > switchToDetec)
                 {
+                    dmx = 0;
+                    matScene2.SetFloat("_dither", Mathf.Clamp01((timer - switchToDetec-4) * 0.3f)) ;
                     scene1.SetActive(false);
                     scene2.SetActive(true);
-                    activationScene02 = 1;
+                    activationScene02 = 1;     
+
                     if (scene2.activeSelf)
                     {
                         if (timer > phase01Scene02)
@@ -161,11 +175,12 @@ public class Timer : MonoBehaviour
                 matScene1.SetFloat("_powermodification", 0);
                 matScene1.SetFloat("_step2invert", 0);
                 matScene1.SetFloat("_dither", 0);
+                matScene2.SetFloat("_dither", 0);
                 matScene1.SetFloat("_final", 0);
                 scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
                 scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
                 detector.SetActive(true);
-                
+                dmx = 0;
                 timer = 0;
                 activate = 0;
                 launch = false;

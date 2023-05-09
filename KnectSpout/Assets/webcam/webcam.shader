@@ -100,7 +100,7 @@ Shader "Unlit/webcam"
 			float ov(float a, float b) {
 				return a > 0.5 ? 2.*a*b : 1. - 2.*(1. - a)*(1. - b);
 			}
-			float rd(float t) { return frac(sin(dot(floor(t), 45.269))*7845.236); }
+			float rd(float t) { return frac(sin(dot(int(t), 45.29))*7845.46); }
 			float rs(float t) { return frac(sin(dot(t, 45.269))*7845.236); }
 			float hs(float2 uv ) { float2 u = uv * float2(1920., 1080.) / 1024.; return sin(tex2D(_bl, u).x*6.2831853071 +_Time.y*30.)*0.5+0.5; }
 			float hn(float2 uv) { float2 u = uv * float2(1920., 1080.) / 1024.; return (tex2D(_bl, u).x); }
@@ -185,7 +185,7 @@ Shader "Unlit/webcam"
 
 				float c2 = lerp(pow(pc.x,2.), pc6, _step1to2) ;
 				float c3 = pow(c2,lerp(1.,lerp(0.75,1.5,no(_c4*0.05)),_powermodification));
-				float c4 = step(hn(uv + 98.), (c3)*_float4)*rd(_c4*0.08 + 95.24)*_dither;
+				float c4 = step(hn(uv + 98.), (c3)*_float4)*no(_c4*0.08 + 95.24)*_dither;
 
 				float3 b1 = lerp(c3+c4, float3(0., 0., 1.), lerp(step(0.75,rd(uv*4.,_c3*6.25))*(1.-u2),step(0.75,rd(uv*2.,_c3*6.25))*u2,step(0.75,rr1))*_final);
 				float lf = max((1. - step(0.5 / 1920.,min(length(uv.x - 0.5) , (u2)+length(abs(uv.x - 0.5) - 0.25)))), 1. - step(0.5 / 1080., min(length(uv.y - 0.5),length(uv.y - 0.25))));

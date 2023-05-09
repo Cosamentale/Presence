@@ -46,24 +46,24 @@ Material:
     m_Ints: []
     m_Floats:
     - _TroisiemePhase: 0
-    - _c1: 35.015335
-    - _c2: 70.015335
-    - _c3: 58.015335
-    - _c4: 4473.6245
-    - _c6: 264.01532
-    - _c7: 203.01534
-    - _dither: 1
-    - _float1: 0.75686276
-    - _float2: 0.6
-    - _float3: 1
+    - _c1: 0.0040908325
+    - _c2: 0.0040908325
+    - _c3: 0.0040908325
+    - _c4: 0
+    - _c6: 0.0040908325
+    - _c7: 0.0040908325
+    - _dither: 0
+    - _float1: 0.4745098
+    - _float2: 0.22745098
+    - _float3: 0
     - _float4: 0.37
     - _float5: 2.19
     - _float6: -0.42
-    - _floatA: 9
+    - _floatA: 3
     - _frame: 0
     - _infra: 1
     - _powermodification: 1
-    - _secondPhase: 1
+    - _secondPhase: 0
     - _taille2: 12
     - _troisiemePhase: 0
     m_Colors: []

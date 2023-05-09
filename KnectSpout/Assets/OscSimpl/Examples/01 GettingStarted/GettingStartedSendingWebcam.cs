@@ -20,6 +20,7 @@ namespace OscSimpl.Examples
 
         public InfraredDetectionFrame script1;
         public Timer script2;
+
         void Start()
 		{
             LocalIPTarget = _oscOut.remoteIpAddress;
@@ -54,13 +55,13 @@ namespace OscSimpl.Examples
             //_oscOut.Send(address1, infra.float1*10);
             float tt = 0;
            // if (fract(Time.time * speed) < 0.5)
-           if(rd(Time.time*speed)<0.5)
+           if(rd(Time.time*speed*script2.dmx)<0.5)
             {
                 tt = 0;
             }
             else
             {
-                tt = 255;
+                tt = 255 ;
             }
             _oscOut.Send(address6, tt);
             _oscOut.Send(address1, script1.floatArray1[2]*10);

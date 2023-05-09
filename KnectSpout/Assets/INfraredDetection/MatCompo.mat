@@ -85,13 +85,24 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _frame: 25561
-    - _p1: 0.875
-    - _p2: 0.375
+    - _frame: 516
+    - _p1: 0.2
+    - _p2: 0.5
+    - _p3: 0.7
+    - _p4: 0.9
+    - _phase2: 1
+    - _phase2st: 1
+    - _phase2v: 1
+    - _phase3: 0
+    - _phase3d: 1
+    - _phase3st: 0
     - _resy: 2048
     - _speed1: 1
-    - _speed2: 3
+    - _speed2: 1
     - _speed3: 2
+    - _state: 0
+    - _timePhase31: 205
+    - _timePhase32: 20
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

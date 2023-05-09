@@ -110,25 +110,25 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _blur: 40
-    - _bluractivation: 0
-    - _c1: 35.015335
-    - _c2: 70.015335
-    - _c3: 58.015335
-    - _c4: 4473.6245
-    - _c5: 208.01534
-    - _c6: 264.01532
-    - _c7: 203.01534
-    - _dither: 1
-    - _final: 1
+    - _bluractivation: 1
+    - _c1: 0.0040908325
+    - _c2: 0.0040908325
+    - _c3: 0.0040908325
+    - _c4: 0
+    - _c5: 0.0040908325
+    - _c6: 0.0040908325
+    - _c7: 0.0040908325
+    - _dither: 0
+    - _final: 0
     - _float1: 1
     - _float2: 1.5
     - _float3: 0.79
     - _float4: 0.37
     - _fondu: 1
-    - _powermodification: 1
+    - _powermodification: 0
     - _step0to1: 0
-    - _step1to2: 1
-    - _step2invert: 1
+    - _step1to2: 0
+    - _step2invert: 0
     - _ta1: 3.9329004
     - _ta2: 4.072562
     - _ta3: 6.522347
