@@ -2,9 +2,10 @@ Shader "Unlit/Compo"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-		_MainTex2("Texture", 2D) = "white" {}
-		_bl("_bl", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "black" {}
+		_MainTex2("Texture", 2D) = "black" {}
+		_Text("_Text",2D) = "black"{}
+		_bl("_bl", 2D) = "black" {}
 		_p1("_p1",Float) = 0
 		_p2("_p2",Float) = 0
 		_p3("_p3",Float) = 0
@@ -47,6 +48,7 @@ Shader "Unlit/Compo"
             };
             sampler2D _MainTex;
 			sampler2D _MainTex2;
+			sampler2D _Text;
             float4 _MainTex_ST;
 			float _p1;
 			float _p2;
@@ -120,6 +122,8 @@ Shader "Unlit/Compo"
 					l1 = step(min(distance(uv.x, pp4), distance(uv.x, pp2 )), ha);
 					l2 = max(step(length(frac(uv.x*5.+2.5)-0.5), 2.5/1920.),step(distance((uv-0.5)*2.,0.5),la2))*step(2./5.,uv.x)*step(uv.x-1./1920.,4./5.);					
 				}
+				float tex = +tex2D(_Text, i.uv*float2(3.5, 14.)).x*_state;
+				float tex2 = +tex2D(_Text, i.uv*float2(3.5, 14.)-lerp(float2(0.,9.5), float2(2.5, 12.5), _phase3st)).x;
 				float mc4 = step(uv.y, 0.8)*step(0.2, length(uv.y - 0.4));
 				float c4 = c ;
 				float buc = map2(0.2, 0.6, uv.y);
@@ -143,7 +147,7 @@ Shader "Unlit/Compo"
 				float c9 = tex2D(_MainTex, uc9).z*mc9;
 				float c10 = max(c9, c8);
 				float cf = lerp(c3,lerp(lerp(c4*mc4, c7,mc5+mc6),
-					lerp(c4*lerp(1. - mc4,mc4,_phase3st),c10+c7,mc8+mc9+mc5+mc6),
+					lerp(c4*lerp(1. - mc4,mc4,_phase3st) + tex2,c10+c7,mc8+mc9+mc5+mc6),
 					_phase3d),  _phase3);
 				float ff2 = _timePhase31 / _speed1;
 				float ff3 = _timePhase32 / _speed1;
@@ -154,7 +158,8 @@ Shader "Unlit/Compo"
 				float ll3 = smoothstep(la2, 0., li(uv, float2(frac(ff3), _p1), float2(lerp(0.3,0.6, frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(0.6, 0.8, frac(ff3)))));
 				ll3 += smoothstep(la2, 0., li(uv, float2(frac(ff3), _p3), float2(lerp(0.7, 1., frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(0.6, 0.8, frac(ff3)))));
 				float lf = lerp(l1 + ll1 + l2,lerp(ll3 + l4, ll2 + l3, _phase3st), _phase3);
-                return float4(float3(1.,1.,1.)*cf+lf,1.);
+				
+                return float4(float3(1.,1.,1.)*cf+lf+tex,1.);
             }
             ENDCG
         }

@@ -46,6 +46,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         B = new RenderTexture(64, 64, 0);
         B.enableRandomWrite = true;
         B.Create();
+        //B.filterMode = FilterMode.Point;
         C = new RenderTexture(1920, 1080, 0);
         C.enableRandomWrite = true;
         C.Create();
@@ -149,6 +150,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         compute_shader.Dispatch(handle_main2, D.width / 8, D.height / 8, 1);
         
         material.SetTexture("_MainTex", D);
+        material.SetTexture("_MainTex2", B);
         material.SetFloat("_taille2", _taille2);
         material.SetFloat("_floatA", floatA);
         material.SetFloat("_secondPhase", SecondPhase);

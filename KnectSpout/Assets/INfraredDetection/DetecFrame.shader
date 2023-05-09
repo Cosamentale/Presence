@@ -2,10 +2,11 @@ Shader "Unlit/DetecFrame"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-		_Date("Date", 2D) = "white" {}
-		_Texte("Texte",2D)="White"{}
-		_bl("_bl", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "black" {}
+		//_MainTex2("_MainTex2", 2D) = "white" {}
+		_Date("Date", 2D) = "black" {}
+		_Texte("Texte",2D)="black"{}
+		_bl("_bl", 2D) = "black" {}
 		_float1("_float1",Float) = 0
 		_float2("_float2",Float) = 0
 		_float3("_float3",Float) = 0
@@ -52,6 +53,7 @@ Shader "Unlit/DetecFrame"
             };
 
             sampler2D _MainTex;
+			//sampler2D _MainTex2;
 			sampler2D _Date;
 			sampler2D _bl;
 			sampler2D _Texte;
@@ -175,7 +177,7 @@ Shader "Unlit/DetecFrame"
 				float mv5 = tex2D(_Texte, float2(uu.x,frac(uu.y))).x*mmv5;
 				float cl5 = step(min(min(length(i.uv.y - 0.5), length(i.uv.y - 0.25)), length(i.uv.y - 0.75)), 0.5 / 1080.);
 				float3 c7 = lerp(c6, lerp(max(f3+f2,max((max(bl4,cl5)*d3)*ttb,ttl)),1.,lerp(mv5*d3,tee,ttb)), _troisiemePhase);
-                return float4(c7,1.);
+                return float4(c7 ,1.);
             }
             ENDCG
         }
