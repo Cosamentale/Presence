@@ -110,23 +110,29 @@ Shader "Unlit/webcam"
 
             fixed4 frag (v2f i) : SV_target
             {
+				float dt = 2. / 3.;
+				float rf1 = step(0.5, rd(_c3 *10. + 954.69));
+				float rf2 = step(dt, rd(_c3*10. + 98.56));
+				float rf3 = step(0.15, rd(_c3*10. + 98.56));
+				float r6 = step(0.5, rd(_c3*10. + 672.145));
 				float2 uv = (i.uv);
+				float2 uv2 = lerp(uv,lerp(lerp(uv, float2(uv.x, frac(uv.y + 0.5)), r6),lerp(i.uv, float2(frac(uv.x + 0.5), uv.y), r6), max(rf1, 1. - rf2)),rf3);
 				float Directions = 16.0;
 				float Quality = 4.0;
 				float Size =( 1.+hs(uv+986.5)*0.5)*_blur;
 				float2 Radius = Size / float2(1920., 1080.);
 				float3 c = float3(0., 0., 0.);
 				for (float d = 0.0; d < Pi; d += Pi / Directions){
-					for (float e = 1.0 / Quality; e <= 1.0; e += 1.0 / Quality){c += tex2D(_MainTex4, i.uv + float2(cos(d), sin(d))*Radius*e).xyz;}}
+					for (float e = 1.0 / Quality; e <= 1.0; e += 1.0 / Quality){c += tex2D(_MainTex4, uv2 + float2(cos(d), sin(d))*Radius*e).xyz;}}
 				c /= Quality * Directions - 15.;
-				float3 b = tex2D(_MainTex4, i.uv).xyz;
+				float3 b = tex2D(_MainTex4, uv2).xyz;
 				float n1 = smoothstep(0.45, 0.55, no(_c2 *12.+98.48))*_bluractivation;
 				float n2 = smoothstep(0.45, 0.55, no(_c2*13. + 125.32))*_bluractivation;
 				float n3 = smoothstep(0.45, 0.55, no(_c2*14. + 78.12))*_bluractivation;
 				float ca = clamp(ov(lerp(b.x, c.x,  n1), lerp(0.5, hs(uv + 23.69), 0.2)), 0, 1.);
 				float cb = clamp(ov(lerp(b.y, c.y,  n2),lerp(0.5, hs(uv + 23.69), 0.2)), 0., 1.);
 				float cc = clamp(ov(lerp(b.z, c.z, n3), lerp(0.5, hs(uv + 23.69), 0.2)), 0., 1.);
-				float dt = 2. / 3.;
+
 				//////////////
 				float t = _c1*12.;
 				float3 t1 = float3(ca,cb,cc);
@@ -136,7 +142,7 @@ Shader "Unlit/webcam"
 				float l2 = step(0.5 / 1080., length(uv.y - 0.5));
 				float rr1 = rd(t + 65.15);
 				float r1 = step(0.5, rr1);
-				float r2 = step(0.5, rd(t + 45.12));
+				float r2 = step(0.5, rd(t + 45.12))*0.;
 				float r3 = step(dt, rd(t + 78.49));
 				float u1 = step(0.5, uv.x);
 				float u2 = step(0.5, uv.y);
@@ -155,10 +161,9 @@ Shader "Unlit/webcam"
 				float3 to2 =  lerp( lerp(lerp(t1, t3, u2), lerp(t3, t1, u2), r1), t2, u1);
 				float3 to3 =  lerp( lerp(lerp(t2, t1, u2), lerp(t2, t1, u2), r1), t3, u1);
 				float3 to4 = lerp(lerp(to1, to2, r2), to3, r3);
-				float rf1 = step(0.5, rd(_c3 *10. + 954.69));
-				float rf2 = step(dt, rd(_c3*10. + 98.56));
-				float rf3 = step(0.15, rd(_c3*10. + 98.56));
+				
 				float3 tf1 = lerp(tl1,lerp(tm4, lerp(tn4, to4,rf1), rf2), rf3);
+
 				float tll = 1.-lerp(1., lerp(l1, lerp(max(l1,u2)*l2, l1 *max(l2, u1), rf1), rf2), rf3);
 				float g2 = lerp(g1, lerp(g1, lerp(g1, g1*u1, rf1), rf2), rf3);
 				//////////

@@ -48,13 +48,15 @@ Shader "Unlit/FramedWabcam"
             fixed4 frag (v2f i) : SV_Target
             {
 				float t = _Time.y*_speed;
+				float r4 = step(0.5, rd(t*0.5 + 954.69));
+				float r5 = step(0.25, rd(t*0.5 + 98.56));
+				float r6 = step(0.5, rd(t*0.5 + 672.145));
 				float2 uv = i.uv;
-				float2 uv2 = (uv - 0.5)*2.;
-				uv2.x *= 1.25;
-				uv2 = (uv2*0.5) + .5;
-                float t1 = tex2D(_MainTex, uv).x;
-				float t2 = tex2D(_MainTex2, lerp(uv2,float2(frac(1.-uv2.x),uv2.y),step(0.5,length(uv2.x-0.5)))).x;
-				float t3 = tex2D(_MainTex3, uv).x;
+				float2 uv2 = lerp(lerp(i.uv,float2(i.uv.x,frac(i.uv.y + 0.5)), r6),
+					lerp(i.uv, float2(frac(i.uv.x + 0.5),i.uv.y ), r6),max(r4,1.-r5));
+                float t1 = tex2D(_MainTex, uv2).x;
+				float t2 = tex2D(_MainTex2, uv2).x;
+				float t3 = tex2D(_MainTex3, uv2).x;
 				float l1 = step(1. / 1920., length(uv.x - 0.5));
 				float l2 = step(1. / 1080., length(uv.y - 0.5));
 				float r1 = step(0.5,rd(t + 65.15));
@@ -75,7 +77,7 @@ Shader "Unlit/FramedWabcam"
 				float to2 = lerp(1., lerp(lerp(1., lerp(lerp(t1, t3, u2), lerp(t3, t1, u2), r1), l2), t2, u1), l1);
 				float to3 = lerp(1., lerp(lerp(1., lerp(lerp(t2, t1, u2), lerp(t2, t1, u2), r1), l2), t3, u1), l1);
 				float to4 = lerp(lerp(to1, to2, r2), to3, r3);
-				float tf1 = lerp(tm4,lerp(tn4, to4, step(0.5, rd(t*0.5 + 954.69))),step(0.25,rd(t*0.5+98.56)));
+				float tf1 = lerp(tm4,lerp(tn4, to4, r4),r5);
                 return float4(tf1,tf1,tf1,1.);
             }
             ENDCG

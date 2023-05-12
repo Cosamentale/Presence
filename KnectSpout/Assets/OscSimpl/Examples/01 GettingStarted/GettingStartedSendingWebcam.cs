@@ -15,7 +15,10 @@ namespace OscSimpl.Examples
         public string address4 = "/f4";
         public string address5 = "/f5";
         public string address6 = "/f6";
+        public string address7 = "/d3";
+        public string address8 = "/d4";
         public float speed = 0;
+        public float speed2 = 0;
         private string LocalIPTarget;
 
         public InfraredDetectionFrame script1;
@@ -53,17 +56,44 @@ namespace OscSimpl.Examples
 		{
 
             //_oscOut.Send(address1, infra.float1*10);
-            float tt = 0;
-           // if (fract(Time.time * speed) < 0.5)
-           if(rd(Time.time*speed*script2.dmx)<0.5)
+            float tt1 = 0; float tt2 = 0; float tt3 = 0; float tt4 = 0;
+            // if (fract(Time.time * speed) < 0.5)
+            if (rd(Time.time*speed*script2.dmx)<0.5)
             {
-                tt = 0;
+                tt1 = 0;
             }
             else
             {
-                tt = 255 ;
+                tt1 = 255 ;
             }
-            _oscOut.Send(address6, tt);
+            if (rd(Time.time * speed * script2.dmx+234) < 0.5)
+            {
+                tt2 = 0;
+            }
+            else
+            {
+                tt2 = 255;
+            }
+            if (rd(Time.time * speed2 * script2.dmx+945) < 0.5)
+            {
+                tt3 = 0;
+            }
+            else
+            {
+                tt3 = 255;
+            }
+            if (rd(Time.time * speed2 * script2.dmx+785) < 0.5)
+            {
+                tt4 = 0;
+            }
+            else
+            {
+                tt4 = 255;
+            } 
+            _oscOut.Send(address5, tt1);
+            _oscOut.Send(address6, tt2);
+            _oscOut.Send(address7, tt3);
+            _oscOut.Send(address8, tt4);     
             _oscOut.Send(address1, script1.floatArray1[2]*10);
             _oscOut.Send(address4, script2.activate);
             _oscOut.Send(address3, script2.activationScene02*10);

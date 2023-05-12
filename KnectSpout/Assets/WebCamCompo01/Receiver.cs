@@ -85,40 +85,34 @@ namespace OscSimpl.Examples
 				}
 			}
 
-             /*
-            if (noOSC == false)
-             {
-                 vf1 = v1 * puissance;
-                 vf2 = v2 * puissance;
-                 vf3 = v3 * puissance;
-                 vf4 = v4 * puissance;
-                 vf5 = v5 * puissance;
-                 vf6 = v6 * puissance;
-                 vf7 = v7 * puissance;
-             }
-             else
-             {
-                 // Debug.Log("Update method called");
-                 float n1 = no(Time.time + 45.98f);
-                 float n2 = no(Time.time + 95.12f);
-                 float n3 = no(Time.time + 78.13f);
-                 float n4 = no(Time.time + 13.62f);
-                 vf1 += n1 * 0.05f;
-                 vf2 += n2 * 0.05f ;
-                 vf3 += n3 * 0.05f ;
-                 vf4 += n4 * 0.05f;
-                 vf5 = n1;
-                 vf6 = n2;
-                 vf7 = n3;      
-             }    */
             float n1 = no(Time.time + 45.98f);
-            vf1 = v1 * puissance + n1*0.02f;
-            vf2 = v2 * puissance + n1 * 0.02f;
-            vf3 = v3 * puissance + n1 * 0.02f;
-            vf4 = v4 * puissance ;
-            vf5 = v5 * puissance + n1 * 0.02f;
-            vf6 = v6 * puissance + n1 * 0.02f;
-            vf7 = v7 * puissance + n1 * 0.02f;  
+            if (noOSC == false)
+            {
+                 vf1 = v1 * puissance + n1*0.02f;
+           vf2 = v2 * puissance + n1 * 0.02f;
+           vf3 = v3 * puissance + n1 * 0.02f;
+           vf4 = v4 * puissance ;
+           vf5 = v5 * puissance + n1 * 0.02f;
+           vf6 = v6 * puissance + n1 * 0.02f;
+           vf7 = v7 * puissance + n1 * 0.02f;  
+            }
+            else
+            {
+                // Debug.Log("Update method called");
+                //float n1 = no(Time.time + 45.98f);
+                float n2 = rd(Time.time + 95.12f);
+                float n3 = rd(Time.time + 78.13f);
+                float n4 = rd(Time.time + 13.62f);
+                vf1 += n1 * 0.05f;
+                vf2 += n2 * 0.05f ;
+                vf3 += n3 * 0.05f ;
+                vf4 += n4 * 0.05f;
+                vf5 = n1;
+                vf6 = n2;
+                vf7 = n3;      
+            }    
+           
+           
             /*material.SetFloat("_c1", vf1);
             material.SetFloat("_c2", vf2);
             material.SetFloat("_c3", vf3);
@@ -136,21 +130,21 @@ namespace OscSimpl.Examples
             material3.SetFloat("_c6", vf7); */
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i].SetFloat("_c1",(vf1));
-                materials[i].SetFloat("_c2", (vf2));
-                materials[i].SetFloat("_c3", (vf3));
+                materials[i].SetFloat("_c1", Mathf.Floor(vf1));
+                materials[i].SetFloat("_c2", Mathf.Floor(vf2));
+                materials[i].SetFloat("_c3", Mathf.Floor(vf3));
                 materials[i].SetFloat("_c4", (vf4));
-                materials[i].SetFloat("_c5", (vf5));
-                materials[i].SetFloat("_c6", (vf6));
-                materials[i].SetFloat("_c7", (vf7));
+                materials[i].SetFloat("_c5", Mathf.Floor(vf5));
+                materials[i].SetFloat("_c6", Mathf.Floor(vf6));
+                materials[i].SetFloat("_c7", Mathf.Floor(vf7));
             }
-            script1._c1 = vf5 ;
-            script1._c2 = vf6;
-            script1._c3 = vf7;
-            script2._c1 = vf1;
-            script2._c2 = vf2;
-            script2._c3 = vf3;
-            script3._c1 = vf5;
+            script1._c1 = Mathf.Floor(vf5);
+            script1._c2 = Mathf.Floor(vf6);
+            script1._c3 = Mathf.Floor(vf7);
+            script2._c1 = Mathf.Floor(vf1);
+            script2._c2 = Mathf.Floor(vf2);
+            script2._c3 = Mathf.Floor(vf3);
+            script3._c1 = Mathf.Floor(vf5);
             // script1._c4 = vf4;
             //script1._c1 = vf1;
             //script1._c1 = vf1;
