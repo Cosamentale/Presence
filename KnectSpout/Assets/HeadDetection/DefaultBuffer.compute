@@ -1,0 +1,33 @@
+
+#pragma kernel CSMain
+Texture2D<float4> reader;
+Texture2D<float4> reader2;
+Texture2D<float4> reader3;
+Texture2D<float4> reader4;
+RWTexture2D<float4> writer;
+SamplerState _LinearClamp;
+float _time;
+float _resx;
+float _resy;
+[numthreads(8, 8, 1)]
+void CSMain(uint2 id : SV_DispatchThreadID)
+{
+	float2 f = float2(id.x, id.y);
+	float2 res = float2(_resx, _resy);
+	float2 uv = f / res;
+
+	float r1 = 0.; float r2 = 0.; float r3 = 0.;
+	if (_time < 0.1) {
+		r1 = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+		r2 = reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+		r3 = reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	}
+	else {
+		r1 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+		r2 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y;
+		r3 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).z;
+	}
+	
+	//float r2 = smoothstep(0.2, 0.5, abs(reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x - r1));
+	writer[id] = float4(r1, r2, r3, r1);
+}

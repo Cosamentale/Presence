@@ -130,13 +130,13 @@ namespace OscSimpl.Examples
             material3.SetFloat("_c6", vf7); */
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i].SetFloat("_c1", Mathf.Floor(vf1));
-                materials[i].SetFloat("_c2", Mathf.Floor(vf2));
-                materials[i].SetFloat("_c3", Mathf.Floor(vf3));
+                materials[i].SetFloat("_c1",(vf1));
+                materials[i].SetFloat("_c2", (vf2));
+                materials[i].SetFloat("_c3",(vf3));
                 materials[i].SetFloat("_c4", (vf4));
-                materials[i].SetFloat("_c5", Mathf.Floor(vf5));
-                materials[i].SetFloat("_c6", Mathf.Floor(vf6));
-                materials[i].SetFloat("_c7", Mathf.Floor(vf7));
+                materials[i].SetFloat("_c5", (vf5));
+                materials[i].SetFloat("_c6", (vf6));
+                materials[i].SetFloat("_c7", (vf7));
             }
             script1._c1 = Mathf.Floor(vf5);
             script1._c2 = Mathf.Floor(vf6);
