@@ -13,6 +13,7 @@ namespace OscSimpl.Examples
         public string address5 = "/c5";
         public string address6 = "/c6";
         public string address7 = "/c7";
+        public string address8 = "/l1";
         public float v1 = 0;
         public float v2 = 0;
         public float v3 = 0;
@@ -37,7 +38,9 @@ namespace OscSimpl.Examples
         public float vf5;
         public float vf6;
         public float vf7;
+        public float vf8;
         public float puissance;
+        public contorlLight light;
         void Start()
 		{
 			// Ensure that we have a OscIn component and start receiving on port 7000.
@@ -61,6 +64,7 @@ namespace OscSimpl.Examples
             _oscIn.MapFloat(address5, In_Trigger5);
             _oscIn.MapFloat(address6, In_Trigger6);
             _oscIn.MapFloat(address7, In_Trigger7);
+            _oscIn.MapFloat(address8, In_Trigger8);
             //_oscIn.MapFloat(address10, In_ChangingValue1);
 
             // 2) For messages with multiple arguments, route the message using the Map method.
@@ -94,7 +98,25 @@ namespace OscSimpl.Examples
            vf4 = v4 * puissance ;
            vf5 = v5 * puissance + n1 * 0.02f;
            vf6 = v6 * puissance + n1 * 0.02f;
-           vf7 = v7 * puissance + n1 * 0.02f;  
+           vf7 = v7 * puissance + n1 * 0.02f;
+                vf8 = v8;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    materials[i].SetFloat("_c1", (vf1));
+                    materials[i].SetFloat("_c2", (vf2));
+                    materials[i].SetFloat("_c3", Mathf.Floor(vf3));
+                    materials[i].SetFloat("_c4", (vf4));
+                    materials[i].SetFloat("_c5", (vf5));
+                    materials[i].SetFloat("_c6", (vf6));
+                    materials[i].SetFloat("_c7", (vf7));
+                }
+                script1._c1 = Mathf.Floor(vf5);
+                script1._c2 = Mathf.Floor(vf6);
+                script1._c3 = Mathf.Floor(vf7);
+                script2._c1 = Mathf.Floor(vf1);
+                script2._c2 = Mathf.Floor(vf2);
+                script2._c3 = Mathf.Floor(vf3);
+                script3._c1 = Mathf.Floor(vf5);
             }
             else
             {
@@ -109,7 +131,24 @@ namespace OscSimpl.Examples
                 vf4 += n4 * 0.05f;
                 vf5 = n1;
                 vf6 = n2;
-                vf7 = n3;      
+                vf7 = n3;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    materials[i].SetFloat("_c1", Mathf.Floor(vf1) + n1 * 0.02f);
+                    materials[i].SetFloat("_c2", Mathf.Floor(vf2) + n1 * 0.02f);
+                    materials[i].SetFloat("_c3", Mathf.Floor(vf3) + n1 * 0.02f);
+                    materials[i].SetFloat("_c4", (vf4));
+                    materials[i].SetFloat("_c5", Mathf.Floor(vf5));
+                    materials[i].SetFloat("_c6", Mathf.Floor(vf6));
+                    materials[i].SetFloat("_c7", Mathf.Floor(vf7));
+                }
+                script1._c1 = Mathf.Floor(vf5);
+                script1._c2 = Mathf.Floor(vf6);
+                script1._c3 = Mathf.Floor(vf7);
+                script2._c1 = Mathf.Floor(vf1);
+                script2._c2 = Mathf.Floor(vf2);
+                script2._c3 = Mathf.Floor(vf3);
+                script3._c1 = Mathf.Floor(vf5);
             }    
            
            
@@ -128,23 +167,8 @@ namespace OscSimpl.Examples
             material3.SetFloat("_c4", vf5);
             material3.SetFloat("_c5", vf6);
             material3.SetFloat("_c6", vf7); */
-            for (int i = 0; i < materials.Length; i++)
-            {
-                materials[i].SetFloat("_c1",(vf1));
-                materials[i].SetFloat("_c2", (vf2));
-                materials[i].SetFloat("_c3",(vf3));
-                materials[i].SetFloat("_c4", (vf4));
-                materials[i].SetFloat("_c5", (vf5));
-                materials[i].SetFloat("_c6", (vf6));
-                materials[i].SetFloat("_c7", (vf7));
-            }
-            script1._c1 = Mathf.Floor(vf5);
-            script1._c2 = Mathf.Floor(vf6);
-            script1._c3 = Mathf.Floor(vf7);
-            script2._c1 = Mathf.Floor(vf1);
-            script2._c2 = Mathf.Floor(vf2);
-            script2._c3 = Mathf.Floor(vf3);
-            script3._c1 = Mathf.Floor(vf5);
+           
+            light.vl1 = vf8;
             // script1._c4 = vf4;
             //script1._c1 = vf1;
             //script1._c1 = vf1;
@@ -160,44 +184,50 @@ namespace OscSimpl.Examples
         void In_Trigger1(float value)
 		{
           
-            v1 += Mathf.Abs(value)*0.1f;
+            v1 += Mathf.Abs(value);
                
         }
         void In_Trigger2(float value)
         {
            
-            v2 += Mathf.Abs(value) * 0.1f;
+            v2 += Mathf.Abs(value) ;
           
         }
         void In_Trigger3(float value)
         {
         
-            v3 += Mathf.Abs(value) * 0.1f;
+            v3 += Mathf.Abs(value) ;
            
         }
         void In_Trigger4(float value)
         {
            
-            v4 += Mathf.Abs(value) * 0.1f;
+            v4 += Mathf.Abs(value);
          
         }
         void In_Trigger5(float value)
         {
            
-            v5 += Mathf.Abs(value) * 0.1f;
+            v5 += Mathf.Abs(value) ;
       
         }
         void In_Trigger6(float value)
         {
             
-            v6 += Mathf.Abs(value) * 0.1f;
+            v6 += Mathf.Abs(value) ;
          
         }
         void In_Trigger7(float value)
         {
         
-            v7 += Mathf.Abs(value) * 0.1f;
+            v7 += Mathf.Abs(value);
         
+        }
+        void In_Trigger8(float value)
+        {
+
+            v8 += Mathf.Abs(value);
+
         }
         void In_ChangingValue1(float value)
 		{

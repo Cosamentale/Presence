@@ -89,12 +89,15 @@ namespace OscSimpl.Examples
             else
             {
                 tt4 = 255;
-            } 
+            }
+            float va1;
+            if (script1.floatArray1[2] * 10 < 0.01f) { va1 = 0; }
+            else { va1 = 1; }
             _oscOut.Send(address5, tt1);
             _oscOut.Send(address6, tt2);
             _oscOut.Send(address7, tt3);
             _oscOut.Send(address8, tt4);     
-            _oscOut.Send(address1, script1.floatArray1[2]*10);
+            _oscOut.Send(address1,va1);
             _oscOut.Send(address4, script2.activate);
             _oscOut.Send(address3, script2.activationScene02*10);
             // _oscOut.Send(address2, infra.floatArray1[1] * 10);

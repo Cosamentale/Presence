@@ -11,9 +11,14 @@ public class contorlLight : MonoBehaviour
     public float speed;
     public float speed2;
     private bool l1Changed = false;
-    private bool l2Changed = false;
-    private bool l3Changed = false;
-    private bool l4Changed = false;
+    //private bool l2Changed = false;
+    public float vl1;
+    public float prevl1;
+    public float v1;
+    public float v2;
+   // public float prevl2;
+   // private bool l3Changed = false;
+   // private bool l4Changed = false;
     void Start()
     {
         
@@ -25,70 +30,75 @@ public class contorlLight : MonoBehaviour
 
     void Update()
     {
-        if (rd(Time.time * speed) > 0.5)
+        if (vl1 != prevl1)
         {
             if (!l1Changed)
             {
-                l1.SetStrength(0);
-                l1Changed = true;
-            }
-        }
-        else
-        {
-            if (l1Changed)
-            {
                 l1.SetStrength(1);
-                l1Changed = false;
-            }
-        }
-        if (rd(Time.time * speed + 985) > 0.5)
-        {
-            if (!l2Changed)
-            {
                 l2.SetStrength(0);
-                l2Changed = true;
-            }
-        }
-        else
-        {
-            if (l2Changed)
-            {
-                l2.SetStrength(1);
-                l2Changed = false;
-            }
-        }
-        if (rd(Time.time * speed2 + 458) > 0.5)
-        {
-            if (!l3Changed)
-            {
-                l3.SetStrength(0);
-                l3Changed = true;
-            }
-        }
-        else
-        {
-            if (l3Changed)
-            {
                 l3.SetStrength(1);
-                l3Changed = false;
-            }
-        }
-        if (rd(Time.time * speed2 + 265) > 0.5)
-        {
-            if (!l4Changed)
-            {
                 l4.SetStrength(0);
-                l4Changed = true;
+                l1Changed = true;
+                prevl1 = vl1;
             }
-        }
-        else
-        {
-            if (l4Changed)
+            else
             {
+                l1.SetStrength(0);
+                l2.SetStrength(1);
+                l3.SetStrength(0);
                 l4.SetStrength(1);
-                l4Changed = false;
+                l1Changed = false;
+                prevl1 = vl1;
             }
         }
+        /*  if (rd(Time.time * speed + 985) > 0.5)
+          {
+              if (!l2Changed)
+              {
+                  l2.SetStrength(0);
+                  l2Changed = true;
+              }
+          }
+          else
+          {
+              if (l2Changed)
+              {
+                  l2.SetStrength(1);
+                  l2Changed = false;
+              }
+          }   */
+        /*  if (rd(Time.time * speed2 + 458) > 0.5)
+          {
+              if (!l3Changed)
+              {
+                  l3.SetStrength(0);
+                  l3Changed = true;
+              }
+          }
+          else
+          {
+              if (l3Changed)
+              {
+                  l3.SetStrength(1);
+                  l3Changed = false;
+              }
+          }
+          if (rd(Time.time * speed2 + 265) > 0.5)
+          {
+              if (!l4Changed)
+              {
+                  l4.SetStrength(0);
+                  l4Changed = true;
+              }
+          }
+          else
+          {
+              if (l4Changed)
+              {
+                  l4.SetStrength(1);
+                  l4Changed = false;
+              }
+          } */
     }
 
     

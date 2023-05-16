@@ -368,9 +368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091cd705510aa0d46a56322b4870af46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptTime: 0.5
-  ActivationTime: 1
-  DesactivationTime: 1.5
+  scriptTime: 2
+  ActivationTime: 1.5
+  DesactivationTime: 2
   script: {fileID: 1713239441}
 --- !u!4 &217984572
 Transform:
@@ -394,7 +394,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217984569}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -970,7 +970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &506952177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1026,8 +1026,12 @@ MonoBehaviour:
   l2: {fileID: 1806970270}
   l3: {fileID: 1894798165}
   l4: {fileID: 338982780}
-  speed: 1
-  speed2: 0
+  speed: 2
+  speed2: 1
+  vl1: 0
+  prevl1: 0
+  v1: 0
+  v2: 0
 --- !u!1 &620565008
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,10 +2103,11 @@ MonoBehaviour:
   address1: /c1
   address2: /c2
   address3: /c3
-  address4: /d
+  address4: /c4
   address5: /c5
   address6: /c6
   address7: /c7
+  address8: /l1
   v1: 0
   v2: 0
   v3: 0
@@ -2131,7 +2136,9 @@ MonoBehaviour:
   vf5: 0
   vf6: 0
   vf7: 0
+  vf8: 0
   puissance: 1
+  light: {fileID: 506952179}
 --- !u!1 &1391893858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,7 +3351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1969242329
 Transform:
   m_ObjectHideFlags: 0

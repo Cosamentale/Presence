@@ -157,7 +157,7 @@ Shader "Unlit/Compo"
 				float l4 = step(min(length(uv.y - _p1), length(uv.y - _p3)), 0.5 / 1080.);
 				float ll3 = smoothstep(la2, 0., li(uv, float2(frac(ff3), _p1), float2(lerp(0.3,0.6, frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(0.6, 0.8, frac(ff3)))));
 				ll3 += smoothstep(la2, 0., li(uv, float2(frac(ff3), _p3), float2(lerp(0.7, 1., frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(0.6, 0.8, frac(ff3)))));
-				float lf = lerp(l1 + ll1 + l2,lerp(ll3 + l4, ll2 + l3, _phase3st), _phase3);
+				float lf = lerp(l1*0.2 + ll1*0.25 + l2,lerp(ll3*0.25 + l4*0.2, ll2*.25 + l3*0.2, _phase3st), _phase3);
 				
                 return float4(float3(1.,1.,1.)*cf+lf+tex,1.);
             }
