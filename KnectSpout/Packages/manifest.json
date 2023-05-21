@@ -9,6 +9,8 @@
     }
   ],
   "dependencies": {
+    "com.unity.barracuda": "3.0.0",
+    "jp.keijiro.klak.testtools": "1.1.0",
     "com.unity.ai.navigation": "1.1.1",
     "com.unity.collab-proxy": "1.17.7",
     "com.unity.ide.rider": "3.0.17",

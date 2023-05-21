@@ -101,8 +101,9 @@ Shader "Unlit/DetecFrame"
 				float tb = floor((t2*_taille2 + 2.)*(9. / 16.));
 				float t1 = tex2D(_MainTex,i.uv).x;
 				float r5 = step(2. / 3., rd(67.15));
-				float r6 = step(0.5, rdn(_c7*45.));
-				float r7 = step(0.5, rdn(_c7*74.));
+				float r6 = step(0.5, rdn(_c3*45.));
+				float r7 = step(0.5, rdn(_c3*74.));
+				float r8 = step(0.9, rdn(_c3*32.));
 				float d3 = step(0.01, _float3);
 				float ver = isEven(tb)*step(2., tb)*d3*r5*(1.- _secondPhase);
 				float t3 = lerp(t1, tex2D(_MainTex, i.uv + float2(0., lerp(0.05, -0.05, step(0.5, i.uv.y)))).x, ver);
@@ -137,8 +138,8 @@ Shader "Unlit/DetecFrame"
 				float te = tex2D(_Date, us).x;
 				float l1 = step(distance(i.uv.x*ta, sp), ta*.5/1920.);
 				float f1  = clamp(ov(lerp(t3,t7, _secondPhase), lerp(0.5, hs(i.uv + 23.69), 0.1)), 0, 1.);
-				float f2 = pow(f1, lerp(1.5, lerp(1.25, 1.75, no(_c4*0.05)), _powermodification));
-				float f3 = step(hn(i.uv + 98.), (f2)*_float4)*no(_c4*0.08 + 95.24)*_dither;
+				float f2 = pow(f1, lerp(1.5, lerp(1.25, 1.75, no(_c4*0.0001)), _powermodification));
+				float f3 = step(hn(i.uv + 98.), (f2)*_float4)*no(_c4*0.0001 + 95.24)*_dither;
 				float mv4 = tex2D(_Texte, uq).x*d3;
 				float3 c1 = lerp(f2+f3,lerp(float3(0., 0., 1.),float3(1.,1.,1.),l1+ te * step(ta / (ta - sp), 6.)+mv4), r1*step(0.01,_float3));
 				float2 ur = i.uv * float2(4.,16.);
@@ -170,7 +171,7 @@ Shader "Unlit/DetecFrame"
 				float2 um = float2(frac(i.uv*4.)) - float2(0., _float6);
 				um = (((um - 0.5)*2.)*_float5)*0.5 + 0.5;
 				float mv1 = tex2D(_Texte, um).x;
-				float3 c6 = lerp(c5, lerp(lerp(f2 + f3,max(float3(0.,0.,1.),mv1*d3),step(i.uv.y,0.5)*lerp(step(0.5,i.uv.x), step( i.uv.x,0.5),r6)
+				float3 c6 = lerp(c5, lerp(lerp(f2 + f3,max(float3(0.,0.,1.),mv1*d3),step(lerp(i.uv.y,1.-i.uv.y,r8),0.5)*lerp(step(0.5,i.uv.x), step( i.uv.x,0.5),r6)
 				),float3(1.,1.,1.), l4+te3), _secondPhase);
 				float2 uu = ((i.uv - 0.5)*16.+float2(0.,2. ))*0.5 + 0.5;
 				float mmv5 = step(tta,0.1);

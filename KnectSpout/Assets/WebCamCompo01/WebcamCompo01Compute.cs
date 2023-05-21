@@ -20,7 +20,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     public float speed3 = 10;
     public int imgresx = 512;
     public int imgresy = 1024;
-    public float[] floatArray1 = new float[3];
+    public float[] floatArray1 = new float[4];
     int handle_t3;
     ComputeBuffer t3Buffer2;
     public RenderTextureFormat rtFormat = RenderTextureFormat.ARGBHalf;
@@ -46,6 +46,17 @@ public class WebcamCompo01Compute : MonoBehaviour
     public bool hasValidated = false;
     public bool hasValidated2 = false;
     public bool hasValidated3 = false;
+    public float _bluractivation;
+    public float _step1to2;
+    public float tic;
+    public float solo;
+    public float tsolo;
+    public float _reg1;
+    public float _reg2;
+    public float activationtime;
+    public float test;
+    public float test2;
+    public float lhv;
     //public float reactive = 0;
     void Start()
     {
@@ -68,15 +79,12 @@ public class WebcamCompo01Compute : MonoBehaviour
         handle_t3 = compute_shader.FindKernel("CSMain_t3");
         handle_main2 = compute_shader.FindKernel("CSMain2");
 
-        t3Buffer2 = new ComputeBuffer(3, sizeof(float));
-        //material.SetTexture("_MainTex2", webcamTexture2);
+        t3Buffer2 = new ComputeBuffer(4, sizeof(float));
         compute_shader.SetFloat("_resx", imgresx);
         compute_shader.SetFloat("_resy", imgresy);
-      
-
-
-
+        compute_shader.SetFloat("_active", 1);
         material.SetFloat("_resy", imgresy);
+        activationtime = Time.frameCount;
     }
      float fract(float t) { return t - Mathf.Floor(t); }
     float rd(float t) { float f = Mathf.Floor(t); return   fract(Mathf.Sin(Vector2.Dot(new Vector2(f, f), new Vector2(54.56f, 54.56f))) * 7845.236f); }
@@ -85,172 +93,165 @@ public class WebcamCompo01Compute : MonoBehaviour
         tex1 = mat1.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
-        float ran = rd(Time.time*0.5f);
-        float ran2 = rd(Time.time*0.5f + 95);
+
+        float tt =  Time.frameCount - activationtime;//test * 60;//
+        float ff = Mathf.Floor(tt / speed1) * 10 / imgresy+55;
+        if (fract(tt / speed2) > 0.05f){tic = 10;}
+        else{tic = 0;}
         float state = 0;
+        if (solo == 1) { tsolo += 1; }
+        else { tsolo = 0; }
+        float td = 1f / 3f;
+        float dt = 2f / 3f;
+        float ran2 = fract(ff /4);
+        float ran = fract(ff /40 );
+        float mg3 = fract(ff /2 );
+        float ran3 = fract(ff/16 );
+        float tp2 = ff /16 ;
+        float tt4 = ff / 9;        
+        float t2 =0; float t3 = 0 ; float t4 = 0;
+        if (ff < 21){
+            if (fract(ff / 6) > 0.5f) { lhv = 0; } else { lhv = 1; }
+            if (tt4 < 1){
+                t2 = fract(ff / 4);
+                t3 = fract(ff / 3);
+                t4 = fract(tt4);}
+            else{
+                t2 = fract(ff / 12);
+                t3 = fract(tt4 + dt);
+                t4 = fract(ff / 18 - td);
+                if (fract(ff / 3) < td) { solo = 0; }
+                else { solo = 1; }}}
+        else {
+            if (ff < 56) { 
+            phase2 = true;
+            if (fract(ff / 24) < 0.5f) { if (fract(ff / 6) < 0.5f) { lhv = 0; } else { lhv = 1; } }
+            else { if (fract(ff / 6) < 0.5f) { lhv = 1; } else { lhv = 0; } }
+            if (ff > 32){
+                    t2 = fract((ff + 1) / 6);
+                t3 = fract((ff + 1) / 12+ 5);
+                if (fract((ff + 1) / 3) < td){solo = 0;}
+                else { solo = 1; }}
+            else{ solo = 0;
+                if (ff < 25){
+                    t2 = fract(ff / 2);
+                    t3 = fract(ff / 4+ 0.25f);}
+                else{
+                    if (fract(ff / 8) < 0.5f){t2 = fract(ff / 8+ 1.5f);}
+                    else { t2 = fract(ff / 4); }
+                    t3 = fract(ff / 2);}}}
+            else
+            {
+                phase3 = true;
+                solo = 0;
+            }
+        }
+       
         if (phase3 == true)
         {
-            //hasValidated3 = false;
             hasValidated2 = false;
-            if (!hasValidated)
-                {
-                compute_shader.SetFloat("_active", 0);
-                hasValidated = true;
-                }
-            else
-            {
-
-                compute_shader.SetFloat("_active", 1);
-            }
-
+            if (!hasValidated ){
+                compute_shader.SetFloat("_active",0);
+                hasValidated = true;}
+            else{ compute_shader.SetFloat("_active", 1); }
             material.SetFloat("_phase3", 1);
             compute_shader.SetFloat("_phase3", 1);
-            _p1 = 0.4f;
-            _p2 = 0.7f;
-            _p3 = 0.9f;
-            _p4 = 0.1f;
-            float md = Mathf.Floor((timePhase31 + timePhase32) / speed1) * 5 / imgresy;
-            if (md < 0.5)
+            _p1 = 0.4f;_p2 = 0.7f;_p3 = 0.9f;_p4 = 0.1f;
+            float ts = 0;
+            float bmd = Mathf.Floor((timePhase31 + timePhase32+ts) / speed1) / imgresy*10;
+            float ba = 1;
+         
+            if (bmd >= 12)
             {
-                material.SetFloat("_phase3d", 0);
+                if (fract(ff / 12) > 0.5f) { lhv = 0; } else { lhv = 1; }
+                ba = 3;
+                if (fract(ff / 6) < td) { solo = 0; ts = 0; }
+                else { solo = 1; ts += 1; bmd = bmd - 1; }
             }
-            else
-            {
-                material.SetFloat("_phase3d", 1);
-            }
-            if (fract(md) < 0.5)
-            {
+            test = ba;
+            float md2 = bmd /2 ;
+            float md = bmd /4 ;
+            float md3 = fract(bmd /16+0.5f);
+            if (md2 < 0.5){material.SetFloat("_phase3d", 0);}else{material.SetFloat("_phase3d", 1);}
+            if (fract(md+0.5f) < 0.5) { material.SetFloat("_phase3st2", 1); }
+            else { material.SetFloat("_phase3st2", 0); }
+            if (md3 < 0.25f) { material.SetFloat("_phase3st3", 1); }
+            else { material.SetFloat("_phase3st3", 0); }
+            if (md3 < 0.25f) { material.SetVector("_poca", new Vector4(0.3f, 0.6f,0.7f, 1)); }
+            if (md3 > 0.25f && t2 <= 0.5f) { material.SetVector("_poca", new Vector4(0, 0.3f, 0.4f, 0.7f)); }
+            if (md3 > 0.5f && t2 <= 0.75f) { material.SetVector("_poca", new Vector4(0.2f, 0.5f, 0.6f, 0.9f)); }
+            if (md3 > 0.75f && t2 <= 1) { material.SetVector("_poca", new Vector4(0.1f, 0.4f, 0.5f, 0.8f)); }
+        if (fract(md2) < 0.5){
                 material.SetFloat("_phase3st", 1);
-                timePhase31 += 1;
+                compute_shader.SetFloat("_phase3st", 1);
+                timePhase31 +=  (1 - solo);
                 compute_shader.SetFloat("_timePhase31", timePhase31);
-                material.SetFloat("_timePhase31", timePhase31);
-              
-            }
-            else
-            {
+                material.SetFloat("_timePhase31", timePhase31);}
+            else {
                 material.SetFloat("_phase3st", 0);
-                timePhase32 += 1;
+                compute_shader.SetFloat("_phase3st", 0);
+                timePhase32 +=  (1 - solo);
                 compute_shader.SetFloat("_timePhase32", timePhase32);
-                material.SetFloat("_timePhase32", timePhase32);
-                
-            }
+                material.SetFloat("_timePhase32", timePhase32);}
            
         }
         else
         {
-            //hasValidated3 = false;
             hasValidated = false;
             timePhase31 = 0;
             timePhase32 = 0;
             material.SetFloat("_phase3", 0);
             compute_shader.SetFloat("_phase3", 0);
-            if (phase2 == true)
-            {
-                if (!hasValidated2)
-                {
-                    compute_shader.SetFloat("_active", 0);
-                    hasValidated2 = true;
-                }
-                else
-                {
-                    compute_shader.SetFloat("_active", 1);
-                }
-
+            if (phase2 == true){
+                if (!hasValidated2){compute_shader.SetFloat("_active",0);hasValidated2 = true;}
+                else{compute_shader.SetFloat("_active", 1);}
                 material.SetFloat("_phase2", 1);
                 compute_shader.SetFloat("_phase2", 1);
-                if (ran2 > 0.5)
-                {
+                if (t3 < 0.5f){
                     material.SetFloat("_phase2v", 1);
                     compute_shader.SetFloat("_phase2v", 1);
-                    _p1 = 0.2f;
-                    _p2 = 0.5f;
-                    _p3 = 0.7f;
-                    _p4 = 0.9f;                  
-                    if (ran >= 0.5)
-                    {
+                    _p1 = 0.2f;_p2 = 0.5f;_p3 = 0.7f;_p4 = 0.9f;                  
+                    if (t2 < 0.5f) {
                         material.SetFloat("_phase2st", 0);
-                        compute_shader.SetFloat("_phase2st", 0);
-                    }
-                    else
-                    {
+                        compute_shader.SetFloat("_phase2st", 0);}
+                    else{
                         material.SetFloat("_phase2st", 1);
-                        compute_shader.SetFloat("_phase2st", 1);
-                    }
-                }
-                else
-                {
-                    _p1 = 0.375f;
-                    _p2 = 0.125f;
+                        compute_shader.SetFloat("_phase2st", 1);}}
+                else{                    
                     material.SetFloat("_phase2v", 0);
                     compute_shader.SetFloat("_phase2v", 0);
-                    if (ran >= 0.5)
-                    {
+                    if (t2 < 0.5f){
                         material.SetFloat("_phase2st", 1);
                         compute_shader.SetFloat("_phase2st", 1);
-                    }
-                    else
-                    {
+                        _p1 = 0.375f;
+                        _p2 = 0.125f;}
+                    else{
                         material.SetFloat("_phase2st", 0);
                         compute_shader.SetFloat("_phase2st", 0);
-                    }
+                        _p1 = 0.125f;_p2 = 0.375f;}
                 }
             }
             else
             {
-                hasValidated = false;
-                hasValidated2 = false;
-                /*if (!phase2 && !phase3)
-                {
-                    if (!hasValidated3)
-                    {
-                        compute_shader.SetFloat("_active", 0);
-                        hasValidated3 = true;
-                    }
-                    else
-                    {
-                        compute_shader.SetFloat("_active", 1);
-                    }
-                }
-                else
-                {
-                    compute_shader.SetFloat("_active", 1);
-                } */
+                hasValidated = false; hasValidated2 = false;
                 material.SetFloat("_phase2", 0);
                 compute_shader.SetFloat("_phase2", 0);
                 material.SetFloat("_phase2v", 0);
                 compute_shader.SetFloat("_phase2v", 0);
-                if (ran2 < 0.5)
-                {
-                    state = 0;
-                    if (ran < 0.25f)
-                    {
-                        _p1 = 0.125f;
-                        _p2 = 0.625f;
-                    }
-                    if (ran >= 0.25f && ran < 0.5f)
-                    {
-                        _p1 = 0.375f;
-                        _p2 = 0.75f;
-                    }
-                    if (ran >= 0.55f && ran < 0.75f)
-                    {
-                        _p1 = 0.625f;
-                        _p2 = 0.25f;
-                    }
-                    if (ran >= 0.75f && ran <= 1)
-                    {
-                        _p1 = 0.875f;
-                        _p2 = 0.375f;
-                    }
-                }
-                else
-                {
-                    state = 1;
-                    _p2 = 0.5f;
+                if (t3 < dt){state = 0;
+                    if (t2 < 0.25f){_p1 = 0.125f;_p2 = 0.625f;}
+                    if (t2 > 0.25f && t2 <= 0.5f){_p1 = 0.625f;_p2 = 0.25f;}
+                    if (t2 > 0.5f && t2 <= 0.75f){_p1 = 0.875f; _p2 = 0.375f;}
+                    if (t2 > 0.75f && t2 <= 1){_p1 = 0.375f;_p2 = 0.75f;}}
+                else{state = 1; _p2 = 0.5f;
+                    if (t4 <= td) { _p1 = 0.5f; }
+                    if (t4 > td && t4 <= dt) { _p1 = 0.5f / 3f; }
+                    if (t4 > dt && t4 <= 1) { _p1 = 2.5f / 3f; }
                 }
             }
-        }      
-
+        }
+        compute_shader.SetFloat("_reg1", _reg1);
+        compute_shader.SetFloat("_reg2", _reg2);
         compute_shader.SetTexture(handle_main2, "reader4", D);
         compute_shader.SetTexture(handle_main2, "reader", tex1);
         compute_shader.SetTexture(handle_main2, "reader2", tex2);
@@ -264,14 +265,17 @@ public class WebcamCompo01Compute : MonoBehaviour
         compute_shader.SetTexture(handle_main2, "reader4", C);
         compute_shader.SetTexture(handle_main2, "writer", D);
         compute_shader.Dispatch(handle_main2, C.width / 8, C.height / 8, 1);
+
         compute_shader.SetTexture(handle_main, "reader", A);
         compute_shader.SetTexture(handle_main, "reader2", C);
-        compute_shader.SetFloat("_time", Time.frameCount);
+        compute_shader.SetFloat("_time", tt);
         compute_shader.SetFloat("_time2", Time.time);
         compute_shader.SetFloat("_p1", _p1);
         compute_shader.SetFloat("_p2", _p2);
         compute_shader.SetFloat("_p3", _p3);      
         compute_shader.SetFloat("_p4", _p4);
+        compute_shader.SetFloat("_bluractivation", _bluractivation);
+        compute_shader.SetFloat("_step1to2", _step1to2);
         compute_shader.SetFloat("_speed1", speed1);                
         compute_shader.SetFloat("_speed2", speed2);
         compute_shader.SetFloat("_speed3", speed3);
@@ -283,7 +287,7 @@ public class WebcamCompo01Compute : MonoBehaviour
         
         material.SetTexture("_MainTex", B);
         material.SetTexture("_MainTex2", D);
-        material.SetFloat("_frame", Time.frameCount);
+        material.SetFloat("_frame", tt);
         material.SetFloat("_speed1", speed1);
         material.SetFloat("_speed2", speed2);
         material.SetFloat("_speed3", speed3);
@@ -293,13 +297,56 @@ public class WebcamCompo01Compute : MonoBehaviour
         material.SetFloat("_p3", _p3);
         material.SetFloat("_p4", _p4);
         material.SetFloat("_state", state);
-        
-        compute_shader.SetTexture(handle_t3, "reader", B);
+        material.SetFloat("_solo", solo);
+        material.SetFloat("_tsolo", tsolo);
+        material.SetFloat("_lhv", lhv);
+        compute_shader.SetFloat("_lhv", lhv);
+        compute_shader.SetFloat("_tsolo", tsolo);
+        compute_shader.SetFloat("_solo", solo);
+        compute_shader.SetFloat("_state", state);
+        compute_shader.SetTexture(handle_t3, "reader", C);
+        compute_shader.SetTexture(handle_t3, "reader2", B);
         compute_shader.SetBuffer(handle_t3, "t3Buffer2", t3Buffer2);
-        compute_shader.Dispatch(handle_t3, 4, 1, 1);
-
-        float[] t3Data2 = new float[3]; ;
-        t3Buffer2.GetData(t3Data2, 0, 0, 3);
+        compute_shader.Dispatch(handle_t3, 5, 1, 1);
+        float[] t3Data2 = new float[4]; ;
+        t3Buffer2.GetData(t3Data2, 0, 0, 4);
         floatArray1 = t3Data2;
+    }
+   /* private void OnDisable()
+    {
+        CleanupResources();
+    }
+
+    private void OnDestroy()
+    {
+        CleanupResources();
+    }
+      */
+    private void CleanupResources()
+    {
+        // Make sure to release or dispose of the ComputeBuffer
+        if (t3Buffer2 != null)
+        {
+            t3Buffer2.Release();
+            t3Buffer2.Dispose();
+        }
+
+        // Destroy the RenderTexture
+        if (A != null)
+        {
+            Destroy(A);
+        }
+        if (B != null)
+        {
+            Destroy(B);
+        }
+        if (C != null)
+        {
+            Destroy(C);
+        }
+        if (D != null)
+        {
+            Destroy(D);
+        }   
     }
 }

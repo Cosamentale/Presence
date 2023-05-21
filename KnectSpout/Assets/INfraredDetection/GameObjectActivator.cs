@@ -4,29 +4,42 @@ using UnityEngine;
 
 public class GameObjectActivator : MonoBehaviour
 {
-    public GameObject[] gameObjects;
+    //public GameObject[] gameObjects;
+    public WebcamCompo01Compute script;
+    public GameObject gameObject;
     //public DepthSourceManagerMy kinect;
     void Start()
     {
         // Deactivate all gameObjects initially
-        DeactivateAllGameObjects();
+       // DeactivateAllGameObjects();
     }
 
     void Update()
     {
         // Check for input
-        for (int i = 0; i < gameObjects.Length; i++)
+        /*  for (int i = 0; i < gameObjects.Length; i++)
+          {
+              // Use the numeric keypad keys (e.g., "1", "2", "3", etc.) to activate/deactivate the corresponding gameObjects in the array
+              if (Input.GetKeyDown(KeyCode.Keypad1 + i))
+              {
+                  ToggleGameObject(i);
+              }
+          }  */
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            // Use the numeric keypad keys (e.g., "1", "2", "3", etc.) to activate/deactivate the corresponding gameObjects in the array
-            if (Input.GetKeyDown(KeyCode.Keypad1 + i))
-            {
-                ToggleGameObject(i);
-            }
+           gameObject.SetActive(true);
         }
-      
+        if(Input.GetKeyDown(KeyCode.Keypad1+1))
+        {
+            script.solo = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad1 + 2))
+        {
+            script.solo = 1;
+        }
     }
 
-    void ToggleGameObject(int index)
+   /* void ToggleGameObject(int index)
     {
         // Check if the index is within the array bounds
         if (index >= 0 && index < gameObjects.Length)
@@ -43,5 +56,5 @@ public class GameObjectActivator : MonoBehaviour
         {
             gameObjects[i].SetActive(false);
         }
-    }
+    }  */
 }

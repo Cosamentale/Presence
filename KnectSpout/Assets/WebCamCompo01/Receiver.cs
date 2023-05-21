@@ -14,6 +14,25 @@ namespace OscSimpl.Examples
         public string address6 = "/c6";
         public string address7 = "/c7";
         public string address8 = "/l1";
+        public string address9 = "/f1";
+        public string address10 = "/f2";
+        public string address11 = "/f3";
+        public string address12 = "/f4";
+        public string address13 = "/f5";
+        public string address14 = "/f6";
+        public string address15 = "/f7";
+        public string address16 = "/b1";
+        public string address17 = "/b2";
+        public string address18 = "/b3";
+        public string address19 = "/b4";
+        public string address20 = "/p";
+        public string address21 = "/b5";
+        public string address22 = "/b6";
+        public string address23 = "/b7";
+        public string address24 = "/b8";
+        public string address25 = "/f8";
+        public string address26 = "/f9";
+        public string address27 = "/f10";
         public float v1 = 0;
         public float v2 = 0;
         public float v3 = 0;
@@ -22,7 +41,6 @@ namespace OscSimpl.Examples
         public float v6 = 0;
         public float v7 = 0;
         public float v8 = 0;
-        public string address10 = "";
         public Material[] materials;
         public int numberOfMaterials;
         public InfraredSourceDessin script1;
@@ -40,7 +58,23 @@ namespace OscSimpl.Examples
         public float vf7;
         public float vf8;
         public float puissance;
-        public contorlLight light;
+        public contorlLight lightt;
+        public GameObject scene1;
+        public GameObject scene2;
+        public GameObject scene3;
+        public float acti;
+        public float acti2;
+        public float acti3;
+        public float acti4;
+        public float acti5;
+        public float selecspeed;
+        public float speed;
+        public float solo;
+       // float vsolo;
+        //public bool changed = true;
+        public bool flag = false;  // Flag to track if the boolean became true
+        public bool controlEnabled = true;  // Flag to track if the control is enabled
+        public bool isTrue = false;
         void Start()
 		{
 			// Ensure that we have a OscIn component and start receiving on port 7000.
@@ -65,6 +99,25 @@ namespace OscSimpl.Examples
             _oscIn.MapFloat(address6, In_Trigger6);
             _oscIn.MapFloat(address7, In_Trigger7);
             _oscIn.MapFloat(address8, In_Trigger8);
+            _oscIn.MapFloat(address9, In_Trigger9);
+            _oscIn.MapFloat(address10, In_Trigger10);
+            _oscIn.MapFloat(address11, In_Trigger11);
+            _oscIn.MapFloat(address12, In_Trigger12);
+            _oscIn.MapFloat(address13, In_Trigger13);
+            _oscIn.MapFloat(address14, In_Trigger14);
+            _oscIn.MapFloat(address15, In_Trigger15);
+            _oscIn.MapFloat(address16, In_Trigger16);
+            _oscIn.MapFloat(address17, In_Trigger17);
+            _oscIn.MapFloat(address18, In_Trigger18);
+            _oscIn.MapFloat(address19, In_Trigger19);
+            _oscIn.MapFloat(address20, In_Trigger20);
+            _oscIn.MapFloat(address21, In_Trigger21);
+            _oscIn.MapFloat(address22, In_Trigger22);
+            _oscIn.MapFloat(address23, In_Trigger23);
+            _oscIn.MapFloat(address24, In_Trigger24);
+            _oscIn.MapFloat(address25, In_Trigger25);
+            _oscIn.MapFloat(address26, In_Trigger26);
+            _oscIn.MapFloat(address27, In_Trigger27);
             //_oscIn.MapFloat(address10, In_ChangingValue1);
 
             // 2) For messages with multiple arguments, route the message using the Map method.
@@ -148,33 +201,63 @@ namespace OscSimpl.Examples
                 script2._c1 = Mathf.Floor(vf1);
                 script2._c2 = Mathf.Floor(vf2);
                 script2._c3 = Mathf.Floor(vf3);
-                script3._c1 = Mathf.Floor(vf5);
-            }    
-           
-           
-            /*material.SetFloat("_c1", vf1);
-            material.SetFloat("_c2", vf2);
-            material.SetFloat("_c3", vf3);
-            material.SetFloat("_c4", vf4);
-
-            material2.SetFloat("_c1", vf1);
-            material2.SetFloat("_c2", vf2);
-            material2.SetFloat("_c3", vf3);
-      
-            material3.SetFloat("_c1", vf1);
-            material3.SetFloat("_c2", vf2);
-            material3.SetFloat("_c3", vf3);
-            material3.SetFloat("_c4", vf5);
-            material3.SetFloat("_c5", vf6);
-            material3.SetFloat("_c6", vf7); */
-           
-            light.vl1 = vf8;
+                script3._c1 = Mathf.Floor(vf1);
+            }
+            if (acti2 == 0)
+            {
+                scene3.SetActive(false);
+                if (acti == 0)
+                {
+                    scene1.SetActive(true);
+                    scene2.SetActive(false);
+                }
+                else
+                {
+                    scene1.SetActive(false);
+                    scene2.SetActive(true);
+                }
+            }
+            else
+            {
+                scene1.SetActive(false);
+                scene2.SetActive(false);
+                scene3.SetActive(true);
+            }
+             
+            if(acti3 == 0)
+            {
+                script2.phase2 = false;
+            }
+            else
+            {
+                script2.phase2 = true;
+              
+            }
+            if (acti4 == 0)
+            {
+                script2.phase3 = false;
+            }
+            else
+            {
+                script2.phase3 = true;              
+            }
+          
+                lightt.vl1 = vf8;
             // script1._c4 = vf4;
             //script1._c1 = vf1;
             //script1._c1 = vf1;
             //script1._c1 = vf1;
-        }
+            if(selecspeed == 0)
+            {
+                script2.speed1 = 1 + speed * 10;
+            }
+            else
+            {
+                script2.speed1 = speed;
+            }
 
+        }
+       
         void OnDisable()
 		{
 			
@@ -229,17 +312,136 @@ namespace OscSimpl.Examples
             v8 += Mathf.Abs(value);
 
         }
-        void In_ChangingValue1(float value)
-		{
-			if (!C_Value1_In)
-			{
-				DynamicValue_In = 0;
-			}
-			else
-			{
-				DynamicValue_In = value;
-			}
-		}
+        void In_Trigger9(float value)
+        {
 
-	}
+            materials[2].SetFloat("_fondu", value);
+
+        }
+        void In_Trigger10(float value)
+        {
+
+            materials[2].SetFloat("_bluractivation", value);
+            script2._bluractivation= value;
+
+        }
+        void In_Trigger11(float value)
+        {
+
+            materials[2].SetFloat("_step0to1", value);
+
+        }
+        void In_Trigger12(float value)
+        {
+
+            materials[2].SetFloat("_step1to2", value);
+            script2._step1to2= value;
+
+        }
+        void In_Trigger13(float value)
+        {
+
+            materials[2].SetFloat("_powermodification", value);
+
+        }
+        void In_Trigger14(float value)
+        {
+
+            materials[2].SetFloat("_step2invert", value);
+
+        }
+        void In_Trigger15(float value)
+        {
+
+            materials[2].SetFloat("_dither", value);
+
+        }
+        void In_Trigger16(float value)
+        {
+
+            materials[2].SetFloat("_final", value);
+           
+
+        }
+        void In_Trigger17(float value)
+        {
+            acti = value;
+        }
+       
+        void In_Trigger18(float value)
+        {
+           
+            scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = value;
+            
+            
+
+        }
+        void In_Trigger19(float value)
+        {
+
+            scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = value;
+
+        }
+        void In_Trigger20(float value)
+        {
+
+           acti2 = value;
+
+        }
+        void In_Trigger21(float value)
+        {
+
+            acti3 = value;
+
+        }
+        void In_Trigger22(float value)
+        {
+
+            acti4 = value;
+
+        }
+        void In_Trigger23(float value)
+        {
+
+            script2.solo = value;
+
+        }
+        void In_Trigger24(float value)
+        {
+
+            selecspeed = value;
+
+        }
+        void In_Trigger25(float value)
+        {
+
+            speed = value;
+
+        }
+        void In_Trigger26(float value)
+        {
+
+            script2.speed2 =   value*100;
+
+        }
+        void In_Trigger27(float value)
+        {
+
+            script2.speed3 = value * 1000;
+            
+
+        }
+        void In_ChangingValue1(float value)
+         {
+             if (!C_Value1_In)
+             {
+                 DynamicValue_In = 0;
+             }
+             else
+             {
+                 DynamicValue_In = value;
+             }
+         }   
+
+    }
 }

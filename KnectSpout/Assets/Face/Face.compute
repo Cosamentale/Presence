@@ -1,0 +1,42 @@
+#pragma kernel CSMain
+Texture2D<float4> reader;
+Texture2D<float4> reader2;
+RWTexture2D<float4> writer;
+SamplerState _LinearClamp;
+float _time;
+float _resx;
+float _resy;
+float4 _data[10];
+float map(float low1, float low2, float high1, float high2, float value) { return low2 + (value - low1) * (high2 - low2) / (high1 - low1); }
+float map2(float low1, float high1, float value) { return  (value - low1) / (high1 - low1); }
+[numthreads(8, 8, 1)]
+void CSMain(uint2 id : SV_DispatchThreadID)
+{
+	float2 f = float2(id.x, id.y);
+	float2 res = float2(_resx, _resy);
+	float2 uv = f / res;
+	float fac = 16. / 9.;
+	float4 t = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0);
+	float d1 = _data[0].z- _data[0].x;
+	float d2 = _data[0].w - _data[0].y;
+	float fac2 = d1 / d2;
+	float fac3 = fac / fac2;
+	float2 uv2 = float2(map(0., _data[0].x-d1*fac2,1., _data[0].z+d1*fac2, uv.x), map(0., 1.-_data[0].y, 1., 1.-_data[0].w,1.-uv.y));
+	float4 t2 = reader2.SampleLevel(_LinearClamp, uv2 + 0.5 / res, 0);
+	float2 uv3 = float2(map(0., _data[0].x , 1., _data[0].z, uv.x), map(0., 1. - _data[0].y, 1., 1. - _data[0].w, 1. - uv.y));
+	float4 t3 = reader2.SampleLevel(_LinearClamp, uv3 + 0.5 / res, 0);
+	float xdiv =32.;
+	float ydiv = 18.;
+	float2 uvr = float2(uv.x - (1. / xdiv), uv.y);
+	if (uv.x < (1. / xdiv)) {
+		uvr = float2(uv.x + ((xdiv - 1.) / xdiv), uv.y - (1. / ydiv));
+	}
+	float outc = 0.;
+	if (uv.x < (1. / xdiv) && uv.y < (1. / ydiv)) {
+		outc = reader.SampleLevel(_LinearClamp, frac(uv*float2(xdiv, ydiv)) + 0.5 / res, 0).a;
+	}
+	else {
+		outc = reader.SampleLevel(_LinearClamp, uvr + 0.5 / res, 0).r;
+	}
+	writer[id] = float4(outc,outc,outc,t3.x);
+}
