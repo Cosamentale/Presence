@@ -57,6 +57,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     public float test;
     public float test2;
     public float lhv;
+    public float final;
     //public float reactive = 0;
     void Start()
     {
@@ -88,29 +89,44 @@ public class WebcamCompo01Compute : MonoBehaviour
     }
      float fract(float t) { return t - Mathf.Floor(t); }
     float rd(float t) { float f = Mathf.Floor(t); return   fract(Mathf.Sin(Vector2.Dot(new Vector2(f, f), new Vector2(54.56f, 54.56f))) * 7845.236f); }
+    float sm (float a, float b, float x){float t = Mathf.Clamp01((x - a) / (0 - a));
+    return t * t * (3 - 2 * t);}
+    float no(float t) { return Mathf.Lerp(rd(t), rd(t + 1), sm(0.45f, 0.55f, fract(t))); }
+
     void Update()
     {
         tex1 = mat1.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
 
-        float tt =  Time.frameCount - activationtime;//test * 60;//
-        float ff = Mathf.Floor(tt / speed1) * 10 / imgresy+55;
+        //float tt =  no(Time.time*0.25f)*3000+fract((Time.frameCount - activationtime)/1000)*1000;//test * 60;//
+        float tt = Time.frameCount - activationtime;//test * 60;//
+        float sp = 1.2f;
+        float ff1 = 0;
+        if (final < 0.5)
+        {
+             ff1 = Mathf.Floor(tt / speed1) * 10 / imgresy * sp ;
+        }
+        else { 
+        speed1 =0.01f+0.7f*no(Time.time * 0.25f + 785);
+        ff1 = no(Time.time * 0.25f) * 70 + fract(Mathf.Floor(tt / speed1) * 10 / imgresy * sp/10)*10;
+        }
+        //float vi1 = 1.5f;
+        float ff = ff1;
+        //if (ff1 < 10/vi1) { ff =ff1 * vi1; } else { ff = ff1; }        
         if (fract(tt / speed2) > 0.05f){tic = 10;}
         else{tic = 0;}
         float state = 0;
-        if (solo == 1) { tsolo += 1; }
+        if (solo == 1 ) { tsolo += 1*sp; }
         else { tsolo = 0; }
         float td = 1f / 3f;
-        float dt = 2f / 3f;
-        float ran2 = fract(ff /4);
-        float ran = fract(ff /40 );
-        float mg3 = fract(ff /2 );
-        float ran3 = fract(ff/16 );
-        float tp2 = ff /16 ;
-        float tt4 = ff / 9;        
+        float dt = 2f / 3f;           
         float t2 =0; float t3 = 0 ; float t4 = 0;
+
         if (ff < 21){
+            phase2 = false;
+            phase3 = false;
+            float tt4 = ff / 9;
             if (fract(ff / 6) > 0.5f) { lhv = 0; } else { lhv = 1; }
             if (tt4 < 1){
                 t2 = fract(ff / 4);
@@ -123,9 +139,10 @@ public class WebcamCompo01Compute : MonoBehaviour
                 if (fract(ff / 3) < td) { solo = 0; }
                 else { solo = 1; }}}
         else {
-            if (ff < 56) { 
-            phase2 = true;
-            if (fract(ff / 24) < 0.5f) { if (fract(ff / 6) < 0.5f) { lhv = 0; } else { lhv = 1; } }
+            if (ff < 56) {                
+                phase2 = true;
+                phase3 = false;
+                if (fract(ff / 24) < 0.5f) { if (fract(ff / 6) < 0.5f) { lhv = 0; } else { lhv = 1; } }
             else { if (fract(ff / 6) < 0.5f) { lhv = 1; } else { lhv = 0; } }
             if (ff > 32){
                     t2 = fract((ff + 1) / 6);
@@ -166,31 +183,35 @@ public class WebcamCompo01Compute : MonoBehaviour
                 if (fract(ff / 12) > 0.5f) { lhv = 0; } else { lhv = 1; }
                 ba = 3;
                 if (fract(ff / 6) < td) { solo = 0; ts = 0; }
-                else { solo = 1; ts += 1; bmd = bmd - 1; }
+                else { solo = 1; ts += 1 * sp ; bmd = bmd - 1; }
             }
             test = ba;
             float md2 = bmd /2 ;
             float md = bmd /4 ;
             float md3 = fract(bmd /16+0.5f);
             if (md2 < 0.5){material.SetFloat("_phase3d", 0);}else{material.SetFloat("_phase3d", 1);}
-            if (fract(md+0.5f) < 0.5) { material.SetFloat("_phase3st2", 1); }
-            else { material.SetFloat("_phase3st2", 0); }
-            if (md3 < 0.25f) { material.SetFloat("_phase3st3", 1); }
-            else { material.SetFloat("_phase3st3", 0); }
-            if (md3 < 0.25f) { material.SetVector("_poca", new Vector4(0.3f, 0.6f,0.7f, 1)); }
-            if (md3 > 0.25f && t2 <= 0.5f) { material.SetVector("_poca", new Vector4(0, 0.3f, 0.4f, 0.7f)); }
-            if (md3 > 0.5f && t2 <= 0.75f) { material.SetVector("_poca", new Vector4(0.2f, 0.5f, 0.6f, 0.9f)); }
-            if (md3 > 0.75f && t2 <= 1) { material.SetVector("_poca", new Vector4(0.1f, 0.4f, 0.5f, 0.8f)); }
+            if (fract(md+0.5f) < 0.5) { material.SetFloat("_phase3st2", 1);compute_shader.SetFloat("_phase3st2", 1); }
+            else { material.SetFloat("_phase3st2", 0); compute_shader.SetFloat("_phase3st2", 0); }
+            if (md3 < 0.25f) { material.SetFloat("_phase3st3", 1); compute_shader.SetFloat("_phase3st3", 1); }
+            else { material.SetFloat("_phase3st3", 0);compute_shader.SetFloat("_phase3st3", 0); }
+            if (md3 < 0.25f) { material.SetVector("_poca", new Vector4(0.3f, 0.6f,0.7f, 1));
+            compute_shader.SetVector("_poca", new Vector4(0.3f, 0.6f, 0.7f, 1));}
+            if (md3 > 0.25f && t2 <= 0.5f) { material.SetVector("_poca", new Vector4(0, 0.3f, 0.4f, 0.7f));
+                compute_shader.SetVector("_poca", new Vector4(0, 0.3f, 0.4f, 0.7f));}
+            if (md3 > 0.5f && t2 <= 0.75f) { material.SetVector("_poca", new Vector4(0.2f, 0.5f, 0.6f, 0.9f));
+                compute_shader.SetVector("_poca", new Vector4(0.2f, 0.5f, 0.6f, 0.9f));}
+            if (md3 > 0.75f && t2 <= 1) { material.SetVector("_poca", new Vector4(0.1f, 0.4f, 0.5f, 0.8f));
+                compute_shader.SetVector("_poca", new Vector4(0.1f, 0.4f, 0.5f, 0.8f));}
         if (fract(md2) < 0.5){
                 material.SetFloat("_phase3st", 1);
                 compute_shader.SetFloat("_phase3st", 1);
-                timePhase31 +=  (1 - solo);
+                timePhase31 +=  (1 - solo) * sp ;
                 compute_shader.SetFloat("_timePhase31", timePhase31);
                 material.SetFloat("_timePhase31", timePhase31);}
             else {
                 material.SetFloat("_phase3st", 0);
                 compute_shader.SetFloat("_phase3st", 0);
-                timePhase32 +=  (1 - solo);
+                timePhase32 +=  (1 - solo) * sp ;
                 compute_shader.SetFloat("_timePhase32", timePhase32);
                 material.SetFloat("_timePhase32", timePhase32);}
            
@@ -269,6 +290,8 @@ public class WebcamCompo01Compute : MonoBehaviour
         compute_shader.SetTexture(handle_main, "reader", A);
         compute_shader.SetTexture(handle_main, "reader2", C);
         compute_shader.SetFloat("_time", tt);
+        compute_shader.SetFloat("_sp", sp);
+        compute_shader.SetFloat("_ff", ff);
         compute_shader.SetFloat("_time2", Time.time);
         compute_shader.SetFloat("_p1", _p1);
         compute_shader.SetFloat("_p2", _p2);
@@ -291,7 +314,8 @@ public class WebcamCompo01Compute : MonoBehaviour
         material.SetFloat("_speed1", speed1);
         material.SetFloat("_speed2", speed2);
         material.SetFloat("_speed3", speed3);
-  
+        material.SetFloat("_sp",sp);
+        material.SetFloat("_ff", ff);
         material.SetFloat("_p1", _p1);
         material.SetFloat("_p2", _p2);
         material.SetFloat("_p3", _p3);

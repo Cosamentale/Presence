@@ -333,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &217984570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,7 +766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &324456186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,7 +783,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: e5e71cf36ca131945a32671b985d7eb3, type: 2}
   desiredWidth: 1920
   desiredHeight: 1080
-  speed1: 0.25
+  speed1: 0.1
   speed2: 15
   speed3: 100
   imgresx: 512
@@ -822,11 +822,12 @@ MonoBehaviour:
   solo: 0
   tsolo: 0
   _reg1: 0
-  _reg2: 1
+  _reg2: 0.7
   activationtime: 0
   test: 1.25
   test2: 5
   lhv: 0
+  final: 0
 --- !u!23 &324456187
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -987,7 +988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &506952177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,7 +1311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7389153362318505037, guid: db007439e938c834eb4289805f2880ef, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1443868068, guid: db007439e938c834eb4289805f2880ef, type: 3}
@@ -1729,7 +1730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1139735376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1837,16 +1838,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221099071}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef3666bb58b39694186f87d156d56693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: 37277085aa181514797e748396a1801c, type: 2}
   tex: {fileID: 8400000, guid: 985eb2b4621724e44b24ba753daa0a26, type: 2}
+  mat2: {fileID: 2100000, guid: 4b14a671b18d37c4798f7f004e2cc560, type: 2}
+  mat3: {fileID: 2100000, guid: 8c32227b569378e43810bd50541490ef, type: 2}
   face: {fileID: 1221099073}
   compute_shader: {fileID: 7200000, guid: 1a8d1ea5205bc57469081f14e6805521, type: 3}
   material: {fileID: 2100000, guid: 9791a8ab23336264999cd25cb3850289, type: 2}
+  c1: 0
+  c2: 0
+  c3: 0
+  c4: 0
+  lastIncrementTime: 0
+  value: 0
 --- !u!114 &1221099073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,7 +1863,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221099071}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e679627c6c78c0045931944c9f0ca6ee, type: 3}
   m_Name: 
@@ -1933,7 +1942,7 @@ Transform:
   m_GameObject: {fileID: 1221099071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19, y: 9, z: 1}
+  m_LocalScale: {x: 16, y: 9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2286,13 +2295,16 @@ MonoBehaviour:
   address18: /b3
   address19: /b4
   address20: /p
-  address21: /b5
-  address22: /b6
-  address23: /b7
+  address21: /t1
+  address22: /t2
+  address23: /t3
   address24: /b8
   address25: /f8
   address26: /f9
   address27: /f10
+  address28: /t4
+  address29: /t5
+  address30: /b5
   v1: 0
   v2: 0
   v3: 0
@@ -2303,13 +2315,15 @@ MonoBehaviour:
   v8: 0
   materials:
   - {fileID: 2100000, guid: 51bc60e439adbe149997a64125547e27, type: 2}
-  - {fileID: 2100000, guid: 662e65f194890cb4db58a2e5c0c00991, type: 2}
+  - {fileID: 2100000, guid: e5e71cf36ca131945a32671b985d7eb3, type: 2}
   - {fileID: 2100000, guid: 11c6bdc9412535d40a6f7a43ffd905e5, type: 2}
   - {fileID: 2100000, guid: 93bf3387b272c15469a8a1de4ad0c535, type: 2}
+  - {fileID: 2100000, guid: 9791a8ab23336264999cd25cb3850289, type: 2}
   numberOfMaterials: 0
   script1: {fileID: 1005614869}
   script2: {fileID: 324456186}
   script3: {fileID: 189201038}
+  script4: {fileID: 1221099072}
   C_Value1_In: 0
   DynamicValue_In: 0
   noOSC: 0
@@ -2326,6 +2340,7 @@ MonoBehaviour:
   scene1: {fileID: 1648699576}
   scene2: {fileID: 189201035}
   scene3: {fileID: 324456185}
+  scene4: {fileID: 1221099071}
   acti: 0
   acti2: 0
   acti3: 0
@@ -2565,6 +2580,8 @@ MonoBehaviour:
   address6: /d2
   address7: /d3
   address8: /d4
+  address9: /lecture
+  address10: /ecriture
   speed: 1
   speed2: 0
   script1: {fileID: 189201038}
@@ -3086,7 +3103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1713239437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3220,7 +3237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1805866026
 MonoBehaviour:
   m_ObjectHideFlags: 0

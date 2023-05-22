@@ -26,6 +26,7 @@ Shader "Unlit/Compo"
 		_phase3d("_phase3d",Float) = 0
 			_solo("_solo",Float)=0
 			_tsolo("_tsolo",Float) = 0
+			_dither("_dither",Float) = 0
     }
     SubShader
     {
@@ -77,6 +78,9 @@ Shader "Unlit/Compo"
 			float _tsolo;
 			float _lhv;
 			float4 _poca;
+			float _dither;
+			float _sp;
+			float _ff;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -93,16 +97,23 @@ Shader "Unlit/Compo"
 			}
 			float map(float low1, float low2 , float high1, float high2, float value) { return low2 + (value - low1) * (high2 - low2) / (high1 - low1); }
 			float map2(float low1,  float high1, float value) { return  (value - low1)/ (high1 - low1); }
+			float ov(float a, float b) {
+				return a > 0.5 ? 2.*a*b : 1. - 2.*(1. - a)*(1. - b);
+			}
+			float hn(float2 uv) { float2 u = uv * float2(1920., 1080.) / 1024.; return (tex2D(_bl, u).x); }
             fixed4 frag (v2f i) : SV_Target
             {
 				float2 uv = i.uv;
 				float ff1 = _frame / _speed1;
 				float ff1b = _frame / _speed2;
-				float tt3 = step( frac(floor(ff1)*10. / _resy/6),0.5);
+				float fff = _ff;
+				float tt3 = step( frac(fff/6),0.5);
 				float la = 0.5/1080.;
 				float la2 = 2.*la;
 				float ha = 0.5 / 1920.;
-				float c = tex2D(_MainTex2, uv).a*max(step(length(uv.y - 0.5),.125), 1. - _state)*(1.-_solo);
+				float c = pow(clamp(ov(tex2D(_MainTex2, uv).a, lerp(0.5, hs(uv + 23.69), 0.2)), 0, 1.),lerp(1.,3.,_dither))
+					*max(step(length(uv.y - 0.5),.125), 1. - _state)*(1.-_solo);
+				c += step(hn(uv + 98.),c)*_dither;
 				float lv2 = step(0.4, uv.x);
 				//float phase2vso = lerp(_phase2v, tt3, _solo);
 				float c2 = lerp(lerp(tex2D(_MainTex, float2(frac(uv.y*4.), uv.x)).x, tex2D(_MainTex, float2(frac(uv.x*3.), uv.y)).x, _state),
@@ -110,8 +121,8 @@ Shader "Unlit/Compo"
 				float po = _p1;
 				float c3 = lerp(c2, c, lerp(step(0.125,distance(uv.y ,_p1) ),step(1./6.,length(uv.x-_p1)),_state));
 				float l1 = step(distance(uv.y, _p2), la);
-				float l = smoothstep(la2, 0., li(uv, float2(frac(ff1b), _p2), float2( frac(floor(ff1)*10. / _resy - 5. / _resy),lerp(_p1-0.125, _p1+0.125,frac( ff1))) ));
-				float ll = smoothstep(la2, 0., li(uv, float2(frac(ff1b), _p2), float2( lerp(_p1 -1./6., _p1 + 1./6., frac(ff1)),frac(floor(ff1)*10. / _resy - 5. / _resy))));
+				float l = smoothstep(la2, 0., li(uv, float2(frac(ff1b), _p2), float2( frac(fff - 5. / _resy),lerp(_p1-0.125, _p1+0.125,frac( ff1))) ));
+				float ll = smoothstep(la2, 0., li(uv, float2(frac(ff1b), _p2), float2( lerp(_p1 -1./6., _p1 + 1./6., frac(ff1)),frac(fff - 5. / _resy))));
 				float ll1 = lerp(l, ll, _state);
 				float l2 = lerp(step( min(distance(uv.y, _p1+0.125), distance(uv.y, _p1 - 0.125)),la),
 				step(length(abs(uv.x-_p1)-1./6.),ha),_state);
@@ -120,16 +131,16 @@ Shader "Unlit/Compo"
 					l2 += step(min(distance(uv.y, _p1 + pl2 + 0.125), distance(uv.y, _p1 +pl2 - 0.125)), la);
 					c3 = lerp(c3, tex2D(_MainTex, float2(frac(uv.y*4.), uv.x)).y, step( distance(uv.y, 1. - _p1),0.125));
 					l1 += step(distance(1.-uv.y, _p2), la);
-					ll1 = smoothstep(la2, 0., li(uv, float2(frac(ff1b),_p2), float2(frac(floor(ff1)*10. / _resy - 5. / _resy), lerp(_p1 - 0.125, _p1 + 0.125, frac(ff1)))));
-					ll1 += smoothstep(la2, 0., li(uv, float2(frac(ff1b),1.- _p2), float2(frac(floor(ff1)*10. / _resy - 5. / _resy), lerp( 1.-_p1 - 0.125,1.-  _p1 + 0.125, frac(ff1)))));
+					ll1 = smoothstep(la2, 0., li(uv, float2(frac(ff1b),_p2), float2(frac(fff - 5. / _resy), lerp(_p1 - 0.125, _p1 + 0.125, frac(ff1)))));
+					ll1 += smoothstep(la2, 0., li(uv, float2(frac(ff1b),1.- _p2), float2(frac(fff - 5. / _resy), lerp( 1.-_p1 - 0.125,1.-  _p1 + 0.125, frac(ff1)))));
 				}
 				if (_phase2v > 0.5) {
 					float mc3 = lv2 * step(0.1, length(uv.x - 0.7));
 					c3 = lerp(c2, c, lerp(mc3,1.-mc3,_phase2st));
 					float pp1 = lerp(_p1, _p2, _phase2st); float pp2 = lerp(_p2, _p1, _phase2st); float pp3 = lerp(_p3, _p4, _phase2st); float pp4 = lerp(_p4, _p3, _phase2st);
 					float pll1 = 0.2 - _phase2st * 0.1;
-					ll1 = smoothstep(la2, 0., li(uv, float2(pp2,frac(ff1b)), float2( lerp(pp1 - pll1, pp1 + pll1, frac(ff1)), frac(floor(ff1)*10. / _resy - 5. / _resy))));
-					ll1 += smoothstep(la2, 0., li(uv, float2(pp4, frac(ff1b)), float2(lerp(pp3 - 0.1, pp3 + 0.1, frac(ff1)), frac(floor(ff1)*10. / _resy - 5. / _resy))));
+					ll1 = smoothstep(la2, 0., li(uv, float2(pp2,frac(ff1b)), float2( lerp(pp1 - pll1, pp1 + pll1, frac(ff1)), frac(fff - 5. / _resy))));
+					ll1 += smoothstep(la2, 0., li(uv, float2(pp4, frac(ff1b)), float2(lerp(pp3 - 0.1, pp3 + 0.1, frac(ff1)), frac(fff- 5. / _resy))));
 					l1 = step(min(distance(uv.x, pp4), distance(uv.x, pp2 )), ha);
 					l2 = max(step(length(frac(uv.x*5.+2.5)-0.5), 2.5/1920.),step(distance((uv-0.5)*2.,0.5),la2))*step(2./5.,uv.x)*step(uv.x-1./1920.,4./5.);					
 				}
@@ -152,7 +163,7 @@ Shader "Unlit/Compo"
 				float phse3 = lerp(_phase3st2,1.-_phase3st2,step(_poca.y+0.05, uv.x));
 				float2 vll3c = lerp(float2(0.6, 0.8),float2(0.,0.2), _phase3st);
 				float2 vll3d = lerp(float2(0.2, 0.8), float2(0., 0.6), _phase3st);
-				float2 vst4 = lerp(float2(lerp(0.2, 0., phse3), lerp(0.8, 0.2, phse3)),vll3d, _phase3st3);
+				float2 vst4 = lerp(float2(lerp(0.2, 0., phse3), lerp(0.8, 0.6, phse3)),vll3d, _phase3st3);
 				float2 vst3 = lerp(float2(lerp(0.6, 0., phse3), lerp(0.8, 0.2, phse3)), vll3c, _phase3st3);
 				float2 vll3 = lerp(float2(lerp(0.6, 0.,  _phase3st2), lerp(0.8, 0.2, _phase3st2)), vll3c, _phase3st3);
 				float2 vll3b = lerp(float2(lerp(0.6, 0., 1. - _phase3st2), lerp(0.8, 0.2, 1. - _phase3st2)), vll3c, _phase3st3);
@@ -178,7 +189,7 @@ Shader "Unlit/Compo"
 				float l4 = step(min(length(uv.y - _p1), length(uv.y - _p3)),la);
 				float ll3 = smoothstep(la2, 0., li(uv, float2(frac(ff3b), _p1), float2(lerp(_poca.x, _poca.y, frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(vll3.x, vll3.y, frac(ff3)))));
 				ll3 += smoothstep(la2, 0., li(uv, float2(frac(ff3b), _p3), float2(lerp(_poca.z, _poca.w, frac(floor(ff3)*10. / _resy - 5. / _resy)), lerp(vll3b.x, vll3b.y, frac(ff3)))));
-				float baf3 = step(min(min(length(uv.x-_poca.x), length(uv.x- _poca.y)), min(length(uv.x- _poca.z), length(uv.x-max(0.999,_poca.w)))), ha)*step(vst4.x,uv.y)
+				float baf3 = step(min(min(length(uv.x-_poca.x), length(uv.x- _poca.y)), min(length(uv.x- _poca.z), length(uv.x-min(0.999,_poca.w)))), ha)*step(vst4.x,uv.y)
 					*step(uv.y,vst4.y);
 				float bf3 = step(min(length(uv.y - vst4.x), length(uv.y - vst4.y)), la)*(step(0., duc)*step(duc, 1.) + step(0., duc2)*step(duc2, 1.))+baf3;
 				float sll = 0.25*(1.-_solo);
@@ -186,14 +197,14 @@ Shader "Unlit/Compo"
 				float lf = lerp(l1*sl + ll1*sll + l2,lerp(ll3*sll + l4*0.2, ll2*sll + l3*sl, _phase3st)+bf3, _phase3);
 				float pfo = frac(floor(_tsolo/_speed1)*5. / _resy*lerp(1.,0.5,_phase3));
 				float lfo = lerp(step(length(uv.x - pfo), 0.75 / 1920.),step(length(1.-uv.y - pfo), 0.75/ 1080.),_lhv)*_solo;
-			
-				/*float ffom = map2(0.4, 0.6, pfo);
+			/*
+				float ffom = map2(0.4, 0.6, pfo);
 				float mfom = step(length(ffom - 0.5), 0.5);
 				float ffom2 =  frac(length(pfo)*4.);
 				float mfom2 = step(length(1.-pfo - _p1), 0.125);
-				float fom = lerp(lerp(pfo,ffom*mfom,_state), lerp(ffom2*mfom2, pfo, _state),tt3);
-				float fom22 = lerp(lerp(1., mfom, _state), lerp(mfom2, 1., _state), tt3);
-
+				float fom = lerp(lerp(pfo,ffom*mfom,_state), lerp(ffom2*mfom2, pfo, _state), _lhv);
+				float2 fomf = lerp(float2(fom, 0.5), float2(0.5, fom), lerp(1. - _lhv, _lhv, _state));*/
+				/*
 				float feom = frac(length(pfo)*lerp(2.5,5., step(0.4, pfo)));
 				float2 meom = float2(step(length(pfo - _p1),0.2), step(length(pfo - _p3), 0.1));
 				float2 meom2 = float2(step(length(pfo - _p2), 0.1), step(length(pfo - _p4), 0.1));
@@ -202,15 +213,18 @@ Shader "Unlit/Compo"
 				float neom2 = step(length(pfo -1.+_p1), 0.125);
 				float fneom = frac(length(pfo*4.));
 				float eom = lerp(lerp(pfo,meom3.x+meom3.y, _phase2v), lerp((neom+neom2)*fneom, pfo, _phase2v),tt3);*/
+				
+				/*float bom = map2(_poca.x, _poca.y, pfo);
+				float bom2 = map2(_poca.z, _poca.w, pfo);
+				float2 vll3h = lerp(float2(0.8, 0.2), float2(0.6, 0.),_phase3st);
+				float2 vll3f = lerp(float2(lerp(0.6, 0., 1. - _phase3st2), lerp(0.8, 0.2, 1. - _phase3st2)), float2(vll3h.y, vll3h.y), _phase3st3);
+				float2 vll3e = lerp(float2(lerp(0.6, 0.,  _phase3st2), lerp(0.8, 0.2,  _phase3st2)), float2(vll3h.x, vll3h.x), _phase3st3);
+				float dom = map2(vll3e.x, vll3f.x,1.- pfo);
+				float dom2 = map2(vll3e.y, vll3f.y,1.- pfo);
+				float doma1 = step(length(lerp(bom, dom, _lhv) - 0.5), 0.5);
+				float doma2 = step(length(lerp(bom2, dom2, _lhv) - 0.5), 0.5);*/
 
-				/*float bom = map2(0.3, 0.6, pfo);
-				float bom2 =map2(0.7, 1., pfo);
-				float dom = map2(0.2, 0.8, pfo);
-				float dom2 = map2(0.4, 1., pfo);
-				float doma1 = step(length(lerp(bom, dom, tt3) - 0.5), 0.5);
-				float doma2 = step(length(lerp(bom2, dom2, tt3) - 0.5), 0.5);*/
-
-				return float4(float3(1., 1., 1.)*cf + lf + tex + lfo, 1.);//+float4(doma1,doma2, 0., 0.);
+				return float4(float3(1., 1., 1.)*cf + lf + tex + lfo, 1.);// +float4(fomf, 0., 0.);
             }
             ENDCG
         }

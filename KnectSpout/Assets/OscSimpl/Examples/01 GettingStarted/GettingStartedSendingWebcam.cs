@@ -17,6 +17,8 @@ namespace OscSimpl.Examples
         public string address6 = "/f6";
         public string address7 = "/d3";
         public string address8 = "/d4";
+        public string address9 = "/d5";
+        public string address10 = "/ecriture";
         //public string address8 = "/d4";
 
         public float speed = 0;
@@ -59,21 +61,28 @@ namespace OscSimpl.Examples
 		{
 
     
-            float va1;
-            if (script1.floatArray1[2]  < 0.01f) { va1 = 0; }
-            else { va1 = 10; }
-            if (script4.acti2 == 1)
+           
+            if (script4.acti2 ==1)
             {
                 _oscOut.Send(address5, script3.floatArray1[0]);
                 _oscOut.Send(address6, script3.floatArray1[1]);
                 _oscOut.Send(address7, script3.floatArray1[2]);
                 _oscOut.Send(address8, script3.floatArray1[3]);
+                _oscOut.Send(address10, (1 - script3.solo) * 10);
                 //_oscOut.Send(address7, script3.tic);
 
             }
-            _oscOut.Send(address1,va1);
-            _oscOut.Send(address4, script2.activate);
-            _oscOut.Send(address3, script2.activationScene02*10);
+            // _oscOut.Send(address9, script3.solo*10);
+            // _oscOut.Send(address10,(1- script3.solo) * 10);
+            if (script4.acti2 == 0)
+            {
+                float va1;
+                if (script1.floatArray1[2] < 0.01f) { va1 = 0; }
+                else { va1 = 10; }
+                _oscOut.Send(address1, va1);
+                _oscOut.Send(address4, script2.activate);
+                _oscOut.Send(address3, script2.activationScene02 * 10);
+            }
             // _oscOut.Send(address2, infra.floatArray1[1] * 10);
             // _oscOut.Send(address3, infra.floatArray1[2] * 10);
             /*_oscOut.Send(address5, infra.floatArray1[3]);

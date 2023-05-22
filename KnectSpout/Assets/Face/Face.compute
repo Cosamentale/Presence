@@ -6,9 +6,14 @@ SamplerState _LinearClamp;
 float _time;
 float _resx;
 float _resy;
+float _c2;
+float _r3;
+float _r4;
 float4 _data[10];
 float map(float low1, float low2, float high1, float high2, float value) { return low2 + (value - low1) * (high2 - low2) / (high1 - low1); }
 float map2(float low1, float high1, float value) { return  (value - low1) / (high1 - low1); }
+float rd(float2 p) { return frac(sin(dot(floor(p), float2(45.6, 98.6)))*7845.323+_time); }
+float rd(float p) { return frac(sin(dot(floor(p*12.),45.236))*7845.323); }
 [numthreads(8, 8, 1)]
 void CSMain(uint2 id : SV_DispatchThreadID)
 {
@@ -25,18 +30,21 @@ void CSMain(uint2 id : SV_DispatchThreadID)
 	float4 t2 = reader2.SampleLevel(_LinearClamp, uv2 + 0.5 / res, 0);
 	float2 uv3 = float2(map(0., _data[0].x , 1., _data[0].z, uv.x), map(0., 1. - _data[0].y, 1., 1. - _data[0].w, 1. - uv.y));
 	float4 t3 = reader2.SampleLevel(_LinearClamp, uv3 + 0.5 / res, 0);
-	float xdiv =32.;
-	float ydiv = 18.;
+	float rr = _r3;
+	float xdiv =floor(13.*rr+3.);
+	float ydiv = floor(5.*rr+3.);
 	float2 uvr = float2(uv.x - (1. / xdiv), uv.y);
 	if (uv.x < (1. / xdiv)) {
 		uvr = float2(uv.x + ((xdiv - 1.) / xdiv), uv.y - (1. / ydiv));
 	}
-	float outc = 0.;
+	float2 outc = float2(0.,0.);
 	if (uv.x < (1. / xdiv) && uv.y < (1. / ydiv)) {
-		outc = reader.SampleLevel(_LinearClamp, frac(uv*float2(xdiv, ydiv)) + 0.5 / res, 0).a;
+		outc = reader.SampleLevel(_LinearClamp, frac(uv*float2(xdiv, ydiv)) + 0.5 / res, 0).wz;
 	}
 	else {
-		outc = reader.SampleLevel(_LinearClamp, uvr + 0.5 / res, 0).r;
+		outc = reader.SampleLevel(_LinearClamp, uvr + 0.5 / res, 0).xy;
 	}
-	writer[id] = float4(outc,outc,outc,t3.x);
+	float m = step(0.5, frac(uv.y*2.5));
+	//float ff = lerp(outc, reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).r, lerp(m,1.-m,step(0.5,frac(_time*30.))));
+	writer[id] = float4(outc,_r4,t3.x);
 }
