@@ -1,0 +1,89 @@
+﻿#pragma kernel CSMain
+#pragma kernel CSMain2
+Texture2D<float4> reader; 
+Texture2D<float4> reader2;
+Texture2D<float4> reader3;
+Texture2D<float4> reader4;
+Texture2D<float4> reader5;
+RWTexture2D<float4> writer;
+SamplerState _LinearClamp;
+
+float _time;
+float _resx;
+float _resy;
+
+float _c1;
+
+
+#define Pi 3.14159265359
+float rd(float t) { return frac(sin(dot(floor(t), 45.266))*7845.236); }
+float li(float2 p, float2 a, float2 b) {
+	float2 pa = p - a; float2 ba = b - a;
+	float h = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.);
+	return length(pa - ba * h);
+}
+[numthreads(8,8,1)]
+void CSMain (uint2 id : SV_DispatchThreadID) 
+{
+	
+	float2 f = float2(id.x,id.y);
+	float2 res=float2(_resx, _resy);
+	float2 uv = f / res;
+
+	float vid = pow(reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y,0.5);
+	float prev = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+
+	float diff = abs(vid - prev);
+
+	diff = smoothstep(0.2, 0.5, diff);
+	float ta = 0.;
+	diff = max(diff, reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y*0.95);
+	float bs = 1. / 17.;
+	float bs2 = 1. / 10.;
+	float2 bs3 = float2(bs, bs2);
+	float vm = 1000.;
+	//float2 g = float2(0.,0.); float vtot = 0.;
+	float2 pm = float2(0.5,0.5);
+	for (int i = 0; i <= 16; i++)
+		for (int j = 0; j <= 9; j++) {
+			float2 p = (float2(0.5,0.5) + float2(i, j))*bs3;
+			float v = reader.SampleLevel(_LinearClamp, p + 0.5 / res, 0).y;
+			float v2 = 1. - v;
+
+			//g += p * v;
+			//vtot += v;
+			if (v2 < vm) {
+				vm = v2;
+				pm = p;
+			}
+			
+		}
+	
+	float z1 = lerp(pm.x, pm.y, step(0.5, uv.x));
+	float z2 = lerp(reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).w,
+		reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).z,step(0.5,frac(_time*30.)));
+	writer[id] = float4(lerp(prev, vid, 0.5), diff, z1, z2);
+}
+[numthreads(8, 8, 1)]
+void CSMain2(uint2 id : SV_DispatchThreadID)
+{
+
+	float2 f = float2(id.x, id.y);
+	float2 res = float2(_resx, _resy);
+	float2 uv = f / res;
+	float t = _c1*23.;
+	float r2 = step(0.5, rd(t + 45.12));
+	float r3 = step(2. / 3., rd(t + 78.49));
+	float t0 = lerp(lerp(reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r2),
+	reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r3);
+	float4 t2 = float4(reader5.SampleLevel(_LinearClamp, float2(0.25, 0.5) + 0.5 / res, 0).z,
+		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).z,
+		reader5.SampleLevel(_LinearClamp, float2(0.25, 0.5) + 0.5 / res, 0).w,
+		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).w);
+	float d1 = max(max(smoothstep(1./1920., 0., li(uv, t2.xy, t2.xw)) , smoothstep(1./1920., 0., li(uv, t2.xw, t2.zw))),
+		smoothstep(0.5 / 1080., 0., li(uv, t2.xy, t2.zw))*0.2);
+	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x*0.98);
+	
+	writer[id] = float4(d2, t0, t0, t0);
+}
+

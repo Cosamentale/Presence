@@ -21,6 +21,7 @@ public class Face : MonoBehaviour
     public float c4;
     public float lastIncrementTime;
     public float value;
+    public float final;
     float fract(float t) { return t - Mathf.Floor(t); }
     float rd(float t) { float f = Mathf.Floor(t*12); return fract(Mathf.Sin(Vector2.Dot(new Vector2(f, f), new Vector2(54.56f, 54.56f))) * 7845.236f); }
     void Start()
@@ -76,6 +77,7 @@ public class Face : MonoBehaviour
         compute_shader.SetFloat("_c2", c2);
         compute_shader.SetFloat("_r3", r3);
         compute_shader.SetFloat("_r4", v1);
+        compute_shader.SetFloat("_final", final);
         compute_shader.SetVectorArray("_data", face.Data);
         compute_shader.SetFloat("_resx", 1920);
         compute_shader.SetFloat("_resy", 1080);

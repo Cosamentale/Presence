@@ -85,7 +85,8 @@ Shader "Unlit/position"
 			/*float nby = floor(5.*_r3 + 3.);
 			float r4 = floor(_r4*nby);
 			float yd =step(1. / (nby),distance(0.5*nby+1./nby,uv.y*nby));*/
-			float c3 = pow(lerp(c, c2.x, step(0.5,c2.y)),1.);
+			float ma = lerp(0., step(0.5, c2.y),step(0.5, _float3));//step(0.5, c2.y);
+			float c3 = pow(lerp(c, c2.x,ma),1.);
 			float c4 = ov(c3, lerp(0.5, hs(uv + 23.69), 0.2));
 			float c5 = lerp(smoothstep(.2,0.8,c4),step( hn(uv + 98.),pow(c4,2.)), no(_c4*0.0001 + 95.24));
 			float m = step(0.5, frac(uv.y*2.5));
@@ -93,7 +94,7 @@ Shader "Unlit/position"
 			float baf3 = step(min(min(length(uv.x - 0.3), length(uv.x -0.6)), min(length(uv.x - 0.7), length(uv.x - 0.999))), 0.5/1920.)
 				*step(0.2, uv.y)*step(uv.y,0.8);
 			float bf3 = step(min(length(uv.y - 0.7999), length(uv.y - 0.2)), 0.5/1080.)*step(0.3, uv.x)*step(0.05,length(uv.x-0.65)) +baf3;
-			float ll = lerp(bf3, d, _float1)*(1.-step(0.5, c2.y)) +c5*_float2;
+			float ll = lerp(bf3, d, _float1)*(1.-ma) +c5*_float2;
 			return float4(ll, ll, ll, 1.);
 		}
 		ENDCG

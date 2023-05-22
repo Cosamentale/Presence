@@ -9,6 +9,7 @@ float _resy;
 float _c2;
 float _r3;
 float _r4;
+float _final;
 float4 _data[10];
 float map(float low1, float low2, float high1, float high2, float value) { return low2 + (value - low1) * (high2 - low2) / (high1 - low1); }
 float map2(float low1, float high1, float value) { return  (value - low1) / (high1 - low1); }
@@ -46,5 +47,6 @@ void CSMain(uint2 id : SV_DispatchThreadID)
 	}
 	float m = step(0.5, frac(uv.y*2.5));
 	//float ff = lerp(outc, reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).r, lerp(m,1.-m,step(0.5,frac(_time*30.))));
-	writer[id] = float4(outc,_r4,t3.x);
+	float2 fi = lerp(outc.xy, float2(lerp(t2.x,t3.x,step(0.5,_r3)),1.), step(0.5, _final));
+	writer[id] = float4(fi,_r4,t3.x);
 }

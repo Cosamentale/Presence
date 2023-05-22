@@ -356,9 +356,9 @@ namespace OscSimpl.Examples
         void In_Trigger24(float value){selecspeed = value;}
         void In_Trigger25(float value){speed = value;}
         void In_Trigger26(float value){ script2.speed2 =   value*100;}
-        void In_Trigger27(float value){script2.speed3 = value * 1000;}
-        void In_Trigger28(float value) { script2.speed2 = value * 100; }
-        void In_Trigger29(float value) { script2.speed3 = value * 1000; }
+        void In_Trigger27(float value){script2.speed3 = 1+value * 4;}
+        void In_Trigger28(float value) { script4.final = value; }
+        void In_Trigger29(float value) { }
         void In_Trigger30(float value) { script2.final = value ; }
 
         void In_ChangingValue1(float value)

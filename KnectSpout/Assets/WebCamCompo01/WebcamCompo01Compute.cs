@@ -58,6 +58,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     public float test2;
     public float lhv;
     public float final;
+    public float bande;
     //public float reactive = 0;
     void Start()
     {
@@ -89,9 +90,9 @@ public class WebcamCompo01Compute : MonoBehaviour
     }
      float fract(float t) { return t - Mathf.Floor(t); }
     float rd(float t) { float f = Mathf.Floor(t); return   fract(Mathf.Sin(Vector2.Dot(new Vector2(f, f), new Vector2(54.56f, 54.56f))) * 7845.236f); }
-    float sm (float a, float b, float x){float t = Mathf.Clamp01((x - a) / (0 - a));
+    float sm (float a, float b, float x){float t = Mathf.Clamp01((x - a) / (b - a));
     return t * t * (3 - 2 * t);}
-    float no(float t) { return Mathf.Lerp(rd(t), rd(t + 1), sm(0.45f, 0.55f, fract(t))); }
+    float no(float t) { return Mathf.Lerp(rd(t), rd(t + 1), sm(0.4f, 0.6f, fract(t))); }
 
     void Update()
     {
@@ -101,16 +102,18 @@ public class WebcamCompo01Compute : MonoBehaviour
 
         //float tt =  no(Time.time*0.25f)*3000+fract((Time.frameCount - activationtime)/1000)*1000;//test * 60;//
         float tt = Time.frameCount - activationtime;//test * 60;//
-        float sp = 1.2f;
+        float sp = 1.2f+speed3;
         float ff1 = 0;
         if (final < 0.5)
         {
              ff1 = Mathf.Floor(tt / speed1) * 10 / imgresy * sp ;
         }
         else { 
-        speed1 =0.01f+0.7f*no(Time.time * 0.25f + 785);
-        ff1 = no(Time.time * 0.25f) * 70 + fract(Mathf.Floor(tt / speed1) * 10 / imgresy * sp/10)*10;
+        speed1 =0.01f+0.7f*no(Time.time * 0.125f + 785);
+        ff1 = no(Time.time * 0.125f) * 70 + fract(Mathf.Floor(tt / speed1) * 10 / imgresy * sp/10)*10;
         }
+        if (fract(ff1)< 0.02f) { bande = 10; }
+        else { bande = 0; }
         //float vi1 = 1.5f;
         float ff = ff1;
         //if (ff1 < 10/vi1) { ff =ff1 * vi1; } else { ff = ff1; }        
@@ -336,16 +339,17 @@ public class WebcamCompo01Compute : MonoBehaviour
         t3Buffer2.GetData(t3Data2, 0, 0, 4);
         floatArray1 = t3Data2;
     }
-   /* private void OnDisable()
+    private void OnDisable()
     {
-        CleanupResources();
+          CleanupResources();
+        floatArray1[0] = 0;
+        floatArray1[1] = 0;
+        floatArray1[2] = 0;
+        floatArray1[3] = 0;
+        solo = 0;
     }
-
-    private void OnDestroy()
-    {
-        CleanupResources();
-    }
-      */
+   
+      
     private void CleanupResources()
     {
         // Make sure to release or dispose of the ComputeBuffer
@@ -372,5 +376,5 @@ public class WebcamCompo01Compute : MonoBehaviour
         {
             Destroy(D);
         }   
-    }
+    }   
 }

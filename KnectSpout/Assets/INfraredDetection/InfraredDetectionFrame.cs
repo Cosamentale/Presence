@@ -71,7 +71,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         }
 
         
-        if (Time.time - lastIncrementTime > 0.2f)
+        if (Time.time - lastIncrementTime > 0.1f)
         {
          
             v1 = 1;
@@ -156,5 +156,35 @@ public class InfraredDetectionFrame : MonoBehaviour
         material.SetFloat("_secondPhase", SecondPhase);
         material.SetFloat("_troisiemePhase", TroisiemePhase);
         textMesh.text = date;
+    }
+    private void OnDisable()
+    {
+        floatArray1[2] = 0;
+        CleanupResources();
+    }
+
+
+
+    private void CleanupResources()
+    {
+       
+
+        // Destroy the RenderTexture
+        if (A != null)
+        {
+            Destroy(A);
+        }
+        if (B != null)
+        {
+            Destroy(B);
+        }
+        if (C != null)
+        {
+            Destroy(C);
+        }
+        if (D != null)
+        {
+            Destroy(D);
+        }
     }
 }
