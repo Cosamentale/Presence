@@ -54,12 +54,12 @@ public class CameraSetup : MonoBehaviour
         AVProLiveCameraSettingBase gainSetting3 = LiveCamera3.GetVideoSettingByIndex(6);
         AVProLiveCameraSettingFloat settingFloat3 = (AVProLiveCameraSettingFloat)gainSetting3;
         settingFloat3.CurrentValue = 70 * Gain;
-        if(Time.time>0.1f)
+        /*if(Time.time>0.1f)
         {
             LiveCamera.UpdateSettings = false;
             LiveCamera2.UpdateSettings = false;
             LiveCamera3.UpdateSettings = false;
-        }
+        } */
 
     }
 }

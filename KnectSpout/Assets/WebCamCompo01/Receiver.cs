@@ -36,6 +36,8 @@ namespace OscSimpl.Examples
         public string address28 = "/t4";
         public string address29 = "/t5";
         public string address30 = "/b5";
+        public string address31 = "/line";
+        public string address32 = "/t6";
         public float v1 = 0;
         public float v2 = 0;
         public float v3 = 0;
@@ -44,11 +46,14 @@ namespace OscSimpl.Examples
         public float v6 = 0;
         public float v7 = 0;
         public float v8 = 0;
+        public float compo1;
+        public float compo2;
         public Material[] materials;
         public int numberOfMaterials;
-        public InfraredSourceDessin script1;
+        public InfraredDetectionFrameLine script1;
         public WebcamCompo01Compute script2;
         public InfraredDetectionFrame script3;
+
         public Face script4;
         public bool C_Value1_In = false;
 		public float DynamicValue_In;
@@ -67,6 +72,7 @@ namespace OscSimpl.Examples
         public GameObject scene2;
         public GameObject scene3;
         public GameObject scene4;
+        public GameObject scene5;
         public float acti;
         public float acti2;
         public float acti3;
@@ -75,7 +81,15 @@ namespace OscSimpl.Examples
         public float selecspeed;
         public float speed;
         public float solo;
-       // float vsolo;
+        public float fds2;
+        public float ds2;
+        public float fcompo2;
+        public float ts1;
+        public float ts2;
+       // public float factivate;
+        public float factivate;
+        public float factivate2;
+        // float vsolo;
         //public bool changed = true;
         public bool flag = false;  // Flag to track if the boolean became true
         public bool controlEnabled = true;  // Flag to track if the control is enabled
@@ -126,6 +140,8 @@ namespace OscSimpl.Examples
             _oscIn.MapFloat(address28, In_Trigger28);
             _oscIn.MapFloat(address29, In_Trigger29);
             _oscIn.MapFloat(address30, In_Trigger30);
+            _oscIn.MapFloat(address31, In_Trigger31);
+            _oscIn.MapFloat(address32, In_Trigger32);
             //_oscIn.MapFloat(address10, In_ChangingValue1);
 
             // 2) For messages with multiple arguments, route the message using the Map method.
@@ -136,19 +152,19 @@ namespace OscSimpl.Examples
         float no(float x) { return Mathf.Lerp(rd(x), rd(x + 1), Mathf.SmoothStep(0, 1, fract(x))); }
         void Update()
 		{
-     
+          
             ///////////////////// TO MOUVE IN CONTROLLER SECTION
-            if (Input.GetKeyDown(KeyCode.V))
-			{
-				if (!C_Value1_In)
-				{
-					C_Value1_In = true;
-				}
-				else
-				{
-					C_Value1_In = false;
-				}
-			}
+            /* if (Input.GetKeyDown(KeyCode.V))
+             {
+                 if (!C_Value1_In)
+                 {
+                     C_Value1_In = true;
+                 }
+                 else
+                 {
+                     C_Value1_In = false;
+                 }
+             }  */
 
             float n1 = no(Time.time + 45.98f);
             if (noOSC == false)
@@ -172,8 +188,8 @@ namespace OscSimpl.Examples
                     materials[i].SetFloat("_c7", (vf7));
                 }
                 script1._c1 = Mathf.Floor(vf1);
-                script1._c2 = Mathf.Floor(vf6);
-                script1._c3 = Mathf.Floor(vf7);
+               // script1._c2 = Mathf.Floor(vf6);
+                //script1._c3 = Mathf.Floor(vf7); 
                 script2._c1 = Mathf.Floor(vf1);
                 script2._c2 = Mathf.Floor(vf2);
                 script2._c3 = Mathf.Floor(vf3);
@@ -208,8 +224,8 @@ namespace OscSimpl.Examples
                     materials[i].SetFloat("_c7", Mathf.Floor(vf7));
                 }
                 script1._c1 = Mathf.Floor(vf1);
-                script1._c2 = Mathf.Floor(vf6);
-                script1._c3 = Mathf.Floor(vf7);
+               // script1._c2 = Mathf.Floor(vf6);
+              //  script1._c3 = Mathf.Floor(vf7); */
                 script2._c1 = Mathf.Floor(vf1);
                 script2._c2 = Mathf.Floor(vf2);
                 script2._c3 = Mathf.Floor(vf3);
@@ -219,21 +235,35 @@ namespace OscSimpl.Examples
                 script4.c3 = Mathf.Floor(vf3);
                 script4.c4 = Mathf.Floor(vf3);
             }
+            ds2 = Mathf.Clamp01(ds2+fds2)*acti*(1- acti3);
+            compo2 = fcompo2 * (1 - acti3);
             if (acti2 < 2)
             {
                 scene4.SetActive(false);
                 if (acti2 < 1)
                 {
-                    scene3.SetActive(false);
-                    if (acti == 0)
+                    if (acti3 > 0)
                     {
-                        scene1.SetActive(true);
+                        scene1.SetActive(false);
                         scene2.SetActive(false);
+                        scene5.SetActive(true);
                     }
                     else
                     {
-                        scene1.SetActive(false);
-                        scene2.SetActive(true);
+                        scene5.SetActive(false);
+                       
+                        if (acti == 0)
+                        {
+                            scene1.SetActive(true);
+                            scene2.SetActive(false);
+
+                        }
+                        else
+                        {
+                            scene1.SetActive(false);
+                            scene2.SetActive(true);
+
+                        }
                     }
                 }
                 else
@@ -241,6 +271,8 @@ namespace OscSimpl.Examples
                     scene1.SetActive(false);
                     scene2.SetActive(false);
                     scene3.SetActive(true);
+                    scene5.SetActive(false);
+                    scene4.SetActive(false);
                 }
             }
             else
@@ -249,10 +281,12 @@ namespace OscSimpl.Examples
                 scene2.SetActive(false);
                 scene3.SetActive(false);
                 scene4.SetActive(true);
+                scene5.SetActive(false);
             }
+         
             //if(acti3 == 0){script2.phase2 = false;}else{script2.phase2 = true;}
             // if (acti4 == 0){script2.phase3 = false;}else{script2.phase3 = true;}
-           
+
             lightt.vl1 = vf8;
             // script1._c4 = vf4;
             //script1._c1 = vf1;
@@ -269,12 +303,12 @@ namespace OscSimpl.Examples
 
         }
        
-        void OnDisable()
+      /*  void OnDisable()
 		{
 			
-			_oscIn.UnmapFloat(In_ChangingValue1);
+		//	_oscIn.UnmapFloat(In_ChangingValue1);
 		}
-   
+                 */
         void In_Trigger1(float value)
 		{
           
@@ -323,13 +357,15 @@ namespace OscSimpl.Examples
             v8 += Mathf.Abs(value);
 
         }
-        void In_Trigger9(float value){materials[2].SetFloat("_fondu", value);}
+        void In_Trigger9(float value){materials[2].SetFloat("_fondu", value); factivate = value; }
 
         void In_Trigger10(float value){
             materials[2].SetFloat("_bluractivation", value);
             script2._bluractivation= value;       }
 
-        void In_Trigger11(float value) { materials[2].SetFloat("_step0to1", value);}
+        void In_Trigger11(float value) { materials[2].SetFloat("_step0to1", value);
+            compo1 = value;
+        }
 
         void In_Trigger12(float value){
             materials[2].SetFloat("_step1to2", value);
@@ -340,28 +376,34 @@ namespace OscSimpl.Examples
             materials[3].SetFloat("_powermodification", value);}
 
         void In_Trigger14(float value){materials[2].SetFloat("_step2invert", value);}
-        void In_Trigger15(float value){
+        void In_Trigger15(float value)
+        {
             materials[1].SetFloat("_dither", value);
             materials[2].SetFloat("_dither", value);
-            materials[3].SetFloat("_dither", value);}
-        void In_Trigger16(float value){materials[2].SetFloat("_final", value);}
+            materials[3].SetFloat("_dither", value);
+            materials[5].SetFloat("_dither", value);
+        }
+            void In_Trigger16(float value){materials[2].SetFloat("_final", value);
+            fcompo2 = value ;
+        }
 
         void In_Trigger17(float value){acti = value;}       
-        void In_Trigger18(float value){scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = value;}
-        void In_Trigger19(float value){scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = value;}
+        void In_Trigger18(float value){scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = value; }
+        void In_Trigger19(float value){scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = value; fds2 = value; }
         void In_Trigger20(float value){ acti2 = value;}
         void In_Trigger21(float value){ materials[4].SetFloat("_float1", value); }
         void In_Trigger22(float value) { materials[4].SetFloat("_float2", value); }
-        void In_Trigger23(float value) { materials[4].SetFloat("_float3", value); }
+        void In_Trigger23(float value) { materials[4].SetFloat("_float3", value); ts2 = value; }
         void In_Trigger24(float value){selecspeed = value;}
         void In_Trigger25(float value){speed = value;}
         void In_Trigger26(float value){ script2.speed2 =   value*100;}
         void In_Trigger27(float value){script2.speed3 = 1+value * 4;}
-        void In_Trigger28(float value) { script4.final = value; }
-        void In_Trigger29(float value) { }
+        void In_Trigger28(float value) { script4.final = value; ts2 = value; }
+        void In_Trigger29(float value) { materials[4].SetFloat("_float4", value); factivate2 = value;  }
         void In_Trigger30(float value) { script2.final = value ; }
-
-        void In_ChangingValue1(float value)
+        void In_Trigger31(float value) { acti3 = value;  }
+        void In_Trigger32(float value) { materials[4].SetFloat("_dither", value);  }
+        /*void In_ChangingValue1(float value)
          {
              if (!C_Value1_In)
              {
@@ -371,7 +413,7 @@ namespace OscSimpl.Examples
              {
                  DynamicValue_In = value;
              }
-         }   
+         } */
 
     }
 }

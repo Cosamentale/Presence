@@ -82,7 +82,7 @@ void CSMain2(uint2 id : SV_DispatchThreadID)
 		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).w);
 	float d1 = max(max(smoothstep(1./1920., 0., li(uv, t2.xy, t2.xw)) , smoothstep(1./1920., 0., li(uv, t2.xw, t2.zw))),
 		smoothstep(0.5 / 1080., 0., li(uv, t2.xy, t2.zw))*0.2);
-	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x*0.98);
+	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x*step(0.01,frac(_time*0.1)));
 	
 	writer[id] = float4(d2, t0, t0, t0);
 }

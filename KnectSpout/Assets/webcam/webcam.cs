@@ -57,13 +57,14 @@ public class webcam : MonoBehaviour
         compute_shader.SetFloat("_resx", desiredWidth);
         compute_shader.SetFloat("_resy", desiredHeight);
         mat.SetTexture("_MainTex4", A);
+        tex1 = mat1.GetTexture("_MainTex");
+        tex2 = mat2.GetTexture("_MainTex");
+        tex3 = mat3.GetTexture("_MainTex");
     }
     void Update()
     {
 
-        tex1 = mat1.GetTexture("_MainTex");
-        tex2 = mat2.GetTexture("_MainTex");
-        tex3 = mat3.GetTexture("_MainTex");
+        
         compute_shader.SetTexture(handle_main, "reader1", tex2);
         compute_shader.SetTexture(handle_main, "reader2", tex1);
         compute_shader.SetTexture(handle_main, "reader3", tex3);
@@ -72,4 +73,29 @@ public class webcam : MonoBehaviour
 
      
     }
-}
+   /* private void OnDisable()
+    {
+
+        CleanupResources();
+    }
+    private void CleanupResources()
+    {
+
+
+        // Destroy the RenderTexture
+        if (A != null)
+        {
+            Destroy(A);
+        }
+    }
+    private void OnEnable()
+    {
+
+        if (A == null)
+        {
+            A = new RenderTexture(1920, 1080, 0);
+            A.enableRandomWrite = true;
+            A.Create();
+        }
+    }  */
+    }

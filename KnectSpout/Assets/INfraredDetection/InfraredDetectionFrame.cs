@@ -187,4 +187,38 @@ public class InfraredDetectionFrame : MonoBehaviour
             Destroy(D);
         }
     }
-}
+    private void OnEnable()
+    {
+        // Check if buffer and texture are null, and if so, recreate them
+        if (t3Buffer2 == null)
+        {
+            t3Buffer2 = new ComputeBuffer(4, sizeof(float));
+        }
+
+        if (A == null)
+        {
+            A = new RenderTexture(64, 64, 0);
+            A.enableRandomWrite = true;
+            A.Create();
+        }
+        if (B == null)
+        {
+            B = new RenderTexture(64, 64, 0);
+            B.enableRandomWrite = true;
+            B.Create();
+        }
+        if (C == null)
+        {
+            C = new RenderTexture(1920, 1080, 0);
+            C.enableRandomWrite = true;
+            C.Create();
+        }
+        if (D == null)
+        {
+            D = new RenderTexture(1920, 1080, 0);
+            D.enableRandomWrite = true;
+            D.Create();
+        }
+    }
+
+    }

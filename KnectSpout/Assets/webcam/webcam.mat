@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _FINAL_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -110,15 +111,15 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _blur: 41.2
-    - _bluractivation: 0.027611911
-    - _c1: 0.0023907588
-    - _c2: 0.0023907588
+    - _bluractivation: 0
+    - _c1: 0.010240635
+    - _c2: 0.010240635
     - _c3: 0
     - _c4: 0
-    - _c5: 0.0023907588
-    - _c6: 0.0023907588
-    - _c7: 0.0023907588
-    - _dither: 0.01119405
+    - _c5: 0.010240635
+    - _c6: 0.010240635
+    - _c7: 0.010240635
+    - _dither: 0.4049253
     - _final: 0
     - _float1: 1
     - _float2: 1.5
@@ -127,8 +128,8 @@ Material:
     - _fondu: 1
     - _powermodification: 0
     - _step0to1: 0
-    - _step1to2: 0.055970132
-    - _step2invert: 0
+    - _step1to2: 0
+    - _step2invert: 0.17089546
     - _ta1: 3.9329004
     - _ta2: 4.072562
     - _ta3: 6.522347

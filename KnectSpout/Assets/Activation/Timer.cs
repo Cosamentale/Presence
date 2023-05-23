@@ -31,6 +31,7 @@ public class Timer : MonoBehaviour
     public float activate;
     public float activationScene02;
     public float dmx; 
+    public float launchtime;
     void Start()
     {
 
@@ -47,11 +48,13 @@ public class Timer : MonoBehaviour
         scene2.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
         scene2.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
         matScene2.SetFloat("_dither",0);
+        launchtime = Time.time;
     }
 
     void Update()
     {
-        if(Mathf.Floor(Time.time)>1)
+        float tt = Time.time - launchtime;
+        if(Mathf.Floor(tt) >1)
         {
             detector.SetActive(true);
             dmx = 0;

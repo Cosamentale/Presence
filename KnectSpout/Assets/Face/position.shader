@@ -8,7 +8,8 @@ Shader "Unlit/position"
 	_float1("_float1",Range(0,1)) = 0
 		_float2("_float2",Range(0,1)) = 0
 		_float3("_float3",Range(0,1)) = 0
-	 
+		_float4("_float4",Range(0,1)) = 0
+		_dither("_dither",Range(0,1)) = 0
 	}
 		SubShader
 	{
@@ -44,6 +45,8 @@ Shader "Unlit/position"
 			float _float1;
 			float _float2;
 			float _float3;
+			float _float4;
+			float _dither;
 			float4 _data[10];
 			float _r3;
 			float _c3;
@@ -87,8 +90,10 @@ Shader "Unlit/position"
 			float yd =step(1. / (nby),distance(0.5*nby+1./nby,uv.y*nby));*/
 			float ma = lerp(0., step(0.5, c2.y),step(0.5, _float3));//step(0.5, c2.y);
 			float c3 = pow(lerp(c, c2.x,ma),1.);
-			float c4 = ov(c3, lerp(0.5, hs(uv + 23.69), 0.2));
-			float c5 = lerp(smoothstep(.2,0.8,c4),step( hn(uv + 98.),pow(c4,2.)), no(_c4*0.0001 + 95.24));
+			float hh = hs(uv + 23.69);
+			float c4 = ov(c3, lerp(0.5, hh, 0.2));
+			float c5 = lerp(smoothstep(.2,0.8,c4),step( hn(uv + 98.),lerp(pow(c4,2.), pow(hh, 10.), _float4)),
+				max(no(_c4*0.0005 + 95.24)*_dither,_float4));
 			float m = step(0.5, frac(uv.y*2.5));
 
 			float baf3 = step(min(min(length(uv.x - 0.3), length(uv.x -0.6)), min(length(uv.x - 0.7), length(uv.x - 0.999))), 0.5/1920.)

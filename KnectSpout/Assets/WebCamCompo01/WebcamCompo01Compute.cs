@@ -59,6 +59,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     public float lhv;
     public float final;
     public float bande;
+    public float ts2;
     //public float reactive = 0;
     void Start()
     {
@@ -102,6 +103,8 @@ public class WebcamCompo01Compute : MonoBehaviour
 
         //float tt =  no(Time.time*0.25f)*3000+fract((Time.frameCount - activationtime)/1000)*1000;//test * 60;//
         float tt = Time.frameCount - activationtime;//test * 60;//
+        if (tt < 500) { ts2 = 0; }
+        else { ts2 = 10; }
         float sp = 1.2f+speed3;
         float ff1 = 0;
         if (final < 0.5)
@@ -339,7 +342,7 @@ public class WebcamCompo01Compute : MonoBehaviour
         t3Buffer2.GetData(t3Data2, 0, 0, 4);
         floatArray1 = t3Data2;
     }
-    private void OnDisable()
+ /*   private void OnDisable()
     {
           CleanupResources();
         floatArray1[0] = 0;
@@ -376,5 +379,42 @@ public class WebcamCompo01Compute : MonoBehaviour
         {
             Destroy(D);
         }   
-    }   
+    }
+    private void OnEnable()
+    {
+        // Check if buffer and texture are null, and if so, recreate them
+        if (t3Buffer2 == null)
+        {
+            t3Buffer2 = new ComputeBuffer(4, sizeof(float));
+        }
+
+        if (A == null)
+        {
+            A = new RenderTexture(imgresx, imgresy, 0);
+            A.enableRandomWrite = true;
+            A.Create();
+        }
+        if (B == null)
+        {
+            B = new RenderTexture(imgresx, imgresy, 0);
+            B.enableRandomWrite = true;
+            B.Create();
+        }
+        if (C == null)
+        {
+            C = new RenderTexture(1920, 1080, 0, rtFormat);
+            C.enableRandomWrite = true;
+            C.Create();
+        }
+        if (D == null)
+        {
+            D = new RenderTexture(1920, 1080, 0, rtFormat);
+            D.enableRandomWrite = true;
+            D.Create();
+        }
+
+
+  
+        
+    }    */
 }

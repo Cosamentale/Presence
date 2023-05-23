@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-public class InfraredDetectionFrame1 : MonoBehaviour
+public class InfraredDetectionFrameLine : MonoBehaviour
 {
     public ComputeShader compute_shader;
     RenderTexture A;
     RenderTexture B;
     RenderTexture C;
-    RenderTexture D;
+    public RenderTexture D;
 
     public Material material;
  
@@ -24,10 +24,10 @@ public class InfraredDetectionFrame1 : MonoBehaviour
     void Start()
     {
         //gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
-        A = new RenderTexture(64, 32, 0);
+        A = new RenderTexture(64, 64, 0);
         A.enableRandomWrite = true;
         A.Create();
-        B = new RenderTexture(64, 32, 0);
+        B = new RenderTexture(64, 64, 0);
         B.enableRandomWrite = true;
         B.Create();
         //B.filterMode = FilterMode.Point;
@@ -42,16 +42,17 @@ public class InfraredDetectionFrame1 : MonoBehaviour
         handle_main = compute_shader.FindKernel("CSMain");
      
         handle_main2 = compute_shader.FindKernel("CSMain2");
+      
     }
 
     void Update()
     {
-        
-   
 
         tex = mat.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
+
+
         compute_shader.SetTexture(handle_main, "reader", A);
         compute_shader.SetTexture(handle_main, "reader2",D);
         compute_shader.SetFloat("_time", Time.time);
@@ -79,38 +80,9 @@ public class InfraredDetectionFrame1 : MonoBehaviour
         compute_shader.SetTexture(handle_main2, "writer", C);
         compute_shader.Dispatch(handle_main2, D.width / 8, D.height / 8, 1);
         
-        material.SetTexture("_MainTex", D);
+        material.SetTexture("_Tex", D);
        // material.SetTexture("_MainTex2", B);
 
     }
-    private void OnDisable()
-    {
-        
-        CleanupResources();
+  
     }
-
-
-
-    private void CleanupResources()
-    {
-       
-
-        // Destroy the RenderTexture
-        if (A != null)
-        {
-            Destroy(A);
-        }
-        if (B != null)
-        {
-            Destroy(B);
-        }
-        if (C != null)
-        {
-            Destroy(C);
-        }
-        if (D != null)
-        {
-            Destroy(D);
-        }
-    }
-}

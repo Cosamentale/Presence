@@ -2,9 +2,11 @@ Shader "Unlit/detectionLine"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _Tex ("_tex", 2D) = "white" {}
 	_bl("bl", 2D) = "white" {}
-		//_MainTex2("_MainTex2", 2D) = "white" {}
+		//_Tex2("_Tex2", 2D) = "white" {}
+	_dither("_dither",Float)=0
+		_c4("_c4", Float) = 0
     }
     SubShader
     {
@@ -31,15 +33,16 @@ Shader "Unlit/detectionLine"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
+            sampler2D _Tex;
 			sampler2D _bl;
-            float4 _MainTex_ST;
-
+            float4 _Tex_ST;
+			float _dither;
+			float _c4;
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 return o;
             }
 			float hs(float2 uv) { float2 u = uv * float2(1920., 1080.) / 1024.; return sin(tex2D(_bl, u).x*6.2831853071 + _Time.y*30.)*0.5 + 0.5; }
@@ -47,12 +50,18 @@ Shader "Unlit/detectionLine"
 			float ov(float a, float b) {
 				return a > 0.5 ? 2.*a*b : 1. - 2.*(1. - a)*(1. - b);
 			}
+			float rd(float t) { return frac(sin(dot(floor(t*12.), 45.))*7845.) + 0.01; }
+			float no(float t) { return lerp(rd(t), rd(t + 1.), smoothstep(0., 1., frac(t))); }
             fixed4 frag (v2f i) : SV_Target
             {
 				float2 uv = i.uv;
-                float2 c1 = tex2D(_MainTex, i.uv).xy;
+                float2 c1 = tex2D(_Tex, i.uv).xy;
 			float r1 = c1.x + ov(c1.y, lerp(0.5, hs(uv + 23.69), 0.2));
-                return float4(r1,r1,r1,1.);
+			float r2 = pow(clamp(r1, 0., 1.), 1.5);
+			float r3 = lerp(r2,step(hn(uv + 98.), pow(r2,2.)),_dither*no(_c4*0.0001 + 95.24));
+			//float n4 = smoothstep(0.4, 0.95, no(_c4*0.00007 + 152.))*_step2invert;
+			//float pc6 = lerp(smoothstep(0.9, 0.1, pow(pc5, 0.5)), smoothstep(0.1, 0.9, pow(pc5, 2.)), 1. - n4);
+                return float4(r3,r3,r3,1.);
             }
             ENDCG
         }
