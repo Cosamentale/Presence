@@ -89,16 +89,16 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _dither: 0.4049253
-    - _frame: 358
-    - _p1: 0.375
-    - _p2: 0.75
-    - _p3: 0
-    - _p4: 0
-    - _phase2: 0
+    - _dither: 0
+    - _frame: 141315
+    - _p1: 0.4
+    - _p2: 0.7
+    - _p3: 0.9
+    - _p4: 0.1
+    - _phase2: 1
     - _phase2st: 1
     - _phase2v: 0
-    - _phase3: 0
+    - _phase3: 1
     - _phase3d: 1
     - _phase3st: 0
     - _resy: 2048
@@ -107,8 +107,8 @@ Material:
     - _speed2: 15
     - _speed3: 1
     - _state: 0
-    - _timePhase31: 136.39992
-    - _timePhase32: 72.600006
+    - _timePhase31: 14340.445
+    - _timePhase32: 14164.43
     - _tsolo: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

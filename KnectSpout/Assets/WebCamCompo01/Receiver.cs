@@ -239,9 +239,10 @@ namespace OscSimpl.Examples
             compo2 = fcompo2 * (1 - acti3);
             if (acti2 < 2)
             {
-                scene4.SetActive(false);
-                if (acti2 < 1)
+                scene4.SetActive(false);               
+                if (acti2 < 1)                   
                 {
+                    scene3.SetActive(false);
                     if (acti3 > 0)
                     {
                         scene1.SetActive(false);
@@ -393,7 +394,7 @@ namespace OscSimpl.Examples
         void In_Trigger20(float value){ acti2 = value;}
         void In_Trigger21(float value){ materials[4].SetFloat("_float1", value); }
         void In_Trigger22(float value) { materials[4].SetFloat("_float2", value); }
-        void In_Trigger23(float value) { materials[4].SetFloat("_float3", value); ts2 = value; }
+        void In_Trigger23(float value) { materials[4].SetFloat("_float3", value); ts1 = value; }
         void In_Trigger24(float value){selecspeed = value;}
         void In_Trigger25(float value){speed = value;}
         void In_Trigger26(float value){ script2.speed2 =   value*100;}

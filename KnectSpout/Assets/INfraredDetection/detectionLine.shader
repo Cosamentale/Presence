@@ -2,8 +2,8 @@ Shader "Unlit/detectionLine"
 {
     Properties
     {
-        _Tex ("_tex", 2D) = "white" {}
-	_bl("bl", 2D) = "white" {}
+        _Tex ("_tex", 2D) = "black" {}
+	_bl("bl", 2D) = "black" {}
 		//_Tex2("_Tex2", 2D) = "white" {}
 	_dither("_dither",Float)=0
 		_c4("_c4", Float) = 0

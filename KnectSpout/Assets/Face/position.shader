@@ -92,7 +92,7 @@ Shader "Unlit/position"
 			float c3 = pow(lerp(c, c2.x,ma),1.);
 			float hh = hs(uv + 23.69);
 			float c4 = ov(c3, lerp(0.5, hh, 0.2));
-			float c5 = lerp(smoothstep(.2,0.8,c4),step( hn(uv + 98.),lerp(pow(c4,2.), pow(hh, 10.), _float4)),
+			float c5 = lerp(smoothstep(.2,0.8,c4),step( hn(uv + 98.),lerp(pow(c4,2.), pow(hh, 15.), _float4)),
 				max(no(_c4*0.0005 + 95.24)*_dither,_float4));
 			float m = step(0.5, frac(uv.y*2.5));
 

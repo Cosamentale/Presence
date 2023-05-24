@@ -206,7 +206,7 @@ Shader "Unlit/webcam"
 				float lf = max((1. - step(0.5 / 1920.,min(length(uv.x - 0.5) , (u2)+length(abs(uv.x - 0.5) - 0.25)))), 1. - step(0.5 / 1080., min(length(uv.y - 0.5),length(uv.y - 0.25))));
 				float3 b2 = lerp(b1, float3(1., 1., 1.),max(_final* lf,tll* _step0to1)+g2);
 				
-                return float4(lerp(b2,float3(1.,1.,1.),tee3)*_fondu,1.);
+                return float4(smoothstep(1.-_fondu,1.,lerp(b2,float3(1.,1.,1.),tee3))*_fondu,1.);
             }
             ENDCG
         }

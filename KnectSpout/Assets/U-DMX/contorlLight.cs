@@ -8,6 +8,7 @@ public class contorlLight : MonoBehaviour
     public DmxLightSource l2;
     public DmxLightSource l3;
     public DmxLightSource l4;
+    public Timer script;
     public float speed;
     public float speed2;
     private bool l1Changed = false;
@@ -30,25 +31,28 @@ public class contorlLight : MonoBehaviour
 
     void Update()
     {
-        if (vl1 != prevl1)
+        if (script.ds1 == 0)
         {
-            if (!l1Changed)
+            if (vl1 != prevl1)
             {
-                l1.SetStrength(1);
-                l2.SetStrength(0);
-                l3.SetStrength(1);
-                l4.SetStrength(0);
-                l1Changed = true;
-                prevl1 = vl1;
-            }
-            else
-            {
-                l1.SetStrength(0);
-                l2.SetStrength(1);
-                l3.SetStrength(0);
-                l4.SetStrength(1);
-                l1Changed = false;
-                prevl1 = vl1;
+                if (!l1Changed)
+                {
+                    l1.SetStrength(1);
+                    l2.SetStrength(0);
+                    l3.SetStrength(1);
+                    l4.SetStrength(0);
+                    l1Changed = true;
+                    prevl1 = vl1;
+                }
+                else
+                {
+                    l1.SetStrength(0);
+                    l2.SetStrength(1);
+                    l3.SetStrength(0);
+                    l4.SetStrength(1);
+                    l1Changed = false;
+                    prevl1 = vl1;
+                }
             }
         }
         /*  if (rd(Time.time * speed + 985) > 0.5)

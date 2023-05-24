@@ -7,7 +7,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
     RenderTexture A;
     RenderTexture B;
     RenderTexture C;
-    public RenderTexture D;
+    RenderTexture D;
 
     public Material material;
  
@@ -57,7 +57,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
         compute_shader.SetTexture(handle_main, "reader2",D);
         compute_shader.SetFloat("_time", Time.time);
         compute_shader.SetFloat("_resx", 64);
-        compute_shader.SetFloat("_resy", 32);
+        compute_shader.SetFloat("_resy", 64);
         compute_shader.SetTexture(handle_main, "writer", B);
         compute_shader.Dispatch(handle_main, B.width / 8, B.height / 8, 1);
         compute_shader.SetTexture(handle_main, "reader", B);
