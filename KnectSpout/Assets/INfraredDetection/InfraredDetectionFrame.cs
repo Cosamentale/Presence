@@ -71,7 +71,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         }
 
         
-        if (Time.time - lastIncrementTime > 0.1f)
+        if (Time.time - lastIncrementTime > 0.2f)
         {
          
             v1 = 1;

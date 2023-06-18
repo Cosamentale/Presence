@@ -68,7 +68,18 @@ public class Timer : MonoBehaviour
         scene3.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
         scene3.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
         matscene3.SetFloat("_dither",0);
+        matscene5.SetFloat("_float1", 0);
+        matscene5.SetFloat("_float2", 0);
+        matscene5.SetFloat("_float3", 0);
+        matscene5.SetFloat("_float4", 0);
+        matscene3.SetFloat("_dither", 0);
         launchtime = Time.time;
+        compo1 = 0;
+        compo2 = 0;
+        ds1 = 0;
+        bs1 = 0;
+        ts1 = 0;
+        script4.final = 0;
     }
 
     void Update()
@@ -227,10 +238,10 @@ public class Timer : MonoBehaviour
                 matscene5.SetFloat("_float3",0); 
                 matscene5.SetFloat("_float4", 0);
                 matscene3.SetFloat("_dither", 0);
+                script4.final = 0;
                 scene3.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
                 scene3.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
                 detector.SetActive(true);
-                dmx = 0;
                 timer = 0;
                 activate = 0;
                 launch = false;

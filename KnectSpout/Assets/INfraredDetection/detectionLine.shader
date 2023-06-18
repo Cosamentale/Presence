@@ -57,7 +57,7 @@ Shader "Unlit/detectionLine"
 				float2 uv = i.uv;
                 float2 c1 = tex2D(_Tex, i.uv).xy;
 			float r1 = c1.x + ov(c1.y, lerp(0.5, hs(uv + 23.69), 0.2));
-			float r2 = pow(clamp(r1, 0., 1.), 1.5);
+			float r2 = pow(clamp(r1, 0., 1.), 1.);
 			float r3 = lerp(r2,step(hn(uv + 98.), pow(r2,2.)),_dither*no(_c4*0.0001 + 95.24));
 			//float n4 = smoothstep(0.4, 0.95, no(_c4*0.00007 + 152.))*_step2invert;
 			//float pc6 = lerp(smoothstep(0.9, 0.1, pow(pc5, 0.5)), smoothstep(0.1, 0.9, pow(pc5, 2.)), 1. - n4);

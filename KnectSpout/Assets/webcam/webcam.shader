@@ -188,17 +188,17 @@ Shader "Unlit/webcam"
 				float tee4 = tex2D(_Date, up3).x*u2*(1.-u1);
 				float tee3 = lerp(tee4,(tee2 + tee),_final);
 
-				float3 pc = pow(lerp(tl1,tf1, _step0to1),_float1);
+				float3 pc = lerp(tl1,tf1, _step0to1);
 
 				float pc1 = exclusion(pc.x, pc.y);
 				float pc2 = exclusion(pc.x, pc.z);
 				float pc3 = exclusion(pc.y, pc.z);
 				float pc4 = lerp(lerp(pc1, pc2, smoothstep(0.45, 0.55, rd2(95.,_c1))), pc3, smoothstep(dt - 0.05*dt, dt + 0.05*dt, rd2( 451.,_c1)));
-				float pc5 = pow(clamp(pc4,0.,1.), _float3);
+				float pc5 = clamp(pc4,0.,1.);
 				float n4 = smoothstep(0.4, 0.95, no(_c4*0.00007+152.))*_step2invert;
-				float pc6 = lerp(smoothstep(0.9, 0.1, pow(pc5, 0.5)), smoothstep(0.1, 0.9, pow(pc5, 2.)),1.-n4);
+				float pc6 = lerp(smoothstep(0.8, 0.1, pow(pc5, .5)), smoothstep(0.1, 0.9, pow(pc5, 1.)),1.-n4);
 
-				float c2 = lerp(pow(pc.x,2.), pc6, _step1to2) ;
+				float c2 = lerp(pc.x, pc6, _step1to2) ;
 				float c3 = pow(c2,lerp(1.,lerp(0.75,1.5,no(_c4*0.0001)*0.+0.5),_powermodification));
 				float c4 = step(hn(uv + 98.), (c3)*_float4)*no(_c4*0.0001 + 95.24)*_dither;
 
@@ -206,7 +206,7 @@ Shader "Unlit/webcam"
 				float lf = max((1. - step(0.5 / 1920.,min(length(uv.x - 0.5) , (u2)+length(abs(uv.x - 0.5) - 0.25)))), 1. - step(0.5 / 1080., min(length(uv.y - 0.5),length(uv.y - 0.25))));
 				float3 b2 = lerp(b1, float3(1., 1., 1.),max(_final* lf,tll* _step0to1)+g2);
 				
-                return float4(smoothstep(1.-_fondu,1.,lerp(b2,float3(1.,1.,1.),tee3))*_fondu,1.);
+                return float4(lerp(lerp(smoothstep(1. - _fondu, 1., b2), b2, _fondu),float3(1.,1.,1.),tee3)*_fondu,1.);
             }
             ENDCG
         }

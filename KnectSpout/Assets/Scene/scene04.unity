@@ -166,27 +166,27 @@ MonoBehaviour:
   matscene5: {fileID: 2100000, guid: d36b5dba7c618624ab9d597750fddcc0, type: 2}
   tempsFondu: 0.1
   timingBlur: 2
-  timingMergeScene01: 10
-  timingDecoupeScene01: 15
-  timingPowerScene01: 17
-  timingInvertScene01: 25
-  timingDitherScene01: 30
-  scene02: 45
-  timingInvertScene02: 48
-  line: 55
-  scene03: 60
-  switchToDetec: 77
-  phase01Scene02: 107
-  phase02Scene02: 120
-  retourline: 140
-  launchcompo: 150
-  launchface: 290
-  apparition: 300
-  imgfond: 310
-  decoupe: 320
-  decoupefinal: 380
-  effetfinal: 440
-  fin: 450
+  timingMergeScene01: 30
+  timingDecoupeScene01: 50
+  timingPowerScene01: 55
+  timingInvertScene01: 60
+  timingDitherScene01: 70
+  scene02: 100
+  timingInvertScene02: 102
+  line: 110
+  scene03: 130
+  switchToDetec: 150
+  phase01Scene02: 180
+  phase02Scene02: 210
+  retourline: 240
+  launchcompo: 250
+  launchface: 400
+  apparition: 410
+  imgfond: 420
+  decoupe: 430
+  decoupefinal: 510
+  effetfinal: 570
+  fin: 575
   compo1: 0
   compo2: 0
   ds1: 0

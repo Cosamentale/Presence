@@ -43,7 +43,7 @@ namespace OscSimpl.Examples
         public float vf7;
         public float vf8;
         public float puissance;
-        public contorlLight lightt;
+        public contorlLightinstal lightt;
    
       
         //public bool changed = true;

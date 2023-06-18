@@ -59,7 +59,7 @@ public class Face : MonoBehaviour
         tex3 = mat3.GetTexture("_MainTex"); */
         if (r2 < 0.66)
         {
-            if (r1 < 0.5)
+            if (r1 < 0.2)
             {
                 tex = mat.GetTexture("_MainTex");
             }

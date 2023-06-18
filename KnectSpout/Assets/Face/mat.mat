@@ -90,10 +90,10 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _dither: 0.479
-    - _float1: 0
-    - _float2: 0
-    - _float3: 0
+    - _dither: 0
+    - _float1: 1
+    - _float2: 1
+    - _float3: 1
     - _float4: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

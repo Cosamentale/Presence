@@ -107,15 +107,15 @@ Shader "Unlit/DetecFrame"
 				float d3 = step(0.01, _float3);
 				float ver = isEven(tb)*step(2., tb)*d3*r5*(1.- _secondPhase);
 				float t3 = lerp(t1, tex2D(_MainTex, i.uv + float2(0., lerp(0.05, -0.05, step(0.5, i.uv.y)))).x, ver);
-				float t4 = pow(tex2D(_MainTex, frac(i.uv*2.)).y,1.);
+				float t4 =  tex2D(_MainTex, frac(i.uv*2.)).y;
 				//float t5 = lerp(t3, t4, step(0.5, i.uv.x));
-				float t6 = pow(tex2D(_MainTex, (lerp(float2(0.5, 0.5), float2(_float1, _float2), _float3) + (frac(i.uv*2.) - 0.5)*lerp(1., 0.25, _float3))).y, 1.5);
+				float t6 = tex2D(_MainTex, (lerp(float2(0.5, 0.5), float2(_float1, _float2), _float3) + (frac(i.uv*2.) - 0.5)*lerp(1., 0.25, _float3))).y;
 				float tb1 = lerp(tb,4., _troisiemePhase);
 				float v2 = floor(rd( 78.26)*tb1)*0.5;
 				float tta = distance(i.uv.y*tb1, -.5*step(0.1, frac(v2)) + max(floor(rd(98.45)*tb1), 1.));
 				float ttb = step(v2, tta)*d3;
 				float ttl = step(tta, v2 +4./1080.)*ttb;
-				float t8 = lerp(pow(tex2D(_MainTex, i.uv).y, 1.5) ,t1,ttb);
+				float t8 = lerp(tex2D(_MainTex, i.uv).y,t1,ttb);
 				float t7 = lerp(lerp(t3, lerp(t6,t4, lerp(step(0.5, i.uv.x), step(i.uv.x, 0.5), r7)), step(0.5, i.uv.y)), t8, _troisiemePhase);
 				float rr = rd(45.56);
 				float sp = floor(lerp(0.5, 1., rr)*ta);
@@ -138,7 +138,7 @@ Shader "Unlit/DetecFrame"
 				float te = tex2D(_Date, us).x;
 				float l1 = step(distance(i.uv.x*ta, sp), ta*.5/1920.);
 				float f1  = clamp(ov(lerp(t3,t7, _secondPhase), lerp(0.5, hs(i.uv + 23.69), 0.1)), 0, 1.);
-				float f2 = pow(f1, lerp(1.5, lerp(1.25, 1.75, no(_c4*0.0001)), _powermodification));
+				float f2 = pow(f1, lerp(1., lerp(0.85, 1.25, no(_c4*0.0001)), _powermodification));
 				float f3 = step(hn(i.uv + 98.), (f2)*_float4)*no(_c4*0.0001 + 95.24)*_dither;
 				float mv4 = tex2D(_Texte, uq).x*d3;
 				float3 c1 = lerp(f2+f3,lerp(float3(0., 0., 1.),float3(1.,1.,1.),l1+ te * step(ta / (ta - sp), 6.)+mv4), r1*step(0.01,_float3));
@@ -178,7 +178,7 @@ Shader "Unlit/DetecFrame"
 				float mv5 = tex2D(_Texte, float2(uu.x,frac(uu.y))).x*mmv5;
 				float cl5 = step(min(min(length(i.uv.y - 0.5), length(i.uv.y - 0.25)), length(i.uv.y - 0.75)), 0.5 / 1080.);
 				float3 c7 = lerp(c6, lerp(max(f3+f2,max((max(bl4,cl5)*d3)*ttb,ttl)),1.,lerp(mv5*d3,tee,ttb)), _troisiemePhase);
-                return float4(c7 ,1.);
+                return float4(pow(c7,0.75) ,1.);
             }
             ENDCG
         }

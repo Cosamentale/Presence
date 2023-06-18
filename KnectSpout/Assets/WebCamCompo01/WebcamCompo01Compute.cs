@@ -88,6 +88,11 @@ public class WebcamCompo01Compute : MonoBehaviour
         compute_shader.SetFloat("_active", 1);
         material.SetFloat("_resy", imgresy);
         activationtime = Time.frameCount;
+        solo = 0;
+        tsolo = 0;
+        timePhase31 = 0;
+        timePhase32 = 0;
+        compute_shader.SetFloat("_active", 0);
     }
      float fract(float t) { return t - Mathf.Floor(t); }
     float rd(float t) { float f = Mathf.Floor(t); return   fract(Mathf.Sin(Vector2.Dot(new Vector2(f, f), new Vector2(54.56f, 54.56f))) * 7845.236f); }
@@ -260,6 +265,7 @@ public class WebcamCompo01Compute : MonoBehaviour
             }
             else
             {
+                if (tt > 1) { compute_shader.SetFloat("_active", 1); } else { compute_shader.SetFloat("_active", 0); }
                 hasValidated = false; hasValidated2 = false;
                 material.SetFloat("_phase2", 0);
                 compute_shader.SetFloat("_phase2", 0);
@@ -417,4 +423,13 @@ public class WebcamCompo01Compute : MonoBehaviour
   
         
     }    */
+    private void OnEnable()
+    {
+        activationtime = Time.frameCount;
+        solo = 0;
+        tsolo = 0;
+        timePhase31 = 0;
+        timePhase32 = 0;
+        compute_shader.SetFloat("_active", 0);
+    }
 }

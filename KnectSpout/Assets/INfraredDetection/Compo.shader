@@ -112,13 +112,13 @@ Shader "Unlit/Compo"
 				float la2 = 2.*la;
 				float ha = 0.5 / 1920.;
 				float m1 = max(step(length(uv.y - 0.5), .125), 1. - _state)*(1. - _solo);
-				float c = pow(clamp(ov(tex2D(_MainTex2, uv).a, lerp(0.5, hs(uv + 23.69), 0.2)), 0, 1.),lerp(1.,3.,_dither))
+				float c = pow(clamp(ov(tex2D(_MainTex2, uv).a, lerp(0.5, hs(uv + 23.69), 0.2)), 0, 1.),lerp(1.,2.,_dither))
 					*m1;
 				c += step(hn(uv + 98.),c)*m1*_dither;
 				float lv2 = step(0.4, uv.x);
 				//float phase2vso = lerp(_phase2v, tt3, _solo);
-				float c2 = lerp(lerp(tex2D(_MainTex, float2(frac(uv.y*4.), uv.x)).x, tex2D(_MainTex, float2(frac(uv.x*3.), uv.y)).x, _state),
-					lerp(tex2D(_MainTex, float2(frac(uv.x*lerp(2.5,5.,lv2)), uv.y)).x, tex2D(_MainTex, float2(frac(uv.x*5.), uv.y)).y,step(0.6,uv.x)), _phase2v);
+				float c2 = pow(lerp(lerp(tex2D(_MainTex, float2(frac(uv.y*4.), uv.x)).x, tex2D(_MainTex, float2(frac(uv.x*3.), uv.y)).x, _state),
+					lerp(tex2D(_MainTex, float2(frac(uv.x*lerp(2.5, 5., lv2)), uv.y)).x, tex2D(_MainTex, float2(frac(uv.x*5.), uv.y)).y, step(0.6, uv.x)), _phase2v), 0.5);
 				float po = _p1;
 				float c3 = lerp(c2, c, lerp(step(0.125,distance(uv.y ,_p1) ),step(1./6.,length(uv.x-_p1)),_state));
 				float l1 = step(distance(uv.y, _p2), la);

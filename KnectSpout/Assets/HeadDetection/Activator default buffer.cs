@@ -40,6 +40,10 @@ public class Activatordefaultbuffer : MonoBehaviour
         {
             RestartScene();
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            RestartScene2();
+        }
         /* if (Time.time > ActivationTime)
          {
              GetComponent<defaultbuffer>().enabled = true;
@@ -52,7 +56,15 @@ public class Activatordefaultbuffer : MonoBehaviour
     void RestartScene()
     {
         // Reload the currently active scene
-        Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene.name);
+        // Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+         UnityEngine.SceneManagement.SceneManager.LoadScene("scene03");
+      //  Application.LoadLevel("scene03");
+    }
+    void RestartScene2()
+    {
+        // Reload the currently active scene
+        // Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("sceneinstall");
+        //  Application.LoadLevel("scene03");
     }
 }
