@@ -3,6 +3,7 @@
 Texture2D<float4> reader1;
 Texture2D<float4> reader2;
 Texture2D<float4> reader3;
+Texture2D<float4> reader4;
 RWTexture2D<float4> writer;
 SamplerState _LinearClamp;
 float _resx;
@@ -16,5 +17,6 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 	float t1 = reader1.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
 	float t2 = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
 	float t3 = reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
-	writer[id.xy] = float4(t1,t2,t3, 0.0);
+    float t4 = reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	writer[id.xy] = float4(t1,t2,t3,t4);
 }

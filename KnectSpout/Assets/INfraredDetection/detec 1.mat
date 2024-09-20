@@ -46,20 +46,20 @@ Material:
     m_Ints: []
     m_Floats:
     - _TroisiemePhase: 0
-    - _c1: 330.00867
-    - _c2: 310.00867
+    - _c1: 0.008330793
+    - _c2: 0.008330793
     - _c3: 0
-    - _c4: 261.44766
+    - _c4: 0
     - _c6: 0.016872909
     - _c7: 0.016872909
     - _dither: 0
-    - _float1: 0.1764706
-    - _float2: 0.24313726
-    - _float3: 0.023529412
+    - _float1: 0
+    - _float2: 0.011764706
+    - _float3: 0
     - _float4: 0.37
     - _float5: 2.19
     - _float6: -0.42
-    - _floatA: 1
+    - _floatA: 0
     - _frame: 0
     - _infra: 1
     - _powermodification: 0
