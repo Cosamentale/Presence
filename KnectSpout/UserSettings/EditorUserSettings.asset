@@ -6,34 +6,34 @@ EditorUserSettings:
   serializedVersion: 4
   m_ConfigSettings:
     RecentlyUsedSceneGuid-0:
-      value: 5a54575f55570b0c5d0a087246730844424f4f2f2f717267287b1b63b6e5616d
-      flags: 0
-    RecentlyUsedSceneGuid-1:
-      value: 5401035f51065a59550b097315765a444f154178782d7661757f4530e3b26069
-      flags: 0
-    RecentlyUsedSceneGuid-2:
-      value: 50545107000d5a085e0d0d74167a5a444e4f4b292e2a70617e7c4e32e3b1666c
-      flags: 0
-    RecentlyUsedSceneGuid-3:
       value: 5253555151065a5d5c0d587145735b444e4e1a2c2d2c7e672f794964e1b5623a
       flags: 0
+    RecentlyUsedSceneGuid-1:
+      value: 57500602570c5b08580d557b45760b44404f407e7d7827317d2c4a61b6b16d3a
+      flags: 0
+    RecentlyUsedSceneGuid-2:
+      value: 5a54575f55570b0c5d0a087246730844424f4f2f2f717267287b1b63b6e5616d
+      flags: 0
+    RecentlyUsedSceneGuid-3:
+      value: 5b500102030759590f0c582113760d4415154a2e7b2e273428701c30b5b5363e
+      flags: 0
     RecentlyUsedSceneGuid-4:
-      value: 5b08015f04060a025a0a0970437b5d44444e4d7b7e7f73662e704f60e3e4616b
+      value: 050151565d545f0f58560a7049770b4947161c2829717066787a1963e1b63639
       flags: 0
     RecentlyUsedSceneGuid-5:
-      value: 5750505f55560f0a5c56587047210e4447164c7f7d7f7f687b2b4a62b4e6643c
+      value: 02540c025c035b03540b087b44775a4345164d73282a7e622f2b1b61bbb7663b
       flags: 0
     RecentlyUsedSceneGuid-6:
-      value: 5402550552535a5d555c0e2147220f4440154a722e7920367e794d65b4e26c69
+      value: 5707565051545d0a5e5808234172084414154f28792a73697b2b1f37e1e66c3a
       flags: 0
     RecentlyUsedSceneGuid-7:
-      value: 510606525703590e585f0d2412700844464f4e737e7871632c7d1f67e1b96d69
-      flags: 0
-    RecentlyUsedSceneGuid-8:
       value: 0209000354570f0d5f0d097041740b44124f4d727e2c23342b2c4563bab16d3b
       flags: 0
+    RecentlyUsedSceneGuid-8:
+      value: 07070d05530c5e5e5857097342775e4445154b7f7e7f7f347a7a4b32b7e4373b
+      flags: 0
     RecentlyUsedSceneGuid-9:
-      value: 5707565051545d0a5e5808234172084414154f28792a73697b2b1f37e1e66c3a
+      value: 560350530354080d0c0c547114260e441016417b2e7e2731297e1962bab8326a
       flags: 0
     RecentlyUsedScenePath-0:
       value: 22424703114646680e0b0227036c6c111b07142f1f2b233e2867083debf42d
@@ -61,4 +61,5 @@ EditorUserSettings:
   m_VCHierarchyOverlayIcons: 1
   m_VCOtherOverlayIcons: 1
   m_VCAllowAsyncUpdate: 1
+  m_VCScanLocalPackagesOnConnect: 1
   m_ArtifactGarbageCollection: 1

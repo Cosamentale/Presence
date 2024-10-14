@@ -19,6 +19,8 @@ public class webcam : MonoBehaviour
     public Texture tex2;
     public Material mat3;
     public Texture tex3;
+    public Material mat4;
+    public Texture tex4;
     void Start()
     {
 
@@ -60,6 +62,7 @@ public class webcam : MonoBehaviour
         tex1 = mat1.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
+        tex4 = mat4.GetTexture("_MainTex");
     }
     void Update()
     {
@@ -68,6 +71,7 @@ public class webcam : MonoBehaviour
         compute_shader.SetTexture(handle_main, "reader1", tex2);
         compute_shader.SetTexture(handle_main, "reader2", tex1);
         compute_shader.SetTexture(handle_main, "reader3", tex3);
+        compute_shader.SetTexture(handle_main, "reader4", tex4);
         compute_shader.SetTexture(handle_main, "writer", A);
         compute_shader.Dispatch(handle_main, A.width / 8, A.height / 8, 1);
 

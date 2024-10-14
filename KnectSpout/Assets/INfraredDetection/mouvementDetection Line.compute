@@ -44,20 +44,22 @@ void CSMain (uint2 id : SV_DispatchThreadID)
 	float vm = 1000.;
 	//float2 g = float2(0.,0.); float vtot = 0.;
 	float2 pm = float2(0.5,0.5);
-	for (int i = 0; i <= 16; i++)
-		for (int j = 0; j <= 9; j++) {
-			float2 p = (float2(0.5,0.5) + float2(i, j))*bs3;
-			float v = reader.SampleLevel(_LinearClamp, p + 0.5 / res, 0).y;
-			float v2 = 1. - v;
+    for (int i = 0; i <= 20; i++)
+        for (int j = 0; j <= 12; j++)
+        {
+            float2 p = (float2(0.5, 0.5) + float2(i, j)) * bs3;
+            float v = reader.SampleLevel(_LinearClamp, p + 0.5 / res, 0).y;
+            float v2 = 1. - v;
 
 			//g += p * v;
 			//vtot += v;
-			if (v2 < vm) {
-				vm = v2;
-				pm = p;
-			}
+            if (v2 < vm)
+            {
+                vm = v2;
+                pm = p;
+            }
 			
-		}
+        }
 	
 	float z1 = lerp(pm.x, pm.y, step(0.5, uv.x));
 	float z2 = lerp(reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).w,

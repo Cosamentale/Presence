@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: webcam
-  m_Shader: {fileID: 4800000, guid: 018f083c66dd62149a06fc4f0dc26b4f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3d057c123035d004f909b8b148745935, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -111,10 +111,10 @@ Material:
     - _ZWrite: 1
     - _blur: 40
     - _bluractivation: 1
-    - _c1: 330.00867
-    - _c2: 310.00867
+    - _c1: 0.0045325924
+    - _c2: 0.0045325924
     - _c3: 0
-    - _c4: 261.44766
+    - _c4: 0
     - _c5: 600.01685
     - _c6: 0.016872909
     - _c7: 0.016872909
