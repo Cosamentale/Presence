@@ -513,10 +513,6 @@
         "parameters": [
           {
             "value": true,
-            "controlAddress": "/enabled"
-          },
-          {
-            "value": true,
             "controlAddress": "/logOutgoing"
           }
         ],
