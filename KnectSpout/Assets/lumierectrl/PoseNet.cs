@@ -80,32 +80,17 @@ public class PoseNet : MonoBehaviour
    // public Vector3[] posePositions;
     private PoseSkeleton[] skeletons2;
     //public Vector3[] posePositions2;
-    private Vector3 smoothDampVelocity;
-    private Vector3 smoothDampVelocity2;
-    public int closestSkeletonIndex = 0;
-    public int closestSkeletonIndex2 = 0;
-    public int closestSkeletonIndex3 = 0;
-    public int closestSkeletonIndex2Candidate = -1;
+
     public Vector2[] pos1 = new Vector2[12];
     public Vector2[] pos2 = new Vector2[12];
     public Vector2[] pos3 = new Vector2[12];
-    private Vector2[] pos1s = new Vector2[12];
-    private Vector2[] pos2s = new Vector2[12];
-    private Vector2[] pos3s = new Vector2[12];
+
     public float[] score1 = new float[12];
     public float[] score2 = new float[12];
     public float[] score3 = new float[12];
     
 
-    public float pbr;
-    public float pcr;
-    public float pr;
-    public float pp;
-    public float ppb;
-    public float ppc;
-    public float pvt1;
-    public float pvt2;
-    public float pvt3;
+   
     public Vector3 previousHipPosition;
     public Vector3 previousHipPosition2;
     private Vector2 a = new Vector2(0.5f, 0.5f);
@@ -113,23 +98,6 @@ public class PoseNet : MonoBehaviour
     private Vector4[] posePositionsArray2 = new Vector4[17];
     private Vector4[] posePositionsArray3 = new Vector4[17];
 
-    public float person1;
-    public float person2;
-    public float person3;
-    public float nbperson;
-    public float ptest;
-    public float pa;
-    public float pb;
-    public float pc;
-    public float mpa;
-    public float mpb;
-    public float mpc;
-    public int framesConditionTrueA = 0; // Counter to keep track of frames the condition is true for mpa
-    public int framesConditionTrueB = 0; // Counter to keep track of frames the condition is true for mpb
-    public int framesConditionTrueC = 0; // Counter to keep track of frames the condition is true for mpc
-    private bool isImageModified;
-
-    public bool Smooth = false;
     //public Vector3[] pos;
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -279,10 +247,10 @@ public class PoseNet : MonoBehaviour
         material.SetVectorArray("_pos", posePositionsArray);
         material.SetVectorArray("_pos2", posePositionsArray2);
         material.SetVectorArray("_pos3", posePositionsArray3);
-
+       /*
         material.SetFloat("_pos1", skeletons[0].keypoints[0].x);
         material.SetFloat("_pos2a", skeletons[1].keypoints[0].x);
-        material.SetFloat("_pos3a", skeletons[2].keypoints[0].x);
+        material.SetFloat("_pos3a", skeletons[2].keypoints[0].x);   */
 
 
     }

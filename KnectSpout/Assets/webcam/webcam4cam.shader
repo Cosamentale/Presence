@@ -232,7 +232,9 @@ Shader "Unlit/webcam4cam"
 				float pc3 = exclusion(pc.x, pc.a);
 				float pc4 = exclusion(pc.y, pc.z);
 				float pc5 = exclusion(pc.y, pc.a);
-				float pc6 = exclusion(pc.z, pc.a);
+				float pc6 = exclusion
+				
+				(pc.z, pc.a);
 
 				float rpc = rd2(95.,_c1/6.);float dds = 0.05/6.;
 				float pcf = clamp(lerp(pc6,lerp(pc5,lerp(pc4,lerp(pc3,lerp(pc2,pc1,
