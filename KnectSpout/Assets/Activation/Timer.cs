@@ -52,12 +52,34 @@ public class Timer : MonoBehaviour
     public float dmx; 
     public float launchtime;
     public Face script4;
+    private float ttimingMergeScene01 ;
+    private float ttimingDecoupeScene01 ;
+    private float ttimingPowerScene01 ;
+    private float ttimingInvertScene01;
+    private float ttimingDitherScene01;
+    private float tscene02;
+    private float ttimingInvertScene02 ;
+    private float tline ;
+    private float tscene03 ;
+    private float tswitchToDetec ;
+    private float tphase01Scene02;
+    private float tphase02Scene02;
+    private float tretourline;
+    private float tlaunchcompo ;
+    private float tlaunchface;
+    private float tapparition ;
+    private float timgfond;
+    private float tdecoupe;
+    private float tdecoupefinal ;
+    private float teffetfinal ;
+    private float tfin ;
     void Start()
     {
 
         activate = 0;
         activationScene02 = 0;
         launch = false;
+        matScene1.SetFloat("_bluractivation",0);
         matScene1.SetFloat("_fondu",0);
         matScene1.SetFloat("_step0to1", 0);
         matScene1.SetFloat("_step1to2", 0);
@@ -80,7 +102,28 @@ public class Timer : MonoBehaviour
         bs1 = 0;
         ts1 = 0;
         script4.final = 0;
-    }
+          ttimingMergeScene01 = timingBlur+ timingMergeScene01;
+          ttimingDecoupeScene01 = ttimingMergeScene01+ timingDecoupeScene01;
+          ttimingPowerScene01= ttimingDecoupeScene01+ timingPowerScene01;
+          ttimingInvertScene01= ttimingPowerScene01+ timingInvertScene01;
+          ttimingDitherScene01= ttimingInvertScene01+ timingDitherScene01;
+          tscene02= ttimingDitherScene01+ scene02;
+          ttimingInvertScene02= tscene02+ timingInvertScene02;
+          tline= ttimingInvertScene02+ line;
+          tscene03= tline+ scene03;
+          tswitchToDetec= tscene03+ switchToDetec;
+          tphase01Scene02= tswitchToDetec+ phase01Scene02;
+          tphase02Scene02= tphase01Scene02+ phase02Scene02;
+          tretourline= tphase02Scene02+ retourline;
+          tlaunchcompo= tretourline+ launchcompo;
+          tlaunchface= tlaunchcompo+ launchface;
+          tapparition= tlaunchface+ apparition;
+          timgfond= tapparition+ imgfond;
+          tdecoupe= timgfond+ decoupe;
+          tdecoupefinal= tdecoupe+ decoupefinal;
+          teffetfinal= tdecoupefinal+ effetfinal;
+          tfin= teffetfinal+ fin;
+}
 
     void Update()
     {
@@ -106,43 +149,43 @@ public class Timer : MonoBehaviour
             timer += Time.deltaTime;
             activate = 10;
             timeSinceDeactivation = 0;
-            if (timer < fin)
+            if (timer < tfin)
             {
-                if (timer > launchface)
+                if (timer > tlaunchface)
                 {
                     bs1 = 0;
                     scene5.SetActive(true);
                     scene4.SetActive(false);
-                    if (timer > apparition) { matscene5.SetFloat("_float1", Mathf.Clamp01(timer - apparition)); }
-                    if (timer > imgfond) { matscene5.SetFloat("_float2", Mathf.Clamp01(timer - imgfond)); }
-                    if (timer > decoupe) { matscene5.SetFloat("_float3", 1); ts1 = 1; }
-                    if (timer > decoupefinal) { script4.final =1; }
-                    if (timer > effetfinal) { matscene5.SetFloat("_float4", Mathf.Clamp01(timer - effetfinal)); }
+                    if (timer > tapparition) { matscene5.SetFloat("_float1", Mathf.Clamp01(timer - tapparition)); }
+                    if (timer > timgfond) { matscene5.SetFloat("_float2", Mathf.Clamp01(timer - timgfond)); }
+                    if (timer > tdecoupe) { matscene5.SetFloat("_float3", 1); ts1 = 1; }
+                    if (timer > tdecoupefinal) { script4.final =1; }
+                    if (timer > teffetfinal) { matscene5.SetFloat("_float4", Mathf.Clamp01(timer - teffetfinal)); }
                 }
                 else { 
-                if (timer > launchcompo)
+                if (timer > tlaunchcompo)
                 {
                     scene4.SetActive(true);
                     scene2.SetActive(false);
                         bs1 = 1;
                     } 
                 else {
-                        if (timer > retourline)
+                        if (timer > tretourline)
                         { ds1 = 0; compo2 = 0; scene3.SetActive(false); scene2.SetActive(true); }
                         else {
-                            if (timer > switchToDetec)
+                            if (timer > tswitchToDetec)
                             {
                                 ds1 = 1;
-                                matscene3.SetFloat("_dither", Mathf.Clamp01((timer - switchToDetec - 4) * 0.3f));
+                                matscene3.SetFloat("_dither", Mathf.Clamp01((timer - tswitchToDetec - 4) * 0.3f));
                                 scene1.SetActive(false);
                                 scene2.SetActive(false);
                                 scene3.SetActive(true);
                                 activationScene02 = 1;
-                                if (timer > phase01Scene02)
+                                if (timer > tphase01Scene02)
                                 {
                                     scene3.GetComponent<InfraredDetectionFrame>().SecondPhase = 1;
                                 }
-                                if (timer > phase02Scene02)
+                                if (timer > tphase02Scene02)
                                 {
                                     scene3.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 1;
                                 }
@@ -150,7 +193,7 @@ public class Timer : MonoBehaviour
                             else
                             {
                                 ds1 = 0;
-                                if (timer > scene03)
+                                if (timer > tscene03)
                                 {
                                     scene1.SetActive(true);
                                     scene2.SetActive(false);
@@ -159,7 +202,7 @@ public class Timer : MonoBehaviour
                                 else
                                 {
 
-                                    if (timer > line)
+                                    if (timer > tline)
                                     {
                                         scene1.SetActive(false);
                                         scene2.SetActive(true);
@@ -169,42 +212,42 @@ public class Timer : MonoBehaviour
                                         scene1.SetActive(true);
 
 
-                                        if (timer < scene02)
+                                        if (timer < tscene02)
                                         {
                                             matScene1.SetFloat("_fondu", Mathf.Clamp01(timer / tempsFondu));
                                             if (timer > timingBlur)
                                             {
                                                 matScene1.SetFloat("_bluractivation", Mathf.Clamp01(timer - timingBlur));
                                             }
-                                            if (timer > timingMergeScene01)
+                                            if (timer > ttimingMergeScene01)
                                             {
-                                                matScene1.SetFloat("_step1to2", Mathf.Clamp01(timer - timingMergeScene01));
+                                                matScene1.SetFloat("_step1to2", Mathf.Clamp01(timer - ttimingMergeScene01));
                                             }
-                                            if (timer > timingDecoupeScene01)
+                                            if (timer > ttimingDecoupeScene01)
                                             {
                                                 matScene1.SetFloat("_step0to1", 1); compo1 = 1;
                                             }
-                                            if (timer > timingPowerScene01)
+                                            if (timer > ttimingPowerScene01)
                                             {
-                                                matScene1.SetFloat("_powermodification", Mathf.Clamp01(timer - timingPowerScene01));
+                                                matScene1.SetFloat("_powermodification", Mathf.Clamp01(timer - ttimingPowerScene01));
                                             }
-                                            if (timer > timingInvertScene01)
+                                            if (timer > ttimingInvertScene01)
                                             {
-                                                matScene1.SetFloat("_step2invert", Mathf.Clamp01(timer - timingInvertScene01));
+                                                matScene1.SetFloat("_step2invert", Mathf.Clamp01(timer - ttimingInvertScene01));
                                             }
-                                            if (timer > timingDitherScene01)
+                                            if (timer > ttimingDitherScene01)
                                             {
-                                                matScene1.SetFloat("_dither", Mathf.Clamp01(timer - timingDitherScene01));
+                                                matScene1.SetFloat("_dither", Mathf.Clamp01(timer - ttimingDitherScene01));
                                             }
                                         }
                                         else
                                         {
                                             matScene1.SetFloat("_step0to1", 0); compo1 = 0;
                                             matScene1.SetFloat("_powermodification", 0);
-                                            if (timer > timingInvertScene02)
+                                            if (timer > ttimingInvertScene02)
                                             {
-                                                matScene1.SetFloat("_step2invert", 1 - Mathf.Clamp01(timer - timingInvertScene02));
-                                                matScene1.SetFloat("_step1to2", 1 - Mathf.Clamp01(timer - timingInvertScene02));
+                                                matScene1.SetFloat("_step2invert", 1 - Mathf.Clamp01(timer - ttimingInvertScene02));
+                                                matScene1.SetFloat("_step1to2", 1 - Mathf.Clamp01(timer - ttimingInvertScene02));
                                             }
 
                                         }
@@ -217,7 +260,7 @@ public class Timer : MonoBehaviour
 
             }
          
-            if (timer > fin + 1)
+            if (timer > tfin + 1)
             {
                 activationScene02 = 0;
                 scene3.SetActive(false);

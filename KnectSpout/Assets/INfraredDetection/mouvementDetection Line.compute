@@ -38,14 +38,14 @@ void CSMain (uint2 id : SV_DispatchThreadID)
 	diff = smoothstep(0.2, 0.5, diff);
 	float ta = 0.;
 	diff = max(diff, reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).y*0.95);
-	float bs = 1. / 17.;
-	float bs2 = 1. / 10.;
+	float bs = 1. / 32.;
+	float bs2 = 1. / 18.;
 	float2 bs3 = float2(bs, bs2);
 	float vm = 1000.;
 	//float2 g = float2(0.,0.); float vtot = 0.;
 	float2 pm = float2(0.5,0.5);
-    for (int i = 0; i <= 20; i++)
-        for (int j = 0; j <= 12; j++)
+    for (int i = 0; i <= 32; i++)
+        for (int j = 0; j <= 18; j++)
         {
             float2 p = (float2(0.5, 0.5) + float2(i, j)) * bs3;
             float v = reader.SampleLevel(_LinearClamp, p + 0.5 / res, 0).y;
@@ -83,12 +83,12 @@ void CSMain2(uint2 id : SV_DispatchThreadID)
 		reader5.SampleLevel(_LinearClamp, float2(0.25, 0.5) + 0.5 / res, 0).w,
 		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).w);
 	float d1 = 0.;
-	if (t2.z != 0.5/17. && t2.w != 0.5/17. && t2.z !=16.5/17. && t2.w != 16.5 / 17.) {
+	if (t2.z != 0.5/32. && t2.w != 0.5/32. && t2.z !=31.5/32. && t2.w != 31.5 / 32.) {
 		d1 = max(max(smoothstep(1. / 1920., 0., li(uv, t2.xy, t2.xw)), smoothstep(1. / 1920., 0., li(uv, t2.xw, t2.zw))),
 			smoothstep(0.5 / 1080., 0., li(uv, t2.xy, t2.zw))*0.2);
 	}
-	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x*step(0.01,frac(_time*0.1)));
+	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a*step(0.01,frac(_time*0.1)));
 	
-	writer[id] = float4(d2, t0, t0, t0);
+	writer[id] = float4( t0, t0, t0,d2);
 }
 

@@ -73,42 +73,30 @@ void CSMain (uint2 id : SV_DispatchThreadID)
 	float2 f = float2(id.x,id.y);
 	float2 res=float2(_resx, _resy);
 	float2 uv = f / res;
-	float tt1 = (lerp(_ff - 1, floor(_timePhase31 / _speed1)*10. / res.y, _phase3))*(1.-_solo);
-	float tt2 = (lerp(_ff - 1, floor(_timePhase32 / _speed1)*10. / res.y, _phase3) )*(1.-_solo);
-	//float m3 = _time / _speed3;
-	//float tf = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a;
-	//float ba = frac(tt1) + uv.x / _speed1;
+	float tt1 = (lerp(_ff - 1, floor(_timePhase31 / _speed1)*10. / res.y-1, _phase3))*(1.-_solo);
+	float tt2 = (lerp(_ff - 1, floor(_timePhase32 / _speed1)*10. / res.y-1, _phase3) )*(1.-_solo);
+
 	float ba = uv.x;
-	//float ba2 = frac(tt2) + uv.x / _speed1;
-	//float f10 = frac(floor(tt1)*10. / res.y);
+
 	float f10 = frac(tt1);
 	float f12 = frac(tt2);
 	float bt = frac(uv.y*res.y / 10.) / (res.y*0.1);
-	//float ff = frac(floor(_time-2)*10. / res.y);
-	float4 tt = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0)*_active;// *lerp(step(0.016, ff), 1., _solo);
+	float4 tt = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0)*_active;
 	float d1 = step(distance(uv.y, f10 - 5 * _sp / res.y), 5.*_sp / res.y);
 	float d2 = step(distance(uv.y, f12 - 5. *_sp / res.y), 5. *_sp / res.y);
 
 	float2 ut2 = lerp(lerp(float2(ba, _p2 + bt),float2(lerp(_p2,_p1,_phase2st) + bt,ba),_phase2v), float2(ba, _p2 + bt), _phase3);
 	float t2 = reader2.SampleLevel(_LinearClamp,ut2 + 0.5 / res, 0).a;
-	//float b1 = min(1. + 0.*step(frac(tt1*_sp), uv.x),step(distance(uv.y, f10-5./res.y), 5.*_sp/res.y));
-	//float b1 = ;
 	float t4 = lerp(tt.x, t2, d1);
 
 	float2 uu2 = lerp(lerp(float2(ba, 1. - _p2 + bt),float2(lerp(_p4,_p3,_phase2st) + bt,ba),_phase2v),float2(ba,  _p4 + bt),_phase3);
 	float u2 = reader2.SampleLevel(_LinearClamp,uu2 + 0.5 / res, 0).a;
-	//float c1 = min(step(frac(tt1), uv.x), step(distance(uv.y, f10- 5. / res.y), 5. / res.y));
-	//float c1 = step(distance(uv.y, f10 - 5.*_sp / res.y), 5.*_sp / res.y);
 	float u4 = lerp(tt.y , u2, d1);
 
 	float v2 = reader2.SampleLevel(_LinearClamp, float2(ba, _p1 + bt) + 0.5 / res, 0).a;
-	//float d1 = min(step(frac(tt2), uv.x), step(distance(uv.y,f12 - 5. / res.y), 5. / res.y));
-	//float d1 = step(distance(uv.y, f12 - 5. *_sp / res.y), 5. *_sp / res.y);
 	float v4 = lerp(tt.z, v2, d2);
 
 	float w2 = reader2.SampleLevel(_LinearClamp, float2(ba, _p3 + bt) + 0.5 / res, 0).a;
-	//float e1 = min(step(frac(tt2), uv.x), step(distance(uv.y, f12- 5. / res.y), 5. / res.y));
-	//float e1 = step(distance(uv.y, f12 - 5. *_sp / res.y), 5. *_sp / res.y);
 	float w4 = lerp(tt.w, w2, d2);
 
 	writer[id] =float4(t4,u4,v4,w4);
@@ -225,6 +213,6 @@ void CSMain2(uint3 id : SV_DispatchThreadID)
 	float pc4 = lerp(lerp(pc1, pc2, smoothstep(0.45, 0.55, no(_c3*0.5 + 95.17))), pc3, smoothstep(dt - 0.05*dt, dt + 0.05*dt, no(_c3*0.5 + 451.62)));
 	float pc6 = lerp(smoothstep(0.9, 0.1, pow(pc4, 0.5)), smoothstep(0.1, 0.9, pow(pc4, 2.)), 0.);
 	float pc7 = pow(lerp(pc.x, pc4, _step1to2),0.75);
-	writer[id.xy] = float4(t1, t2, t3, pc7);
+	writer[id.xy] = float4(pc7,pc7,pc7, pc7);
 }
 

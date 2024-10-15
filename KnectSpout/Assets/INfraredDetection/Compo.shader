@@ -111,7 +111,7 @@ Shader "Unlit/Compo"
 				float la = 0.5/1080.;
 				float la2 = 2.*la;
 				float ha = 0.5 / 1920.;
-				float m1 = max(step(length(uv.y - 0.5), .125), 1. - _state)*(1. - _solo);
+				float m1 = max(step(length(uv.y - _p2), .125), 1. - _state)*(1. - _solo);
 				float c = pow(clamp(ov(tex2D(_MainTex2, uv).a, lerp(0.5, hs(uv + 23.69), 0.2)), 0, 1.),lerp(1.,2.,_dither))
 					*m1;
 				c += step(hn(uv + 98.),c)*m1*_dither;
