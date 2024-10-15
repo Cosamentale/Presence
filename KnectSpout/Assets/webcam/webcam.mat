@@ -111,10 +111,10 @@ Material:
     - _ZWrite: 1
     - _blur: 40
     - _bluractivation: 1
-    - _c1: 0.0045325924
-    - _c2: 0.0045325924
+    - _c1: 405.76257
+    - _c2: 640.7613
     - _c3: 0
-    - _c4: 0
+    - _c4: 32514.162
     - _c5: 600.01685
     - _c6: 0.016872909
     - _c7: 0.016872909
@@ -124,7 +124,7 @@ Material:
     - _float2: 1.5
     - _float3: 0.79
     - _float4: 0.37
-    - _fondu: 0
+    - _fondu: 1
     - _powermodification: 0
     - _step0to1: 0
     - _step1to2: 0

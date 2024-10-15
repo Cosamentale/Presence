@@ -43,7 +43,7 @@ public class PoseNet : MonoBehaviour
     [Tooltip("The minimum confidence level required to display the key point")]
     // The texture used to create input tensor
     private RenderTexture rTex;
-    //public Texture Tex;
+    public RenderTexture Tex;
     // The preprocessing function for the current model type
     private System.Action<float[]> preProcessFunction;
     // Stores the input data for the model
@@ -220,7 +220,7 @@ public class PoseNet : MonoBehaviour
     void Update()
     {
         material.SetTexture("_MainTex", script2.OutputTexture);
-        Graphics.Blit(script2.OutputTexture, rTex);
+        Graphics.Blit(Tex, rTex);
         ProcessImage(rTex);
         engine.worker.Execute(input);
         input.Dispose();

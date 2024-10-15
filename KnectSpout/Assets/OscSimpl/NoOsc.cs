@@ -9,6 +9,7 @@ public class NoOsc : MonoBehaviour
     public WebcamCompo01Compute script2;
     public InfraredDetectionFrameLine script3;
     public float speed;
+    public WebcamCompo01Compute script4;
     void Start()
     {
         
@@ -28,5 +29,8 @@ public class NoOsc : MonoBehaviour
         script2._c2 = c2;
         script2._c3 = c3;
         script3._c1 = c1;
+        script4._c1 = c1;
+        script4._c2 = c2;
+        script4._c3 = c3;
     }
 }

@@ -60,6 +60,12 @@ public class WebcamCompo01Compute : MonoBehaviour
     public float final;
     public float bande;
     public float ts2;
+    public PoseNetCompo posenet;
+    private float smoothDampVelocity;
+    private float smoothDampVelocity2;
+    private float smoothingTime =1f;
+    public float dp;
+    public float dp2;
     //public float reactive = 0;
     void Start()
     {
@@ -108,9 +114,14 @@ public class WebcamCompo01Compute : MonoBehaviour
 
         //float tt =  no(Time.time*0.25f)*3000+fract((Time.frameCount - activationtime)/1000)*1000;//test * 60;//
         float tt = Time.frameCount - activationtime;//test * 60;//
+        //float pp1 = Mathf.Lerp(posenet.pos1[5].y, posenet.pos1[0].y+Mathf.Abs(posenet.pos1[5].y- posenet.pos1[0].y), Mathf.Sin(Time.time) * 0.5f + 0.5f);
+        dp = Mathf.SmoothDamp(dp, posenet.pos1[0].y, ref smoothDampVelocity, smoothingTime);
+        //float pp2 = Mathf.Lerp(posenet.pos1[5].x, posenet.pos1[6].x, Mathf.Sin(Time.time) * 0.5f + 0.5f);
+        dp2 = Mathf.SmoothDamp(dp2, posenet.pos1[0].x, ref smoothDampVelocity2, smoothingTime);
+
         if (tt < 500) { ts2 = 0; }
         else { ts2 = 10; }
-        float sp = 1.2f+speed3;
+        float sp = speed3;
         float ff1 = 0;
         if (final < 0.5)
         {
@@ -150,12 +161,12 @@ public class WebcamCompo01Compute : MonoBehaviour
                 if (fract(ff / 3) < td) { solo = 0; }
                 else { solo = 1; }}}
         else {
-            if (ff < 56) {                
+            if (ff < 37) {                
                 phase2 = true;
                 phase3 = false;
                 if (fract(ff / 24) < 0.5f) { if (fract(ff / 6) < 0.5f) { lhv = 0; } else { lhv = 1; } }
             else { if (fract(ff / 6) < 0.5f) { lhv = 1; } else { lhv = 0; } }
-            if (ff > 32){
+            if (ff > 26){
                     t2 = fract((ff + 1) / 6);
                 t3 = fract((ff + 1) / 12+ 5);
                 if (fract((ff + 1) / 3) < td){solo = 0;}
@@ -189,7 +200,7 @@ public class WebcamCompo01Compute : MonoBehaviour
             float bmd = Mathf.Floor((timePhase31 + timePhase32+ts) / speed1) / imgresy*10;
             float ba = 1;
          
-            if (bmd >= 12)
+            if (bmd >= 6)
             {
                 if (fract(ff / 12) > 0.5f) { lhv = 0; } else { lhv = 1; }
                 ba = 3;
@@ -234,6 +245,7 @@ public class WebcamCompo01Compute : MonoBehaviour
             timePhase32 = 0;
             material.SetFloat("_phase3", 0);
             compute_shader.SetFloat("_phase3", 0);
+
             if (phase2 == true){
                 if (!hasValidated2){compute_shader.SetFloat("_active",0);hasValidated2 = true;}
                 else{compute_shader.SetFloat("_active", 1);}
@@ -242,13 +254,24 @@ public class WebcamCompo01Compute : MonoBehaviour
                 if (t3 < 0.5f){
                     material.SetFloat("_phase2v", 1);
                     compute_shader.SetFloat("_phase2v", 1);
-                    _p1 = 0.2f;_p2 = 0.5f;_p3 = 0.7f;_p4 = 0.9f;                  
+                                  
                     if (t2 < 0.5f) {
                         material.SetFloat("_phase2st", 0);
-                        compute_shader.SetFloat("_phase2st", 0);}
+                        compute_shader.SetFloat("_phase2st", 0);
+                        _p2 = dp2;
+                        _p4 = 1f - dp2;
+                        _p1 = 0.2f;
+                        _p3 = 0.7f;
+                    }
                     else{
                         material.SetFloat("_phase2st", 1);
-                        compute_shader.SetFloat("_phase2st", 1);}}
+                        compute_shader.SetFloat("_phase2st", 1);
+                        _p2 = 0.5f;
+                        _p4 = 0.9f;
+                        _p1 = dp2;
+                        _p3 = 1f - dp2;
+                    }
+                }
                 else{                    
                     material.SetFloat("_phase2v", 0);
                     compute_shader.SetFloat("_phase2v", 0);
@@ -256,11 +279,12 @@ public class WebcamCompo01Compute : MonoBehaviour
                         material.SetFloat("_phase2st", 1);
                         compute_shader.SetFloat("_phase2st", 1);
                         _p1 = 0.375f;
-                        _p2 = 0.125f;}
+                        _p2 = dp;
+                    }
                     else{
                         material.SetFloat("_phase2st", 0);
                         compute_shader.SetFloat("_phase2st", 0);
-                        _p1 = 0.125f;_p2 = 0.375f;}
+                        _p1 = 0.125f;_p2 = dp;}
                 }
             }
             else
@@ -272,11 +296,11 @@ public class WebcamCompo01Compute : MonoBehaviour
                 material.SetFloat("_phase2v", 0);
                 compute_shader.SetFloat("_phase2v", 0);
                 if (t3 < dt){state = 0;
-                    if (t2 < 0.25f){_p1 = 0.125f;_p2 = 0.625f;}
-                    if (t2 > 0.25f && t2 <= 0.5f){_p1 = 0.625f;_p2 = 0.25f;}
-                    if (t2 > 0.5f && t2 <= 0.75f){_p1 = 0.875f; _p2 = 0.375f;}
-                    if (t2 > 0.75f && t2 <= 1){_p1 = 0.375f;_p2 = 0.75f;}}
-                else{state = 1; _p2 = 0.5f;
+                    if (t2 < 0.25f){_p1 = 0.125f;_p2 = dp;}
+                    if (t2 > 0.25f && t2 <= 0.5f){_p1 = 0.625f;_p2 = dp; }
+                    if (t2 > 0.5f && t2 <= 0.75f){_p1 = 0.875f; _p2 = dp; }
+                    if (t2 > 0.75f && t2 <= 1){_p1 = 0.375f;_p2 = dp; }}
+                else{state = 1; _p2 = dp;
                     if (t4 <= td) { _p1 = 0.5f; }
                     if (t4 > td && t4 <= dt) { _p1 = 0.5f / 3f; }
                     if (t4 > dt && t4 <= 1) { _p1 = 2.5f / 3f; }
@@ -347,82 +371,9 @@ public class WebcamCompo01Compute : MonoBehaviour
         float[] t3Data2 = new float[4]; ;
         t3Buffer2.GetData(t3Data2, 0, 0, 4);
         floatArray1 = t3Data2;
+        posenet.Tex = C;
     }
- /*   private void OnDisable()
-    {
-          CleanupResources();
-        floatArray1[0] = 0;
-        floatArray1[1] = 0;
-        floatArray1[2] = 0;
-        floatArray1[3] = 0;
-        solo = 0;
-    }
-   
-      
-    private void CleanupResources()
-    {
-        // Make sure to release or dispose of the ComputeBuffer
-        if (t3Buffer2 != null)
-        {
-            t3Buffer2.Release();
-            t3Buffer2.Dispose();
-        }
 
-        // Destroy the RenderTexture
-        if (A != null)
-        {
-            Destroy(A);
-        }
-        if (B != null)
-        {
-            Destroy(B);
-        }
-        if (C != null)
-        {
-            Destroy(C);
-        }
-        if (D != null)
-        {
-            Destroy(D);
-        }   
-    }
-    private void OnEnable()
-    {
-        // Check if buffer and texture are null, and if so, recreate them
-        if (t3Buffer2 == null)
-        {
-            t3Buffer2 = new ComputeBuffer(4, sizeof(float));
-        }
-
-        if (A == null)
-        {
-            A = new RenderTexture(imgresx, imgresy, 0);
-            A.enableRandomWrite = true;
-            A.Create();
-        }
-        if (B == null)
-        {
-            B = new RenderTexture(imgresx, imgresy, 0);
-            B.enableRandomWrite = true;
-            B.Create();
-        }
-        if (C == null)
-        {
-            C = new RenderTexture(1920, 1080, 0, rtFormat);
-            C.enableRandomWrite = true;
-            C.Create();
-        }
-        if (D == null)
-        {
-            D = new RenderTexture(1920, 1080, 0, rtFormat);
-            D.enableRandomWrite = true;
-            D.Create();
-        }
-
-
-  
-        
-    }    */
     private void OnEnable()
     {
         activationtime = Time.frameCount;

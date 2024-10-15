@@ -20,7 +20,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
     public Material mat3;
     public Texture tex3;
     public float _c1;
-
+    public PoseNet posenet;
     void Start()
     {
         //gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
@@ -81,6 +81,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
         compute_shader.Dispatch(handle_main2, D.width / 8, D.height / 8, 1);
         
         material.SetTexture("_Tex", D);
+        posenet.Tex = D;
        // material.SetTexture("_MainTex2", B);
 
     }
