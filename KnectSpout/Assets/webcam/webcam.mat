@@ -110,7 +110,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _blur: 40
-    - _bluractivation: 1
+    - _bluractivation: 0
     - _c1: 405.76257
     - _c2: 640.7613
     - _c3: 0

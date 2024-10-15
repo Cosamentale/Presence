@@ -14,6 +14,7 @@ public class Face : MonoBehaviour
     RenderTexture B;
     int handle_main;
     public Material material;
+    public Material material2;
     //public Vector4[] Data;
     public float c1;
     public float c2;
@@ -92,5 +93,7 @@ public class Face : MonoBehaviour
         material.SetTexture("_Texture", B);
         material.SetVectorArray("_data", face.Data);
         material.SetTexture("_cam", tex);
+        material2.SetVector("_data", face.Data[0]);
+        material2.SetTexture("_cam", tex);
     }
 }

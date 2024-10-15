@@ -9,6 +9,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     RenderTexture C;
     RenderTexture D;
     public Material material;
+    public Material material2;
     int handle_main;
     int handle_main2;
     //private WebCamTexture webcamTexture;
@@ -346,6 +347,7 @@ public class WebcamCompo01Compute : MonoBehaviour
         
         material.SetTexture("_MainTex", B);
         material.SetTexture("_MainTex2", D);
+        material2.SetTexture("_MainTex", D);
         material.SetFloat("_frame", tt);
         material.SetFloat("_speed1", speed1);
         material.SetFloat("_speed2", speed2);

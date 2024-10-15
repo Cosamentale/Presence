@@ -91,8 +91,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _dither: 0.518
-    - _float1: 0
-    - _float2: 0
+    - _float1: 1
+    - _float2: 1
     - _float3: 0
     - _float4: 0
     m_Colors:

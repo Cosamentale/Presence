@@ -53,18 +53,18 @@ Material:
     - _c6: 0.016872909
     - _c7: 0.016872909
     - _dither: 0
-    - _float1: 0.08627451
-    - _float2: 0.08627451
-    - _float3: 0
+    - _float1: 0.20784314
+    - _float2: 0.29411766
+    - _float3: 0.3764706
     - _float4: 0.37
     - _float5: 2.19
     - _float6: -0.42
-    - _floatA: 33
+    - _floatA: 3
     - _frame: 0
     - _infra: 1
     - _powermodification: 0
-    - _secondPhase: 1
+    - _secondPhase: 0
     - _taille2: 12
-    - _troisiemePhase: 1
+    - _troisiemePhase: 0
     m_Colors: []
   m_BuildTextureStacks: []

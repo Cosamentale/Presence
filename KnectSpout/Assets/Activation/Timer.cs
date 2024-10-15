@@ -16,6 +16,7 @@ public class Timer : MonoBehaviour
     public Material matscene3;
     public Material matscene4;
     public Material matscene5;
+    public Material matscene52;
     private float timer = 0f;
     public float tempsFondu; 
     public float timingBlur;
@@ -92,6 +93,7 @@ public class Timer : MonoBehaviour
         matscene3.SetFloat("_dither",0);
         matscene5.SetFloat("_float1", 0);
         matscene5.SetFloat("_float2", 0);
+        matscene52.SetFloat("_float2", 0);
         matscene5.SetFloat("_float3", 0);
         matscene5.SetFloat("_float4", 0);
         matscene3.SetFloat("_dither", 0);
@@ -157,7 +159,9 @@ public class Timer : MonoBehaviour
                     scene5.SetActive(true);
                     scene4.SetActive(false);
                     if (timer > tapparition) { matscene5.SetFloat("_float1", Mathf.Clamp01(timer - tapparition)); }
-                    if (timer > timgfond) { matscene5.SetFloat("_float2", Mathf.Clamp01(timer - timgfond)); }
+                    if (timer > timgfond) { matscene5.SetFloat("_float2", Mathf.Clamp01(timer - timgfond));
+                        matscene52.SetFloat("_float2", Mathf.Clamp01(timer - timgfond));
+                    }
                     if (timer > tdecoupe) { matscene5.SetFloat("_float3", 1); ts1 = 1; }
                     if (timer > tdecoupefinal) { script4.final =1; }
                     if (timer > teffetfinal) { matscene5.SetFloat("_float4", Mathf.Clamp01(timer - teffetfinal)); }
@@ -278,6 +282,7 @@ public class Timer : MonoBehaviour
                 matScene1.SetFloat("_final", 0);
                 matscene5.SetFloat("_float1", 0);
                 matscene5.SetFloat("_float2", 0);
+                matscene52.SetFloat("_float2", 0);
                 matscene5.SetFloat("_float3",0); 
                 matscene5.SetFloat("_float4", 0);
                 matscene3.SetFloat("_dither", 0);

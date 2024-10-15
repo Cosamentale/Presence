@@ -79,7 +79,7 @@ public class PoseNetCompo : MonoBehaviour
     private PoseSkeleton[] skeletons2;
     //public Vector3[] posePositions2;
 
-    public Vector2[] pos1 = new Vector2[17];
+    public Vector3[] pos1 = new Vector3[17];
    // public Vector2[] pos2 = new Vector2[17];
    // public Vector2[] pos3 = new Vector2[17];
 
