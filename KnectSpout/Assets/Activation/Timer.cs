@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
     public GameObject detector;
     public GameObject scene1;
     public GameObject scene2;
+    public GameObject scene2b;
     public GameObject scene3;
     public GameObject scene4;
     public GameObject scene5;
@@ -74,6 +75,7 @@ public class Timer : MonoBehaviour
     private float tdecoupefinal ;
     private float teffetfinal ;
     private float tfin ;
+    public GameObject canvas;
     void Start()
     {
 
@@ -88,6 +90,7 @@ public class Timer : MonoBehaviour
         matScene1.SetFloat("_step2invert",0);
         matScene1.SetFloat("_dither", 0);
         matScene1.SetFloat("_final", 0);
+        canvas.SetActive(true);
         scene3.GetComponent<InfraredDetectionFrame>().SecondPhase = 0;
         scene3.GetComponent<InfraredDetectionFrame>().TroisiemePhase = 0;
         matscene3.SetFloat("_dither",0);
@@ -97,6 +100,7 @@ public class Timer : MonoBehaviour
         matscene5.SetFloat("_float3", 0);
         matscene5.SetFloat("_float4", 0);
         matscene3.SetFloat("_dither", 0);
+
         launchtime = Time.time;
         compo1 = 0;
         compo2 = 0;
@@ -171,11 +175,12 @@ public class Timer : MonoBehaviour
                 {
                     scene4.SetActive(true);
                     scene2.SetActive(false);
+                        scene2b.SetActive(false);
                         bs1 = 1;
                     } 
                 else {
                         if (timer > tretourline)
-                        { ds1 = 0; compo2 = 0; scene3.SetActive(false); scene2.SetActive(true); }
+                        { ds1 = 0; compo2 = 0; scene3.SetActive(false); scene2b.SetActive(true); }
                         else {
                             if (timer > tswitchToDetec)
                             {
@@ -183,6 +188,7 @@ public class Timer : MonoBehaviour
                                 matscene3.SetFloat("_dither", Mathf.Clamp01((timer - tswitchToDetec - 4) * 0.3f));
                                 scene1.SetActive(false);
                                 scene2.SetActive(false);
+                                scene2b.SetActive(false);
                                 scene3.SetActive(true);
                                 activationScene02 = 1;
                                 if (timer > tphase01Scene02)
@@ -201,7 +207,9 @@ public class Timer : MonoBehaviour
                                 {
                                     scene1.SetActive(true);
                                     scene2.SetActive(false);
+                                    scene2b.SetActive(false);
                                     matScene1.SetFloat("_final", 1); compo2 = 1;
+                                    canvas.SetActive(false);
                                 }
                                 else
                                 {
@@ -269,6 +277,7 @@ public class Timer : MonoBehaviour
                 activationScene02 = 0;
                 scene3.SetActive(false);
                 scene2.SetActive(false);
+                scene2b.SetActive(false);
                 scene1.SetActive(false);
                 scene5.SetActive(false);
                 scene4.SetActive(false);
@@ -280,6 +289,7 @@ public class Timer : MonoBehaviour
                 matScene1.SetFloat("_dither", 0);
                 matscene3.SetFloat("_dither", 0);
                 matScene1.SetFloat("_final", 0);
+                canvas.SetActive(true);
                 matscene5.SetFloat("_float1", 0);
                 matscene5.SetFloat("_float2", 0);
                 matscene52.SetFloat("_float2", 0);
@@ -299,7 +309,15 @@ public class Timer : MonoBehaviour
                  ds1 = 0;
                  bs1 = 0;
                  ts1 = 0;
-}
+                RestartScene();
+            }
+            void RestartScene()
+            {
+                // Reload the currently active scene
+                // Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+                UnityEngine.SceneManagement.SceneManager.LoadScene("sceneinstallQuai");
+                //  Application.LoadLevel("scene03");
+            }
         }
         else
         {

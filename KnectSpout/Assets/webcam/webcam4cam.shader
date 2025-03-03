@@ -244,7 +244,7 @@ Shader "Unlit/webcam4cam"
 
 				float c2 = lerp(pc.x, pcff, _step1to2) ;
 				float c3 = pow(c2,lerp(1.,lerp(0.75,1.5,no(_c4*0.0001)*0.+0.5),_powermodification));
-				float c4 = step(hn(uv + 98.), (c3)*_float4)*no(_c4*0.0001 + 95.24)*_dither;
+				float c4 = step(hn(uv + 98.), (c3)*_float4)*no(_c4*0.0001 + 95.24)*_dither*0.6;
 
 				float3 b1 = lerp(c3+c4, float3(0., 0., 1.), lerp(step(0.75,rd2(uv*4.,_c3*6.25))*(1.-u2),step(0.75,rd2(uv*2.,_c3*6.25))*u2,step(0.75,rr1))*_final);
 				float lf = max((1. - step(0.5 / 1920.,min(length(uv.x - 0.5) , (u2)+length(abs(uv.x - 0.5) - 0.25)))), 1. - step(0.5 / 1080., min(length(uv.y - 0.5),length(uv.y - 0.25))));

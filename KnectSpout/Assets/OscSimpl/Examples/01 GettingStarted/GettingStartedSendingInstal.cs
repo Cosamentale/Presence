@@ -25,15 +25,19 @@ namespace OscSimpl.Examples
         public string address13 = "/ds1";
         public string address15 = "/bs1";
         public string address17 = "/ts1";
-        public string addressMax1 = "/v1";
+        /*public string addressMax1 = "/v1";
         public string addressMax2 = "/v2";
         public string addressMax3 = "/v3";
         public string addressMax4 = "/v4";
         public string addressMax5 = "/v5";
         public string addressMax6 = "/v6";
         public string addressMax7 = "/v7";
-        public string addressMax8 = "/v8";
-
+        public string addressMax8 = "/v8"; */
+        public string addressMax1 = "/l1";
+        public string addressMax2 = "/l2";
+        public string addressMax3 = "/l3";
+        public string addressMax4 = "/l4";
+        public contorlLightinstal lights;
 
         //public float speed = 0;
         //public float speed2 = 0;
@@ -42,7 +46,7 @@ namespace OscSimpl.Examples
         public InfraredDetectionFrame script1;
         public Timer script2;
         public WebcamCompo01Compute script3;
-        public VisualizerYoloMesh script4;
+        //public VisualizerYoloMesh script4;
         void Start()
 		{
             LocalIPTarget = _oscOut.remoteIpAddress;
@@ -70,10 +74,10 @@ namespace OscSimpl.Examples
             _oscOut.Send(addressMax2, 0);
             _oscOut.Send(addressMax3, 0);
             _oscOut.Send(addressMax4, 0);
-            _oscOut.Send(addressMax5, 0);
+            /*_oscOut.Send(addressMax5, 0);
             _oscOut.Send(addressMax6, 0);
             _oscOut.Send(addressMax7, 0);
-            _oscOut.Send(addressMax8, 0);
+            _oscOut.Send(addressMax8, 0); */
             // ... or, alternatively target remote devices with a IP Address.
             //oscOut.Open( 7000, "192.168.1.101" );
 
@@ -159,14 +163,11 @@ namespace OscSimpl.Examples
                 _oscOut.Send(address1, 0);
                 _oscOut.Send(address13, 10);
             }
-            _oscOut.Send(addressMax1, script4.Data[0].x );
-            _oscOut.Send(addressMax2, script4.Data[0].y );
-            _oscOut.Send(addressMax3, script4.Data[0].z );
-            _oscOut.Send(addressMax4, script4.Data[0].w );
-            _oscOut.Send(addressMax5, script4.Data[1].x );
+           
+           /* _oscOut.Send(addressMax5, script4.Data[1].x );
             _oscOut.Send(addressMax6, script4.Data[1].y );
             _oscOut.Send(addressMax7, script4.Data[1].z );
-            _oscOut.Send(addressMax8, script4.Data[1].w );
+            _oscOut.Send(addressMax8, script4.Data[1].w );    */
 
         }
 	}

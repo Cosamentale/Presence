@@ -12,7 +12,7 @@ public class InfraredDetectionFrame : MonoBehaviour
     //ComputeBuffer t3Buffer;
     ComputeBuffer t3Buffer2;
     public Material material;
-    public Material material2;
+   // public Material material2;
     public float blur;
     public float[] floatArray1 = new float[3];
     int handle_main;
@@ -24,6 +24,8 @@ public class InfraredDetectionFrame : MonoBehaviour
     public Texture tex2;
     public Material mat3;
     public Texture tex3;
+    public Material mat4;
+    public Texture tex4;
     public float _taille1;
     public float _taille2;
     public float floatA;
@@ -81,6 +83,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         tex = mat.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
+        tex4 = mat4.GetTexture("_MainTex");
         compute_shader.SetTexture(handle_main, "reader", A);
         compute_shader.SetTexture(handle_main, "reader2",D);
         compute_shader.SetFloat("_blur", blur);
@@ -112,8 +115,8 @@ public class InfraredDetectionFrame : MonoBehaviour
         material.SetFloat("_float1", floatArray1[0]);
         material.SetFloat("_float2", floatArray1[1]);
         material.SetFloat("_float3", floatArray1[2]);
-        material2.SetFloat("_float1", floatArray1[0]);
-        material2.SetFloat("_float2", floatArray1[1]);
+        //material2.SetFloat("_float1", floatArray1[0]);
+        //material2.SetFloat("_float2", floatArray1[1]);
 
         if (floatArray1[2] != previousfloat)
         {
@@ -132,6 +135,7 @@ public class InfraredDetectionFrame : MonoBehaviour
         compute_shader.SetTexture(handle_main2, "reader2", tex);
         compute_shader.SetTexture(handle_main2, "reader3", tex2);
         compute_shader.SetTexture(handle_main2, "reader4", tex3);
+        compute_shader.SetTexture(handle_main2, "reader5", tex4);
         compute_shader.SetFloat("_time", Time.time);
         compute_shader.SetFloat("_floatA", floatA);
         compute_shader.SetFloat("_float1", floatArray1[0]);
@@ -152,8 +156,8 @@ public class InfraredDetectionFrame : MonoBehaviour
         compute_shader.Dispatch(handle_main2, D.width / 8, D.height / 8, 1);
         
         material.SetTexture("_MainTex", D);
-        material2.SetTexture("_MainTex", D);
-        material2.SetTexture("_MainTex2", B);
+        //material2.SetTexture("_MainTex", D);
+       // material2.SetTexture("_MainTex2", B);
         material.SetTexture("_MainTex2", B);
         material.SetFloat("_taille2", _taille2);
         material.SetFloat("_floatA", floatA);

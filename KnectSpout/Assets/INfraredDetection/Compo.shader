@@ -225,7 +225,7 @@ Shader "Unlit/Compo"
 				float doma1 = step(length(lerp(bom, dom, _lhv) - 0.5), 0.5);
 				float doma2 = step(length(lerp(bom2, dom2, _lhv) - 0.5), 0.5);*/
 
-				return float4(float3(1., 1., 1.)*tex +cf + lfo + lf, 1.);// +float4(fomf, 0., 0.);
+				return float4(float3(1., 1., 1.)*smoothstep(-0.05,1.,tex +cf + lfo + lf), 1.);// +float4(fomf, 0., 0.);
             }
             ENDCG
         }

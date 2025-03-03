@@ -153,7 +153,7 @@ float4 rd4(float t){float ft = floor(t); return frac(sin(float4(dot(ft,45.236),d
             float2 fac = re;
 			float d1 = 0.;
             float ligne =0.8;
-            float zp = 0.001;
+            float zp = 0.00075;
             float2 uli = i.uv;
             float2 ulif = uli*re;
             float trp = 12.;
@@ -298,8 +298,8 @@ float4 rd4(float t){float ft = floor(t); return frac(sin(float4(dot(ft,45.236),d
 
       pof3 = ps1+ps2+ps3+ps4+ps5+ps6+ps7+ps8+ps9; 
       }
-      float rr = r3 + pof+pof2+pof3;
-                return float4(rr,rr,rr,1.);
+      float3 rr = float3(r3,r3,r3) + (pof+pof2+pof3)*float3(0.5,0.5,1.);
+                return float4(rr,1.);
             }
             ENDCG
         }

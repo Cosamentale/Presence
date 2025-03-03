@@ -19,6 +19,8 @@ public class InfraredDetectionFrameLine : MonoBehaviour
     public Texture tex2;
     public Material mat3;
     public Texture tex3;
+    public Material mat4;
+    public Texture tex4;
     public float _c1;
     public PoseNet posenet;
     void Start()
@@ -51,7 +53,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
         tex = mat.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
-
+        tex4 = mat4.GetTexture("_MainTex");
 
         compute_shader.SetTexture(handle_main, "reader", A);
         compute_shader.SetTexture(handle_main, "reader2",D);
@@ -69,6 +71,7 @@ public class InfraredDetectionFrameLine : MonoBehaviour
         compute_shader.SetTexture(handle_main2, "reader2", tex);
         compute_shader.SetTexture(handle_main2, "reader3", tex2);
         compute_shader.SetTexture(handle_main2, "reader4", tex3);
+        compute_shader.SetTexture(handle_main2, "reader6", tex4);
         compute_shader.SetTexture(handle_main2, "reader5", B);
         compute_shader.SetFloat("_time", Time.time);      
         compute_shader.SetFloat("_resx", 1920);

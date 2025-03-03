@@ -8,13 +8,14 @@ public class Face : MonoBehaviour
     public Texture tex;
     public Material mat2;
     public Material mat3;
+    public Material mat4;
     public Visualizer face;
     public ComputeShader compute_shader;
     RenderTexture A;
     RenderTexture B;
     int handle_main;
     public Material material;
-    public Material material2;
+    //public Material material2;
     //public Vector4[] Data;
     public float c1;
     public float c2;
@@ -37,7 +38,7 @@ public class Face : MonoBehaviour
     }
     void Update()
     {
-        float r1 = rd(c1 + 65);
+        //float r1 = rd(c1 + 65);
         float r2 = rd(c1 + 123);
         float r3 = rd(c2);
         //float r4 = rd(c3);
@@ -58,18 +59,29 @@ public class Face : MonoBehaviour
         /*tex = mat.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex"); */
-        if (r2 < 0.66)
+        if (r2 < 0.75)
         {
-            if (r1 < 0.2)
+            if (r2 < 0.5)           
             {
-                tex = mat.GetTexture("_MainTex");
+                if (r2 < 0.25)
+                {
+                    tex = mat.GetTexture("_MainTex");
+                }
+                else
+                {
+                    tex = mat2.GetTexture("_MainTex");
+                }
             }
             else
             {
-                tex = mat2.GetTexture("_MainTex");
-            }
+                tex = mat3.GetTexture("_MainTex");
+            }           
         }
-        else { tex = mat3.GetTexture("_MainTex"); }
+        else {
+               
+            tex = mat4.GetTexture("_MainTex");
+        }
+      
 
         face._source = tex;
         compute_shader.SetTexture(handle_main, "reader", A);
@@ -93,7 +105,7 @@ public class Face : MonoBehaviour
         material.SetTexture("_Texture", B);
         material.SetVectorArray("_data", face.Data);
         material.SetTexture("_cam", tex);
-        material2.SetVector("_data", face.Data[0]);
-        material2.SetTexture("_cam", tex);
+        //material2.SetVector("_data", face.Data[0]);
+        //material2.SetTexture("_cam", tex);
     }
 }

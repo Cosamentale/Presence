@@ -5,6 +5,7 @@ Texture2D<float4> reader2;
 Texture2D<float4> reader3;
 Texture2D<float4> reader4;
 Texture2D<float4> reader5;
+Texture2D<float4> reader6;
 RWTexture2D<float4> writer;
 SamplerState _LinearClamp;
 
@@ -74,20 +75,25 @@ void CSMain2(uint2 id : SV_DispatchThreadID)
 	float2 res = float2(_resx, _resy);
 	float2 uv = f / res;
 	float t = _c1*23.;
-	float r2 = step(0.5, rd(t + 45.12));
-	float r3 = step(2. / 3., rd(t + 78.49));
-	float t0 = lerp(lerp(reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r2),
-	reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r3);
+	float rr2 =  rd(t + 45.12);
+	//float r3 = step(2. / 3., rd(t + 78.49));
+	//float t0 = lerp(lerp(reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r2),
+	//reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x, r3);
+	float te1 = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	float te2 = reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	float te3 = reader4.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	float te4 = reader6.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+	float t0 = lerp(te4, lerp(te3, lerp(te1, te2, step(0.75, rr2)), step(0.5, rr2)), step(0.25, rr2));
 	float4 t2 = float4(reader5.SampleLevel(_LinearClamp, float2(0.25, 0.5) + 0.5 / res, 0).z,
 		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).z,
 		reader5.SampleLevel(_LinearClamp, float2(0.25, 0.5) + 0.5 / res, 0).w,
 		reader5.SampleLevel(_LinearClamp, float2(0.75, 0.5) + 0.5 / res, 0).w);
 	float d1 = 0.;
 	if (t2.z != 0.5/32. && t2.w != 0.5/32. && t2.z !=31.5/32. && t2.w != 31.5 / 32.) {
-		d1 = max(max(smoothstep(1. / 1920., 0., li(uv, t2.xy, t2.xw)), smoothstep(1. / 1920., 0., li(uv, t2.xw, t2.zw))),
+        d1 = max(max(smoothstep(0.5 / 1920., 0., li(uv, t2.xy, t2.xw)) * 0.5s, smoothstep(0.5 / 1920., 0., li(uv, t2.xw, t2.zw)) * 0.5),
 			smoothstep(0.5 / 1080., 0., li(uv, t2.xy, t2.zw))*0.2);
 	}
-	float d2 = max(d1 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a*step(0.01,frac(_time*0.1)));
+	float d2 = max(d1*0.5 , reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).a*step(0.01,frac(_time*0.1)));
 	
 	writer[id] = float4( t0, t0, t0,d2);
 }

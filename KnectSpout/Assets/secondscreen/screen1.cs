@@ -13,6 +13,6 @@ public class screen1 : MonoBehaviour
 
     void Update()
     {
-        screen.SetVectorArray("_pos", yolo.Data); 
+      //  screen.SetVectorArray("_pos", yolo.Data); 
     }
 }

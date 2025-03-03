@@ -12,8 +12,9 @@ namespace UltraFace {
         [SerializeField, Range(0, 1)] float _threshold = 0.5f;
         [SerializeField] ResourceSet _resources = null;
         public Texture _source = null;
-        public Material mat;
+       // public Material mat;
         public Vector4[] Data ;
+        public float nb;
         #endregion
 
         #region Private objects
@@ -45,8 +46,8 @@ namespace UltraFace {
 
             int detectionCount = detections.Length;
             Data = new Vector4[10];
-           
 
+            nb = detections.Length;
             for (int i = 0; i < Mathf.Clamp(detections.Length,0,10); i++)
             {
                 Data[i] = new Vector4(detections[i].x1, detections[i].y1, detections[i].x2, detections[i].y2);

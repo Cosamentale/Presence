@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using neoludicGames.uDmx;
+//using neoludicGames.uDmx;
 public class contorlLightinstal : MonoBehaviour
 {
-    public DmxLightSource l1;
+    /*public DmxLightSource l1;
     public DmxLightSource l2;
     public DmxLightSource l3;
-    public DmxLightSource l4;
+    public DmxLightSource l4;*/
     public Timer script;
     public float speed;
     public float speed2;
@@ -17,6 +17,11 @@ public class contorlLightinstal : MonoBehaviour
     public float prevl1;
     public float v1;
     public float v2;
+    public float l1;
+    public float l2;
+    public float l3;
+    public float l4;
+
    // public float prevl2;
    // private bool l3Changed = false;
    // private bool l4Changed = false;
@@ -33,10 +38,14 @@ public class contorlLightinstal : MonoBehaviour
     {
         if (script.activate == 0)
         {
-            l1.SetStrength(1);
+            /*l1.SetStrength(1);
             l2.SetStrength(1);
             l3.SetStrength(1);
-            l4.SetStrength(1); 
+            l4.SetStrength(1); */
+            l1 = 1;
+            l2 = 1;
+            l3 = 1;
+            l4 = 1;
         }
         else
         {
@@ -46,19 +55,27 @@ public class contorlLightinstal : MonoBehaviour
                 {
                     if (!l1Changed)
                     {
-                        l1.SetStrength(1);
+                        /*l1.SetStrength(1);
                         l2.SetStrength(0);
                         l3.SetStrength(1);
-                        l4.SetStrength(0);
+                        l4.SetStrength(0);*/
+                        l1 = 1;
+                        l2 = 0;
+                        l3 = 1;
+                        l4 = 0;
                         l1Changed = true;
                         prevl1 = vl1;
                     }
                     else
                     {
-                        l1.SetStrength(0);
+                        /*l1.SetStrength(0);
                         l2.SetStrength(1);
                         l3.SetStrength(0);
-                        l4.SetStrength(1);
+                        l4.SetStrength(1);  */
+                        l1 = 0;
+                        l2 = 1;
+                        l3 = 0;
+                        l4 = 1;
                         l1Changed = false;
                         prevl1 = vl1;
                     }

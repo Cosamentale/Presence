@@ -9,7 +9,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     RenderTexture C;
     RenderTexture D;
     public Material material;
-    public Material material2;
+    //public Material material2;
     int handle_main;
     int handle_main2;
     //private WebCamTexture webcamTexture;
@@ -31,6 +31,8 @@ public class WebcamCompo01Compute : MonoBehaviour
     public Texture tex2;
     public Material mat3;
     public Texture tex3;
+    public Material mat4;
+    public Texture tex4;
     public Texture texn;
     public float ti;
     public float _c1;
@@ -67,6 +69,7 @@ public class WebcamCompo01Compute : MonoBehaviour
     private float smoothingTime =1f;
     public float dp;
     public float dp2;
+    public float r1;
     //public float reactive = 0;
     void Start()
     {
@@ -112,7 +115,8 @@ public class WebcamCompo01Compute : MonoBehaviour
         tex1 = mat1.GetTexture("_MainTex");
         tex2 = mat2.GetTexture("_MainTex");
         tex3 = mat3.GetTexture("_MainTex");
-
+        tex4 = mat3.GetTexture("_MainTex");
+        r1 = rd(_c1 * 0.5f + 45f);
         //float tt =  no(Time.time*0.25f)*3000+fract((Time.frameCount - activationtime)/1000)*1000;//test * 60;//
         float tt = Time.frameCount - activationtime;//test * 60;//
         //float pp1 = Mathf.Lerp(posenet.pos1[5].y, posenet.pos1[0].y+Mathf.Abs(posenet.pos1[5].y- posenet.pos1[0].y), Mathf.Sin(Time.time) * 0.5f + 0.5f);
@@ -315,7 +319,9 @@ public class WebcamCompo01Compute : MonoBehaviour
         compute_shader.SetTexture(handle_main2, "reader2", tex2);
         compute_shader.SetTexture(handle_main2, "reader3", tex3);
         compute_shader.SetTexture(handle_main2, "reader5", texn);
+        compute_shader.SetTexture(handle_main2, "reader6", tex4);
         compute_shader.SetFloat("_c1", _c1);
+        compute_shader.SetFloat("_r1",r1);
         compute_shader.SetFloat("_c2", _c2);
         compute_shader.SetFloat("_c3", _c3);
         compute_shader.SetTexture(handle_main2, "writer", C);
@@ -347,7 +353,7 @@ public class WebcamCompo01Compute : MonoBehaviour
         
         material.SetTexture("_MainTex", B);
         material.SetTexture("_MainTex2", D);
-        material2.SetTexture("_MainTex", D);
+        //material2.SetTexture("_MainTex", D);
         material.SetFloat("_frame", tt);
         material.SetFloat("_speed1", speed1);
         material.SetFloat("_speed2", speed2);

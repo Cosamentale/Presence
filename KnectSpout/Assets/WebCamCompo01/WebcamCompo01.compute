@@ -6,6 +6,7 @@ Texture2D<float4> reader2;
 Texture2D<float4> reader3;
 Texture2D<float4> reader4;
 Texture2D<float4> reader5;
+Texture2D<float4> reader6;
 RWTexture2D<float4> writer;
 SamplerState _LinearClamp;
 SamplerState _LinearRepeat;
@@ -46,7 +47,7 @@ float _lhv;
 float4 _poca;
 float _sp;
 float _ff;
-
+float _r1;
 float3 exclusion(float3 s, float3 d)
 {
 	return s + d - 2.0 * s * d;
@@ -172,7 +173,8 @@ void CSMain2(uint3 id : SV_DispatchThreadID)
 	float t1 = reader.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
 	float t2 = reader2.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
 	float t3 = reader3.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
-
+	float t4 = reader6.SampleLevel(_LinearClamp, uv + 0.5 / res, 0).x;
+/*
 	float Directions = lerp(1.,8., _bluractivation);
 	float Quality = lerp(1., 2., _bluractivation);
 	float Size = (1. )*60.;
@@ -190,6 +192,7 @@ void CSMain2(uint3 id : SV_DispatchThreadID)
 	/*float ca = clamp(ov(lerp(t1, c.x, n1), lerp(0.5, hs(uv + 23.69), 0.)), 0, 1.);
 	float cb = clamp(ov(lerp(t2, c.y, n2), lerp(0.5, hs(uv + 23.69), 0.)), 0., 1.);
 	float cc = clamp(ov(lerp(t3, c.z, n3), lerp(0.5, hs(uv + 23.69), 0.)), 0., 1.);*/
+	/*
 	float ca = lerp(t1, c.x, n1);
 	float cb = lerp(t2, c.y, n2);
 	float cc = lerp(t3, c.z, n3);
@@ -200,19 +203,24 @@ void CSMain2(uint3 id : SV_DispatchThreadID)
 	float3 v2 = float3(cb, cc, ca);
 	float3 v3 = float3(cc, ca, cb);
 	
-	float rr1 = rd(t + 65.15);
-	float r1 = step(0.5, rr1);
+	//float rr1 = rd(t + 65.15);
+	//float r1 = step(0.5, rr1);
 	float r2 = step(0.5, rd(t + 45.12));
 	float r3 = step(dt, rd(t + 78.49));
-
-	float3 tl1 = lerp(lerp(v1, v2, r2), v3, r3);
+	*/
+	/*float3 tl1 = lerp(lerp(v1, v2, r2), v3, r3);
 	float3 pc =tl1;
 	float pc1 = exclusion(pc.x, pc.y);
 	float pc2 = exclusion(pc.x, pc.z);
 	float pc3 = exclusion(pc.y, pc.z);
 	float pc4 = lerp(lerp(pc1, pc2, smoothstep(0.45, 0.55, no(_c3*0.5 + 95.17))), pc3, smoothstep(dt - 0.05*dt, dt + 0.05*dt, no(_c3*0.5 + 451.62)));
 	float pc6 = lerp(smoothstep(0.9, 0.1, pow(pc4, 0.5)), smoothstep(0.1, 0.9, pow(pc4, 2.)), 0.);
-	float pc7 = pow(lerp(pc.x, pc4, _step1to2),0.75);
+	float pc7 = pow(lerp(pc.x, pc4, _step1to2),0.75);*/
+	//float t = _c1 * 0.5;
+	//float rr2 = rd(t + 45.12)+0.1;
+    float rr2 = _r1;
+	float t0 = lerp(t4, lerp(t3, lerp(t1, t2, step(0.75, rr2)), step(0.5, rr2)), step(0.25, rr2));
+	float pc7 = t0;
 	writer[id.xy] = float4(pc7,pc7,pc7, pc7);
 }
 

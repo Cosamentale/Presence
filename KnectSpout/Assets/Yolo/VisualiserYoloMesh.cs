@@ -16,8 +16,8 @@ public sealed class VisualizerYoloMesh : MonoBehaviour
     Marker[] _markers = new Marker[10];
     RenderTexture _reducedTex;
     public Vector4[] Data;
-    public float[] ratio;
-    public Material mat;
+    //public float[] ratio;
+    //public Material mat;
     void Start()
     {
         _detector = new ObjectDetector(_resources);
@@ -49,6 +49,17 @@ public sealed class VisualizerYoloMesh : MonoBehaviour
             _markers[i++].SetAttributes(d);
             
         }
+        if (detections.Length > 0)
+        {
+            Data[0] = new Vector4(detections[0].x, detections[0].y, detections[0].w, detections[0].h);
+        }
+        else { Data[0] = new Vector4(0f, 0f, 0f, 0f); }
+        if (detections.Length > 1)
+        {
+            Data[1] = new Vector4(detections[1].x, detections[1].y, detections[1].w, detections[1].h);
+        }
+        else { Data[1] = new Vector4(0f, 0f, 0f, 0f); }
+        /*
         Data = new Vector4[4];
         ratio = new float[4];
 
@@ -57,9 +68,9 @@ public sealed class VisualizerYoloMesh : MonoBehaviour
             Data[j] = new Vector4(detections[j].x - detections[j].w * 0.5f, detections[j].x + detections[j].w * 0.5f, 1f - (detections[j].y - detections[j].h * 0.5f), 1f - (detections[j].y + detections[j].h * 0.5f));
             ratio[j] = detections[j].w / detections[j].h;
         }
-
-        mat.SetVectorArray("_data", Data);
-        mat.SetFloatArray("_ratio", ratio);
+        */
+        //mat.SetVectorArray("_data", Data);
+        //mat.SetFloatArray("_ratio", ratio);
         for (; i < _markers.Length; i++) _markers[i].Hide();
     }
 }
