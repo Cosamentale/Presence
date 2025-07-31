@@ -15,9 +15,10 @@ public class VisualizerYolo : MonoBehaviour
     [SerializeField] ResourceSet _resources = null;
     public Vector4[] Data;
     //public Material mat;
-    public float nb;
+    public int nb;
+    public int nbmax;
     public string[] label;
-    public float[] score;
+    public string[] score;
     #endregion
 
     #region Internal objects
@@ -56,16 +57,16 @@ public class VisualizerYolo : MonoBehaviour
         var detections = _detector.Detections.ToArray();
         int detectionCount = detections.Length;
         
-        nb = detections.Length;
-        Data = new Vector4[detections.Length];
-        label = new string[detections.Length];
-        score = new float[detections.Length];
-        for (int i = 0; i < Mathf.Clamp(detections.Length, 0, 10); i++)
+        nb = Mathf.Clamp(detectionCount, 0, nbmax);
+        Data = new Vector4[nb];
+        label = new string[nb];
+        score = new string[nb];
+        for (int i = 0; i < nb; i++)
         {
             Data[i] = new Vector4(detections[i].x-detections[i].w*0.5f, detections[i].x+detections[i].w*0.5f,(detections[i].y - detections[i].h * 0.5f),  (detections[i].y + detections[i].h * 0.5f));
             //label[i] = detections[i].classIndex+1;
             label[i] = _labels[(int)detections[i].classIndex];
-            score[i] = detections[i].score;
+            score[i] = $"{Mathf.Round(detections[i].score * 100f) / 100f:F2}%";
         }
 
         //mat.SetVectorArray("_data", Data);

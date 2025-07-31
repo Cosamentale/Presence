@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8383883706668280890}
   - component: {fileID: 7993877941057174668}
   m_Layer: 0
-  m_Name: Yolo
+  m_Name: Yolo3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b052af97e504397ab00e3e52bbd084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture: {fileID: 8400000, guid: 392cddba37b514a4eb856c2e7538dac5, type: 2}
+  texture: {fileID: 8400000, guid: 9f9241ca365267e4dbca53805c6e4fec, type: 2}
   _threshold: 0.5
   _resources: {fileID: 11400000, guid: 4bdfe4ce1192248c69b07ffd4bb583c2, type: 2}
   Data: []
   nb: 0
+  nbmax: 3
   label: []
   score: []

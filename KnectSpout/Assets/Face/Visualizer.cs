@@ -50,7 +50,10 @@ namespace UltraFace {
             nb = detections.Length;
             for (int i = 0; i < Mathf.Clamp(detections.Length,0,10); i++)
             {
-                Data[i] = new Vector4(detections[i].x1, detections[i].y1, detections[i].x2, detections[i].y2);
+                if (detections.Rank > 0.5)
+                {
+                    Data[i] = new Vector4(detections[i].x1, detections[i].y1, detections[i].x2, detections[i].y2);
+                }
             }
 
           //  mat.SetVectorArray("_data", Data);
